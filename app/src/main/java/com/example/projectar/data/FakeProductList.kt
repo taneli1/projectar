@@ -33,7 +33,7 @@ object FakeProductList {
         "Description for product $number"
     )
 
-    val data: List<Product> = List(100) {
+    val data: List<Product> = List(20) {
         return@List Product(
             productData(it),
             fakeImageInfo,

@@ -29,24 +29,32 @@ abstract class ProductDao {
 
         // Replace image + model refs
         val image = product.image.let {
-            ImageInfo(
-                it.id,
-                id,
-                it.filename,
-                it.thumbnail
-            )
+            it?.let { it1 ->
+                ImageInfo(
+                    it1.id,
+                    id,
+                    it.filename,
+                    it.thumbnail
+                )
+            }
         }
 
         val model = product.model.let {
-            ModelInfo(
-                it.id,
-                id,
-                it.filename
-            )
+            it?.let { it1 ->
+                ModelInfo(
+                    it1.id,
+                    id,
+                    it.filename
+                )
+            }
         }
 
-        insertImageInfo(image)
-        insertModeInfo(model)
+        if (image != null) {
+            insertImageInfo(image)
+        }
+        if (model != null) {
+            insertModeInfo(model)
+        }
 
         return id
     }
