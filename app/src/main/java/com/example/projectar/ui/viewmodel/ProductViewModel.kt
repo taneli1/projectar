@@ -5,9 +5,14 @@ import android.widget.GridLayout
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.GridCells
 import androidx.lifecycle.*
-import com.example.projectar.data.FakeProductList
+import com.example.projectar.data.productdata.products.FakeProductList
+import com.example.projectar.data.productdata.tags.ProductTags
+import com.example.projectar.data.repository.intrfc.Filter
+import com.example.projectar.data.repository.intrfc.ProductFilter
 import com.example.projectar.data.repository.intrfc.ProductRepository
+import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.data.room.utils.ProductCreator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -18,25 +23,45 @@ private const val TAG = "ProductViewModel"
  * Viewmodel which provides methods to access product data
  */
 class ProductViewModel(private val productRepository: ProductRepository) : ViewModel() {
-    val products = productRepository.getProducts()
+    // Default filter for products
+    private val filter: MutableLiveData<ProductFilter> = MutableLiveData(Filter())
 
-    init {
-        Log.d(
-            TAG,
-            "ViewModel Initialized"
-        );
+    // List of products with a filter applied
+    val filteredProducts: LiveData<List<Product>> = filter.switchMap {
+        productRepository.getProductsFiltered(it)
     }
 
+    // List of all the products TODO remove later
+    val products = productRepository.getProducts()
+
+    // ---------------------- Methods ------------------------
+    // ---------------------- Methods ------------------------
+    // ---------------------- Methods ------------------------
+
+    /**
+     * Get all data for a single products from the database (Excluding tags)
+     */
     fun getProductData(productId: Long) = productRepository.getProduct(productId)
 
-    // ---------------------- For testing purposes ------------------
-    // ---------------------- For testing purposes ------------------
+    /**
+     * Apply a filter for products to get from database
+     */
+    fun applyFilter(filter: ProductFilter) {
+        this.filter.postValue(filter)
+    }
 
-    fun createProducts() {
+    //
+    //
+    //
+    // ---------------------- For testing purposes ------------------
+    // ---------------------- For testing purposes ------------------
+    //
+    //
+    //
+
+    fun createProducts(db: ApplicationDatabase) {
         viewModelScope.launch(Dispatchers.IO) {
-            FakeProductList.data.forEach {
-                productRepository.insertProduct(it)
-            }
+            ProductCreator.createProducts(db)
         }
     }
 

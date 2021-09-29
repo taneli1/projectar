@@ -1,7 +1,5 @@
 package com.example.projectar.ui.testing
 
-import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,12 +11,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.di.Injector
-import com.example.projectar.ui.theme.ProjectarTheme
 import com.example.projectar.ui.viewmodel.ProductViewModel
 
 object TestComposable {
@@ -30,11 +26,11 @@ object TestComposable {
         val viewModel: ProductViewModel = viewModel(
             factory = Injector.provideProductViewModelFactory(database)
         )
-        val products: List<Product> by viewModel.products.observeAsState(listOf())
+        val products: List<Product> by viewModel.filteredProducts.observeAsState(listOf())
 
         TestList(
             data = products,
-        ) { viewModel.createProducts() }
+        ) { viewModel.createProducts(database) }
     }
 
     @Composable
