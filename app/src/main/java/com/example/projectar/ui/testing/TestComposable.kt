@@ -22,7 +22,6 @@ import com.example.projectar.ui.theme.ProjectarTheme
 import com.example.projectar.ui.viewmodel.ProductViewModel
 
 object TestComposable {
-
     @Composable
     fun TestScreen(
         database: ApplicationDatabase,
