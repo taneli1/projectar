@@ -1,4 +1,4 @@
-package com.example.projectar.data.productdata.tags
+package com.example.projectar.data.appdata.tags
 
 private const val TAG_ID_BED = 0L
 private const val TAG_ID_CHAIR = 1L

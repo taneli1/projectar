@@ -1,13 +1,13 @@
-package com.example.projectar.data.productdata.tags
+package com.example.projectar.data.utils
 
 import android.content.Context
-import androidx.compose.material.contentColorFor
+import com.example.projectar.data.appdata.tags.ProductTags
 import kotlin.random.Random
 
 /**
- * Tools to help tag usage
+ * Tools to help Tag usage
  */
-object TagTools {
+object TagUtils {
 
     /**
      * Get a random tag value to add for a product
@@ -37,7 +37,7 @@ object TagTools {
             }
         }
 
-        // This only returns if there is an error in the database values for tags
+        // If this value is returned, database has an error in it.
         return "Tag error in database"
     }
 
