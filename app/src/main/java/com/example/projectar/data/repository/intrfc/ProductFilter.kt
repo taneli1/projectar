@@ -12,7 +12,7 @@ interface ProductFilter {
 }
 
 /**
- * Implementation of filter
+ * Implementation of filter.
  */
 data class Filter(
     override val searchTerm: String = "",
