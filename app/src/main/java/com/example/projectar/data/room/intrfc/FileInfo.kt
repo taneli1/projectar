@@ -11,11 +11,11 @@ import com.example.projectar.data.room.entity.product.ProductData
 
 interface FileInfo {
     // Primary key
-    abstract val id: Long;
+    val id: Long;
 
     /**
      *  Id of the entity this info belongs to
      */
-    abstract val refId: Long;
-    abstract val filename: String
+    val refId: Long;
+    val filename: String
 }

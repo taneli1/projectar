@@ -16,11 +16,11 @@ class Product(
     @Relation(
         parentColumn = "id",
         entityColumn = "refId"
-    ) val image: ImageInfo,
+    ) val image: ImageInfo?,
     @Relation(
         parentColumn = "id",
         entityColumn = "refId"
-    ) val model: ModelInfo
+    ) val model: ModelInfo?
 )
 
 

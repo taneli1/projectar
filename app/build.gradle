@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    compileSdk 30
+    compileSdk 31
 
     defaultConfig {
         applicationId "com.example.projectar"
@@ -54,6 +54,9 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    // ViewModel for compose components
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-beta01"
+
     //for property delegation
     implementation "androidx.activity:activity-ktx:1.3.1"
     //and/or
@@ -62,6 +65,8 @@ dependencies {
 
     // Extensions = ViewModel + LiveData
     implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 
 
     implementation 'androidx.core:core-ktx:1.6.0'
