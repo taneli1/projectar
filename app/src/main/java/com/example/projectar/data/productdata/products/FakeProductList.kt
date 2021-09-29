@@ -1,12 +1,13 @@
-package com.example.projectar.data
+package com.example.projectar.data.productdata.products
 
 import android.util.Log
+import com.example.projectar.data.productdata.tags.ProductTags
 import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.entity.product.ProductData
-
-private const val TAG = "FakeProductList"
+import com.example.projectar.data.room.entity.tag.Tag
+import kotlin.random.Random
 
 /**
  * Products listed in the application
@@ -40,4 +41,5 @@ object FakeProductList {
             fakeModelInfo
         )
     }
+
 }

@@ -1,11 +1,11 @@
 package com.example.projectar.data.room.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
+import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import androidx.room.Update
 
+/**
+ * Provides basic methods for parameter T
+ */
 @Dao
 interface BaseDao<T> {
     @Insert(onConflict = REPLACE)
