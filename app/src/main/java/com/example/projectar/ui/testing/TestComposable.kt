@@ -1,5 +1,6 @@
 package com.example.projectar.ui.testing
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import androidx.compose.foundation.Image
@@ -27,10 +28,11 @@ object TestComposable {
     @Composable
     fun TestScreen(
         database: ApplicationDatabase,
+        context: Context
     ) {
 
         val viewModel: ProductViewModel = viewModel(
-            factory = Injector.provideProductViewModelFactory(database)
+            factory = Injector.provideProductViewModelFactory(database, context)
         )
         val products: List<Product> by viewModel.filteredProducts.observeAsState(listOf())
 
