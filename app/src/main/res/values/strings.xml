@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">projectar</string>
+    <string name="AddToCart">Add to cart</string>
+    <string name="AddToAr">Add to augmented reality</string>
 </resources>
