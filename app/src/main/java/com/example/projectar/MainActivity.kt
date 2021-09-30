@@ -13,12 +13,15 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.Text
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale.Companion.Crop
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -31,11 +34,14 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.data.room.utils.ProductCreator
 import com.example.projectar.di.Injector
 import com.example.projectar.ui.theme.ProjectarTheme
 import com.example.projectar.ui.theme.Shapes
 import com.example.projectar.ui.theme.darkGrey
 import com.example.projectar.ui.viewmodel.ProductViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 //data class Product(val first: String, val second: String, val img: Int)
 //val data = mutableListOf<Product>()
@@ -49,7 +55,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             ProjectarTheme {
                 SetUp()
-                // TestComposable.TestScreen(db)
+                Row() {
+                    Button(onClick = { ProductCreator.nuke(db) }) {
+                        Text(text = "Nuke")
+                    }
+                    Button(onClick = { ProductCreator.createProducts(db) }) {
+                        Text(text = "Create")
+                    }
+                }
             }
         }
     }
@@ -77,7 +90,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
             composable("testList") {
-                TestList(data) {
+                TestList(viewModel, data) {
                     navigate(
                         navController,
                         "singleProduct/$it"
@@ -96,18 +109,26 @@ private fun navigate(navController: NavController, route: String) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TestList(products: List<Product>, navigate: (productId: Long) -> Unit) {
+fun TestList(
+    viewModel: ProductViewModel,
+    products: List<Product>,
+    navigate: (productId: Long) -> Unit
+) {
+
+
     LazyVerticalGrid(
         cells = GridCells.Fixed(2)
     ) {
-        items(products) { Product ->
-            TestBox(Product, navigate)
+        items(products) { product ->
+            product.image?.let {
+                TestBox(product, navigate, viewModel.getImage(it).asImageBitmap())
+            }
         }
     }
 }
 
 @Composable
-fun TestBox(msg: Product, navigate: (productId: Long) -> Unit) {
+fun TestBox(msg: Product, navigate: (productId: Long) -> Unit, imageBitmap: ImageBitmap) {
     Column(
         Modifier
             .padding(10.dp)
@@ -115,7 +136,7 @@ fun TestBox(msg: Product, navigate: (productId: Long) -> Unit) {
             .selectable(selected = true, onClick = { navigate(msg.data.id) })
     ) {
         Image(
-            painter = painterResource(R.drawable.blenny),
+            imageBitmap,
             contentDescription = "picture",
             contentScale = Crop,
             modifier = Modifier

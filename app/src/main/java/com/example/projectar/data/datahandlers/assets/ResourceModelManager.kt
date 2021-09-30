@@ -1,15 +1,13 @@
-package com.example.projectar.data.managers.assets
+package com.example.projectar.data.datahandlers.assets
 
 import android.content.Context
-import com.example.projectar.data.room.entity.file.FileInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
 import java.lang.ref.WeakReference
 
 /**
  * Get 3dModels from resources
  */
-class ResourceModelManager
-    (
+class ResourceModelManager(
     private val context: WeakReference<Context>
 ) : ModelAssetManager {
     override fun getAsset(info: ModelInfo): Model {

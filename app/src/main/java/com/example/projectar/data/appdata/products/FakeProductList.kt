@@ -13,7 +13,7 @@ object FakeProductList {
     private val fakeImageInfo = ImageInfo(
         0,
         0,
-        "none",
+        "goat",
         "none"
     )
 
