@@ -1,12 +1,13 @@
 package com.example.projectar.di
 
+import com.example.projectar.data.managers.product.ProductManagerImpl
 import com.example.projectar.data.repository.ProductRepositoryImpl
-import com.example.projectar.data.repository.intrfc.ProductRepository
+import com.example.projectar.data.repository.interfaces.ProductRepository
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.ui.viewmodel.ProductViewModel
 
 /**
- * Links dependencies for the objects of the application
+ * Inject dependencies for the objects of the application
  */
 object Injector {
 
@@ -30,6 +31,6 @@ object Injector {
     private fun productViewModelFactory(
         repo: ProductRepository
     ): ProductViewModel.ProductViewModelFactory {
-        return ProductViewModel.ProductViewModelFactory(repo)
+        return ProductViewModel.ProductViewModelFactory(ProductManagerImpl(repo))
     }
 }
