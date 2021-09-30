@@ -1,4 +1,4 @@
-package com.example.projectar.data.managers.assets
+package com.example.projectar.data.datahandlers.assets
 
 import android.graphics.Bitmap
 import com.example.projectar.data.room.entity.file.ImageInfo
@@ -10,7 +10,7 @@ import com.example.projectar.data.room.entity.file.FileInfo
  * by implementations of FileInfo.
  *
  * Implementations of AssetManagers can decide for themselves where to get the resources
- * from.
+ * from, as long as the correct form is supplied.
  * @see FileInfo
  */
 interface AssetManager<T : FileInfo, U> {

@@ -1,10 +1,12 @@
 package com.example.projectar.ui.viewmodel
 
+import android.graphics.Bitmap
 import androidx.lifecycle.*
-import com.example.projectar.data.managers.product.ProductManager
+import com.example.projectar.data.datahandlers.product.ProductManager
 import com.example.projectar.data.room.queryfilters.ProductFilter
 import com.example.projectar.data.room.queryfilters.TagFilter
 import com.example.projectar.data.room.db.ApplicationDatabase
+import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.utils.ProductCreator
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +43,10 @@ class ProductViewModel(private val productManager: ProductManager) : ViewModel()
      */
     fun applyFilter(filter: TagFilter) {
         this.filter.postValue(filter)
+    }
+
+    fun getImage(imageInfo: ImageInfo): Bitmap {
+        return productManager.getProductImage(imageInfo)
     }
 
     //

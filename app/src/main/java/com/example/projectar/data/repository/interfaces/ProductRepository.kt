@@ -1,6 +1,7 @@
 package com.example.projectar.data.repository.interfaces
 
 import androidx.lifecycle.LiveData
+import com.example.projectar.data.room.entity.order.Order
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.entity.tag.Tag
 import com.example.projectar.data.room.queryfilters.TagFilter
@@ -21,7 +22,14 @@ interface ProductRepository {
     /** Get all products that match the filters */
     fun getProductsFiltered(filter: TagFilter): LiveData<List<Product>>
 
+    fun getOrders(userId: Long): LiveData<List<Order>>
+
     // -- Insert --
     fun insertProduct(product: Product): Long
     fun insertTag(tag: Tag): Long
+    fun insertOrder(order: Order): Long
+
+
+    // -- Dev --
+    fun nukeDatabase()
 }

@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
  */
 object ProductCreator {
 
-    @DelicateCoroutinesApi
     fun createProducts(database: ApplicationDatabase) {
         GlobalScope.launch {
 
@@ -40,5 +39,9 @@ object ProductCreator {
                     .setTagForProduct(tagLink)
             }
         }
+    }
+
+    fun nuke(database: ApplicationDatabase) {
+        GlobalScope.launch { database.nukeDao().nukeDb() }
     }
 }

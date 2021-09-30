@@ -1,11 +1,17 @@
-package com.example.projectar.data.managers.product
+package com.example.projectar.data.datahandlers.product
 
 import android.graphics.Bitmap
-import com.example.projectar.data.managers.assets.*
+import com.example.projectar.data.datahandlers.assets.*
+import com.example.projectar.data.datahandlers.cart.Cart
+import com.example.projectar.data.datahandlers.order.builder.OrderBuilder
+import com.example.projectar.data.datahandlers.order.handler.OrderHandler
 import com.example.projectar.data.room.queryfilters.TagFilter
 import com.example.projectar.data.repository.interfaces.ProductRepository
 import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 /**
  * Class combining functionalities required by ProductManager interface.
@@ -13,12 +19,20 @@ import com.example.projectar.data.room.entity.file.ModelInfo
  * @param productRepository
  * @param imageManager A class that can provide image assets for the products
  * @param modelManager A class that can provide 3d models for the products
+ * @param cart A Cart implementation
+ * @param orderHandler A class handling the orders after user wants to place it
+ * @param orderBuilder Class building the orders with all the required data
  */
 class ProductManagerImpl(
     private val productRepository: ProductRepository,
     private val imageManager: ImageAssetManager,
     private val modelManager: ModelAssetManager,
+    private val cart: Cart,
+    private val orderHandler: OrderHandler,
+    private val orderBuilder: OrderBuilder
 ) : ProductManager {
+    private val job = Job()
+    private val scope = CoroutineScope(job)
 
     // Product data getters
     override fun getProducts(pf: TagFilter) = productRepository.getProductsFiltered(pf)
@@ -32,5 +46,14 @@ class ProductManagerImpl(
     override fun getProductImage(imageInfo: ImageInfo): Bitmap = imageManager.getAsset(imageInfo)
     override fun getProductModel(modelInfo: ModelInfo): Model = modelManager.getAsset(modelInfo)
 
-    // Cart methods?
+    // Cart
+    override fun useCart(): Cart = cart
+    override fun placeOrder() {
+        scope.launch {
+            val order = orderBuilder.buildOrder(cart.getAll())
+            // placeOrder returns a boolean based on whether the op was successful, could do sth
+            // with it
+            val successful = orderHandler.placeOrder(order)
+        }
+    }
 }

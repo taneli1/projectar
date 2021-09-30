@@ -1,10 +1,12 @@
 package com.example.projectar.di
 
 import android.content.Context
-import com.example.projectar.data.managers.assets.ImageAssetManager
-import com.example.projectar.data.managers.assets.ResourceImageManager
-import com.example.projectar.data.managers.assets.ResourceModelManager
-import com.example.projectar.data.managers.product.ProductManagerImpl
+import com.example.projectar.data.datahandlers.assets.ResourceImageManager
+import com.example.projectar.data.datahandlers.assets.ResourceModelManager
+import com.example.projectar.data.datahandlers.cart.CartImpl
+import com.example.projectar.data.datahandlers.order.builder.OrderBuilderImpl
+import com.example.projectar.data.datahandlers.order.handler.LocalOrderHandler
+import com.example.projectar.data.datahandlers.product.ProductManagerImpl
 import com.example.projectar.data.repository.ProductRepositoryImpl
 import com.example.projectar.data.repository.interfaces.ProductRepository
 import com.example.projectar.data.room.db.ApplicationDatabase
@@ -15,6 +17,7 @@ import java.lang.ref.WeakReference
  * Inject dependencies for the objects of the application
  */
 object Injector {
+    private const val FAKE_USER_ID = 1244L
 
     /**
      * Provides a ViewModelFactory for a ProductViewModel.
@@ -41,7 +44,10 @@ object Injector {
             ProductManagerImpl(
                 repo,
                 ResourceImageManager(WeakReference(context)),
-                ResourceModelManager(WeakReference(context))
+                ResourceModelManager(WeakReference(context)),
+                CartImpl(),
+                LocalOrderHandler(repo),
+                OrderBuilderImpl(FAKE_USER_ID)
             )
         )
     }

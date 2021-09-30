@@ -33,7 +33,7 @@ object TagUtils {
         // Check all the defined tags, return a string if matched
         for (tag in ProductTags.values()) {
             if (tag.id() == tagId) {
-                return context.getString(tag.resourceString())
+                return context.getString(tag.resourceStringId())
             }
         }
 

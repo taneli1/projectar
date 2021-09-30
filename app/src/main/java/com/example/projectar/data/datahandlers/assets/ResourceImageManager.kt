@@ -1,17 +1,10 @@
-package com.example.projectar.data.managers.assets
+package com.example.projectar.data.datahandlers.assets
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Bitmap
-import android.media.Image
 import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.compose.material.contentColorFor
-import androidx.compose.ui.res.painterResource
 import androidx.core.graphics.drawable.toBitmap
-import com.example.projectar.R
-import com.example.projectar.data.room.entity.file.FileInfo
 import com.example.projectar.data.room.entity.file.ImageInfo
 import java.lang.Error
 import java.lang.Exception
@@ -51,7 +44,7 @@ class ResourceImageManager(
             )
         }
 
-        // Returns an empty bitmap if resource file could not be gotten
+        // Returns an empty bitmap if a resource file could not be found
         return Bitmap.createBitmap(
             100,
             100,
