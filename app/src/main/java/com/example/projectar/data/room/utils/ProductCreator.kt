@@ -1,8 +1,8 @@
 package com.example.projectar.data.room.utils
 
-import com.example.projectar.data.productdata.products.FakeProductList
-import com.example.projectar.data.productdata.tags.ProductTags
-import com.example.projectar.data.productdata.tags.TagTools
+import com.example.projectar.data.appdata.products.FakeProductList
+import com.example.projectar.data.appdata.tags.ProductTags
+import com.example.projectar.data.utils.TagUtils
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.tag.Tag
 import com.example.projectar.data.room.entity.tag.TagLink
@@ -29,7 +29,7 @@ object ProductCreator {
             FakeProductList.data.forEach {
                 val id = database.productDao()
                     .insertProduct(it)
-                val randomTagId = TagTools.getRandomTagValue()
+                val randomTagId = TagUtils.getRandomTagValue()
 
                 val tagLink = TagLink(
                     id = id,

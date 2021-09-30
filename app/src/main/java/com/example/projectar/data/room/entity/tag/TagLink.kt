@@ -9,7 +9,6 @@ import com.example.projectar.data.room.entity.product.ProductData
 
 /**
  * Entity which links tags to other entities.
- *
  */
 @Entity(
     primaryKeys = ["id", "tagId"],

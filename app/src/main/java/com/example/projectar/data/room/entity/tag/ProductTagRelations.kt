@@ -6,9 +6,9 @@ import androidx.room.Relation
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.entity.product.ProductData
 
-///**
-// * All products listed under a single tag.
-// */
+/**
+ * All products listed under a single tag.
+ */
 data class ProductListForTag(
     @Embedded val tag: Tag,
     @Relation(
