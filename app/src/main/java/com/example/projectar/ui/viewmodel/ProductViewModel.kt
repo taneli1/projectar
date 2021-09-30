@@ -2,7 +2,7 @@ package com.example.projectar.ui.viewmodel
 
 import androidx.lifecycle.*
 import com.example.projectar.data.managers.product.ProductManager
-import com.example.projectar.data.repository.interfaces.Filter
+import com.example.projectar.data.room.queryfilters.ProductFilter
 import com.example.projectar.data.room.queryfilters.TagFilter
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.product.Product
@@ -17,7 +17,7 @@ private const val TAG = "ProductViewModel"
  */
 class ProductViewModel(private val productManager: ProductManager) : ViewModel() {
     // Default filter for products
-    private val filter: MutableLiveData<TagFilter> = MutableLiveData(Filter())
+    private val filter: MutableLiveData<TagFilter> = MutableLiveData(ProductFilter())
 
     // List of products with a filter applied
     val filteredProducts: LiveData<List<Product>> = filter.switchMap {
@@ -25,7 +25,7 @@ class ProductViewModel(private val productManager: ProductManager) : ViewModel()
     }
 
     // List of all the products TODO remove later
-    val products = productManager.getProducts(Filter())
+    val products = productManager.getProducts(ProductFilter())
 
     // ---------------------- Methods ------------------------
     // ---------------------- Methods ------------------------

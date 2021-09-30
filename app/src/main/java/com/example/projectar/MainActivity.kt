@@ -45,16 +45,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-/*
-        data.add(Product("kala", "kukko", R.drawable.goat))
-        data.add(Product("kala2", "kukko2", R.drawable.goat))
-        data.add(Product("kala3", "kukko3", R.drawable.goat))
-        data.add(Product("kala4", "kukko4", R.drawable.blenny))
-        data.add(Product("kala5", "kukko5", R.drawable.blenny))
-        data.add(Product("kala6", "kukko6", R.drawable.blenny))
-        data.add(Product("kala7", "kukko7", R.drawable.blenny))
-        data.add(Product("kala8", "kukko8", R.drawable.blenny))
-*/
+
         setContent {
             ProjectarTheme {
                 SetUp()
@@ -66,7 +57,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun SetUp() {
         val viewModel: ProductViewModel = viewModel(
-            factory = Injector.provideProductViewModelFactory(db)
+            factory = Injector.provideProductViewModelFactory(db, applicationContext)
         )
         val data: List<Product> by viewModel.products.observeAsState(listOf())
 
