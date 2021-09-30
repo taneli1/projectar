@@ -24,7 +24,6 @@ import com.example.projectar.di.Injector
 import com.example.projectar.ui.viewmodel.ProductViewModel
 
 object TestComposable {
-
     @Composable
     fun TestScreen(
         database: ApplicationDatabase,
