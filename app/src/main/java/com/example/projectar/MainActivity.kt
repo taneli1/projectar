@@ -22,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale.Companion.Crop
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,6 +38,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.data.room.utils.ProductCreator
 import com.example.projectar.di.Injector
 import com.example.projectar.ui.screens.MainList
 import com.example.projectar.ui.screens.SingleProduct
@@ -44,6 +47,8 @@ import com.example.projectar.ui.theme.ProjectarTheme
 import com.example.projectar.ui.theme.Shapes
 import com.example.projectar.ui.theme.darkGrey
 import com.example.projectar.ui.viewmodel.ProductViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private val db by lazy { ApplicationDatabase.get(this) }
@@ -54,7 +59,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             ProjectarTheme {
                 SetUp()
-                // TestComposable.TestScreen(db)
+                Row() {
+                    Button(onClick = { ProductCreator.nuke(db) }) {
+                        Text(text = "Nuke")
+                    }
+                    Button(onClick = { ProductCreator.createProducts(db) }) {
+                        Text(text = "Create")
+                    }
+                }
             }
         }
     }
@@ -62,7 +74,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun SetUp() {
         val viewModel: ProductViewModel = viewModel(
-            factory = Injector.provideProductViewModelFactory(db)
+            factory = Injector.provideProductViewModelFactory(db, applicationContext)
         )
         val data: List<Product> by viewModel.products.observeAsState(listOf())
 
@@ -98,46 +110,3 @@ fun navigate(navController: NavController, route: String) {
         popUpTo("testBox") { inclusive = true }
     }
 }
-
-// Work in progress
-/*
-@Composable
-fun BurgerTopAppBar(
-    //content: RowScope.() -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .background(color = Orange)
-            .fillMaxWidth()
-            .height(40.dp)
-    ) {
-        Text(text = "hello")
-
-    }
-}
-
-*/
-
-/*
-@Composable
-fun FriendsList(navController: NavController) {
-    /*...*/
-    Button(onClick = {
-        navController.navigate("profile") {
-            popUpTo("home") { inclusive = true }
-        }
-    }) {
-        Text(text = "Navigate next")
-    }
-    /*...*/
-}
-*/
-
-/*
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ProjectarTheme {
-        SingleProduct
-    }
-}*/

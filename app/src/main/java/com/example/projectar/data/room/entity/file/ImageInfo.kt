@@ -2,10 +2,8 @@ package com.example.projectar.data.room.entity.file
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 import com.example.projectar.data.room.entity.product.ProductData
-import com.example.projectar.data.room.intrfc.FileInfo
 
 /**
  * Image info for a product
