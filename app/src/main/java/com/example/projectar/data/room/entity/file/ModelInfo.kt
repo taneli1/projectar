@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.projectar.data.room.entity.product.ProductData
-import com.example.projectar.data.room.intrfc.FileInfo
 
 /**
  * 3D-Model info for a product

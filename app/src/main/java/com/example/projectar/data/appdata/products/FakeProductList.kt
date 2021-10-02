@@ -1,12 +1,9 @@
-package com.example.projectar.data
+package com.example.projectar.data.appdata.products
 
-import android.util.Log
 import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.entity.product.ProductData
-
-private const val TAG = "FakeProductList"
 
 /**
  * Products listed in the application
@@ -16,7 +13,7 @@ object FakeProductList {
     private val fakeImageInfo = ImageInfo(
         0,
         0,
-        "none",
+        "goat",
         "none"
     )
 
@@ -40,4 +37,5 @@ object FakeProductList {
             fakeModelInfo
         )
     }
+
 }
