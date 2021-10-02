@@ -28,5 +28,4 @@ fun MainList(
             }
         }
     }
-
 }
