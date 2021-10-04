@@ -1,4 +1,4 @@
-package com.example.projectar.ui.ar
+package com.example.projectar.ui.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,22 +15,22 @@ import com.google.ar.sceneform.ux.ArFragment
 import kotlinx.coroutines.DEBUG_PROPERTY_NAME
 
 class ArViewFragment : ArFragment() {
-    private var _binding: FragmentArViewBinding? = null
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentArViewBinding.inflate(inflater, container, false)
-
-
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+//    private var _binding: FragmentArViewBinding? = null
+//    private val binding get() = _binding!!
+//
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View {
+//        _binding = FragmentArViewBinding.inflate(inflater, container, false)
+//
+//
+//        return binding.root
+//    }
+//
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
 }

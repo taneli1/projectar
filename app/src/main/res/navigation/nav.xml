@@ -6,7 +6,7 @@
     app:startDestination="@id/fragment_compose">
     <fragment
         android:id="@+id/fragment_ar_view"
-        android:name="com.example.projectar.ui.ar.ArViewFragment"
+        android:name="com.example.projectar.ui.fragment.ArViewFragment"
         android:label="fragment_ar_view"
         tools:layout="@layout/fragment_ar_view" />
     <fragment

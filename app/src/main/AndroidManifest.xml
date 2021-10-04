@@ -3,7 +3,6 @@
     package="com.example.projectar">
 
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-feature
         android:name="android.hardware.camera.ar"
         android:required="true" />
@@ -18,7 +17,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/title_activity_main"
             android:theme="@style/Theme.Projectar.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -18,6 +18,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.findNavController
 import androidx.navigation.navArgument
 import com.example.projectar.R
 import com.example.projectar.data.room.db.ApplicationDatabase
@@ -28,6 +29,7 @@ import com.example.projectar.di.Injector
 import com.example.projectar.ui.screens.MainList
 import com.example.projectar.ui.screens.SingleProduct
 import com.example.projectar.ui.theme.ProjectarTheme
+import com.example.projectar.ui.utils.NavFunction
 import com.example.projectar.ui.utils.NavUtils
 import com.example.projectar.ui.viewmodel.ProductViewModel
 
@@ -49,15 +51,8 @@ class ComposeFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ProjectarTheme {
-                    SetUp()
-//                TestComposable.ArScreenTest()
-                    Row() {
-                        Button(onClick = { ProductCreator.nuke(db) }) {
-                            Text(text = "Nuke")
-                        }
-                        Button(onClick = { ProductCreator.createProducts(db) }) {
-                            Text(text = "Create")
-                        }
+                    SetUp() { dest ->
+                        findNavController().navigate(dest)
                     }
                 }
             }
@@ -73,36 +68,19 @@ class ComposeFragment : Fragment() {
 
 
     @Composable
-    fun SetUp() {
+    fun SetUp(navFunction: NavFunction) {
         val viewModel: ProductViewModel = viewModel(
             factory = Injector.provideProductViewModelFactory(db, requireContext())
         )
-        val data: List<Product> by viewModel.products.observeAsState(listOf())
-
         val navController = rememberNavController()
 
-        NavHost(navController = navController, startDestination = "testList") {
-            composable(
-                "singleProduct/{product}",
-                arguments = listOf(navArgument("product") {
-                    type = NavType.LongType
-                })
-            ) { backStackEntry ->
-                backStackEntry.arguments?.getLong("product")?.let { json ->
-                    val product = data.find { it.data.id == json }
-                    if (product != null) {
-                        SingleProduct(product = product, navController)
-                    }
-                }
-            }
-            composable("testList") {
-                MainList(data) {
-                    NavUtils.navigate(
-                        navController,
-                        "singleProduct/$it"
-                    )
-                }
-            }
+        NavUtils.CreateNavigator(
+            navC = navController,
+            viewModel = viewModel
+        )
+
+        Button(onClick = { navFunction(R.id.fragment_ar_view) }) {
+            Text(text = "Navigate")
         }
     }
 }

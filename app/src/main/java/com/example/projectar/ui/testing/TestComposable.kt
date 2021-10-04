@@ -1,10 +1,6 @@
 package com.example.projectar.ui.testing
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.view.View
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,21 +11,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.product.Product
-import com.example.projectar.databinding.FragmentArViewBinding
+import com.example.projectar.data.room.utils.ProductCreator
 import com.example.projectar.di.Injector
-import com.example.projectar.ui.ar.ArViewFragment
 import com.example.projectar.ui.viewmodel.ProductViewModel
-import com.google.ar.sceneform.ux.ArFragment
 
 object TestComposable {
+
+    @Composable
+    fun DbButtons(db: ApplicationDatabase) {
+        Row() {
+            Button(onClick = { ProductCreator.nuke(db) }) {
+                Text(text = "Nuke")
+            }
+            Button(onClick = { ProductCreator.createProducts(db) }) {
+                Text(text = "Create")
+            }
+        }
+    }
 
 //    @Composable
 //    fun ArScreenTest() {
