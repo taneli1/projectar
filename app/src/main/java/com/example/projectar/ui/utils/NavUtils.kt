@@ -10,13 +10,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.screens.MainList
 import com.example.projectar.ui.screens.Profile
 import com.example.projectar.ui.screens.SingleProduct
-import com.example.projectar.ui.viewmodel.ProductViewModel
 
 typealias NavFunction = (id: Int) -> Unit
-
 
 object NavUtils {
     /** Navigate to destination, pops everything from backstack? */
@@ -28,7 +27,7 @@ object NavUtils {
 
     @Composable
     fun CreateNavigator(navC: NavHostController, viewModel: ProductViewModel) {
-        val data: List<Product> by viewModel.filteredProducts.observeAsState(listOf())
+        val data: List<Product> by viewModel.products.observeAsState(listOf())
 
         NavHost(navController = navC, startDestination = "testList") {
             composable(
@@ -40,7 +39,7 @@ object NavUtils {
                 backStackEntry.arguments?.getLong("product")?.let { json ->
                     val product = data.find { it.data.id == json }
                     if (product != null) {
-                        SingleProduct(product = product, navC, viewModel.getCart())
+                        SingleProduct(product = product, navC, viewModel.useCart())
                     }
                 }
             }

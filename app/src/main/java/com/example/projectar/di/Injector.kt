@@ -10,7 +10,7 @@ import com.example.projectar.data.datahandlers.product.ProductManagerImpl
 import com.example.projectar.data.repository.ProductRepositoryImpl
 import com.example.projectar.data.repository.interfaces.ProductRepository
 import com.example.projectar.data.room.db.ApplicationDatabase
-import com.example.projectar.ui.viewmodel.ProductViewModel
+import com.example.projectar.ui.functional.viewmodel.ProductViewModelImpl
 import java.lang.ref.WeakReference
 
 /**
@@ -26,7 +26,7 @@ object Injector {
     fun provideProductViewModelFactory(
         database: ApplicationDatabase,
         context: Context
-    ): ProductViewModel.ProductViewModelFactory {
+    ): ProductViewModelImpl.ProductViewModelFactory {
         val repo = productRepository(database)
         return productViewModelFactory(repo, context)
     }
@@ -39,8 +39,8 @@ object Injector {
 
     private fun productViewModelFactory(
         repo: ProductRepository, context: Context
-    ): ProductViewModel.ProductViewModelFactory {
-        return ProductViewModel.ProductViewModelFactory(
+    ): ProductViewModelImpl.ProductViewModelFactory {
+        return ProductViewModelImpl.ProductViewModelFactory(
             ProductManagerImpl(
                 repo,
                 ResourceImageManager(WeakReference(context)),
