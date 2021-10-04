@@ -36,6 +36,7 @@ import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.utils.ProductCreator
 import com.example.projectar.di.Injector
+import com.example.projectar.ui.testing.TestComposable
 import com.example.projectar.ui.theme.ProjectarTheme
 import com.example.projectar.ui.theme.Shapes
 import com.example.projectar.ui.theme.darkGrey
@@ -54,7 +55,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             ProjectarTheme {
-                SetUp()
+                //SetUp()
+                TestComposable.ArScreenTest()
                 Row() {
                     Button(onClick = { ProductCreator.nuke(db) }) {
                         Text(text = "Nuke")

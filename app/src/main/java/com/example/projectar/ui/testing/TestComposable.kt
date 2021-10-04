@@ -3,6 +3,7 @@ package com.example.projectar.ui.testing
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.view.View
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,14 +18,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.databinding.FragmentArViewBinding
 import com.example.projectar.di.Injector
+import com.example.projectar.ui.ar.ArViewFragment
 import com.example.projectar.ui.viewmodel.ProductViewModel
+import com.google.ar.sceneform.ux.ArFragment
 
 object TestComposable {
+
+//    @Composable
+//    fun ArScreenTest() {
+//        // Adds view to Compose
+//        AndroidView(
+//            modifier = Modifier.fillMaxSize(), // Occupy the max size in the Compose UI tree
+//            factory = {
+//            },
+//
+//        )
+//    }
+//
+//    @Composable
+//    fun ArFragmentComposable(): View{
+//
+//    }
+
+
     @Composable
     fun TestScreen(
         database: ApplicationDatabase,
