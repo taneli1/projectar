@@ -21,12 +21,13 @@ import com.example.projectar.ui.theme.Orange
 import com.example.projectar.ui.theme.Shapes
 import com.example.projectar.ui.theme.darkGrey
 import com.example.projectar.R
+import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.datahandlers.cart.CartImpl
 import com.example.projectar.ui.components.BottomBar
 import com.example.projectar.ui.components.TopBar
 
 @Composable
-fun SingleProduct(product: Product, navController: NavController, trueCart: CartImpl) {
+fun SingleProduct(product: Product, navController: NavController, trueCart: Cart) {
     Scaffold(
         topBar = { TopBar(navController = navController, route = "testList") },
         bottomBar = { BottomBar() },

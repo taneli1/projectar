@@ -49,6 +49,8 @@ class ProductViewModel(private val productManager: ProductManager) : ViewModel()
         return productManager.getProductImage(imageInfo)
     }
 
+    fun getCart() = productManager.useCart()
+
     //
     //
     // ---------------------- For testing purposes ------------------
