@@ -25,19 +25,6 @@ class ArViewFragment : ArFragment() {
     ): View {
         _binding = FragmentArViewBinding.inflate(inflater, container, false)
 
-        val view = binding.root
-
-        view.findViewById<ComposeView>(R.id.compose_view).apply {
-            // Dispose the Composition when the view's LifecycleOwner
-            // is destroyed
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                // In Compose world
-                MaterialTheme {
-                    Text("Hello Compose!")
-                }
-            }
-        }
 
         return binding.root
     }

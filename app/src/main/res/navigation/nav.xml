@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/fragment_compose">
+    <fragment
+        android:id="@+id/fragment_ar_view"
+        android:name="com.example.projectar.ui.ar.ArViewFragment"
+        android:label="fragment_ar_view"
+        tools:layout="@layout/fragment_ar_view" />
+    <fragment
+        android:id="@+id/fragment_compose"
+        android:name="com.example.projectar.ui.fragment.ComposeFragment"
+        android:label="fragment_compose"
+        tools:layout="@layout/fragment_compose">
+        <action
+            android:id="@+id/action_fragment_compose_to_fragment_ar_view"
+            app:destination="@id/fragment_ar_view" />
+    </fragment>
+
+</navigation>

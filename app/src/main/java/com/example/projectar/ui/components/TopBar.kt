@@ -15,8 +15,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.projectar.R
-import com.example.projectar.navigate
 import com.example.projectar.ui.theme.Orange
+import com.example.projectar.ui.utils.NavUtils
 
 
 @Composable
@@ -28,7 +28,7 @@ fun TopBar(
         title = { Text("Title") },
         backgroundColor = Orange,
         actions = {
-            IconButton(onClick = { navigate(navController, route) }) {
+            IconButton(onClick = { NavUtils.navigate(navController, route) }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_baseline_arrow_back_24),
                     contentDescription = "Test"
