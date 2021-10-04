@@ -7,23 +7,25 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.material.Text
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.Button
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale.Companion.Crop
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -36,16 +38,14 @@ import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.utils.ProductCreator
 import com.example.projectar.di.Injector
+import com.example.projectar.ui.screens.MainList
+import com.example.projectar.ui.screens.SingleProduct
+import com.example.projectar.ui.theme.Orange
 import com.example.projectar.ui.testing.TestComposable
 import com.example.projectar.ui.theme.ProjectarTheme
 import com.example.projectar.ui.theme.Shapes
 import com.example.projectar.ui.theme.darkGrey
 import com.example.projectar.ui.viewmodel.ProductViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-
-//data class Product(val first: String, val second: String, val img: Int)
-//val data = mutableListOf<Product>()
 
 class MainActivity : ComponentActivity() {
     private val db by lazy { ApplicationDatabase.get(this) }
@@ -65,6 +65,7 @@ class MainActivity : ComponentActivity() {
                         Text(text = "Create")
                     }
                 }
+                // TestComposable.TestScreen(db)
             }
         }
     }
@@ -72,7 +73,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun SetUp() {
         val viewModel: ProductViewModel = viewModel(
-            factory = Injector.provideProductViewModelFactory(db, applicationContext)
+            factory = Injector.provideProductViewModelFactory(db,applicationContext)
         )
         val data: List<Product> by viewModel.products.observeAsState(listOf())
 
@@ -87,12 +88,12 @@ class MainActivity : ComponentActivity() {
                 backStackEntry.arguments?.getLong("product")?.let { json ->
                     val product = data.find { it.data.id == json }
                     if (product != null) {
-                        SingleProduct(product = product)
+                        SingleProduct(product = product, navController)
                     }
                 }
             }
             composable("testList") {
-                TestList(viewModel, data) {
+                MainList(data) {
                     navigate(
                         navController,
                         "singleProduct/$it"
@@ -103,81 +104,31 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private fun navigate(navController: NavController, route: String) {
+fun navigate(navController: NavController, route: String) {
     navController.navigate(route) {
         popUpTo("testBox") { inclusive = true }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+// Work in progress
+/*
 @Composable
-fun TestList(
-    viewModel: ProductViewModel,
-    products: List<Product>,
-    navigate: (productId: Long) -> Unit
+fun BurgerTopAppBar(
+    //content: RowScope.() -> Unit
 ) {
-
-
-    LazyVerticalGrid(
-        cells = GridCells.Fixed(2)
+    Row(
+        modifier = Modifier
+            .background(color = Orange)
+            .fillMaxWidth()
+            .height(40.dp)
     ) {
-        items(products) { product ->
-            product.image?.let {
-                TestBox(product, navigate, viewModel.getImage(it).asImageBitmap())
-            }
-        }
+        Text(text = "hello")
+
     }
 }
 
-@Composable
-fun TestBox(msg: Product, navigate: (productId: Long) -> Unit, imageBitmap: ImageBitmap) {
-    Column(
-        Modifier
-            .padding(10.dp)
-            .clip(Shapes.medium)
-            .selectable(selected = true, onClick = { navigate(msg.data.id) })
-    ) {
-        Image(
-            imageBitmap,
-            contentDescription = "picture",
-            contentScale = Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(150.dp)
-        )
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(darkGrey)
-                .padding(5.dp)
-        ) {
-            Text(text = msg.data.title, color = Color.White)
-            Text(text = msg.data.price.toString(), color = Color.White)
-        }
-    }
-}
+*/
 
-@Composable
-fun SingleProduct(product: Product) {
-    Column(
-        Modifier
-            .padding(10.dp)
-            .clip(Shapes.medium)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(darkGrey)
-                .padding(5.dp)
-        ) {
-            Text(text = product.data.title, color = Color.White)
-            Text(text = "msg.second", color = Color.White)
-        }
-    }
-    Log.d("HERERERE#", "we got here with id: " + product.data.id)
-}
 /*
 @Composable
 fun FriendsList(navController: NavController) {
@@ -198,6 +149,6 @@ fun FriendsList(navController: NavController) {
 @Composable
 fun DefaultPreview() {
     ProjectarTheme {
-        TestList(data)
+        SingleProduct
     }
 }*/

@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">projectar</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="AddToCart">Add to cart</string>
+    <string name="AddToAr">Add to augmented reality</string>
 </resources>
