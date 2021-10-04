@@ -1,6 +1,7 @@
 package com.example.projectar.ui.viewmodel
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.projectar.data.datahandlers.product.ProductManager
 import com.example.projectar.data.room.queryfilters.ProductFilter
@@ -43,6 +44,7 @@ class ProductViewModel(private val productManager: ProductManager) : ViewModel()
      */
     fun applyFilter(filter: TagFilter) {
         this.filter.postValue(filter)
+        Log.d("Filter: ", filter.searchTerm)
     }
 
     fun getImage(imageInfo: ImageInfo): Bitmap {

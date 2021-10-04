@@ -48,7 +48,7 @@ object NavUtils {
                 }
             }
             composable("testList") {
-                MainList(data, navC) {
+                MainList(data, navC, viewModel) {
                     navigate(
                         navC,
                         "singleProduct/$it"

@@ -79,8 +79,8 @@ class ComposeFragment : Fragment() {
             viewModel = viewModel
         )
 
-        Button(onClick = { navFunction(R.id.fragment_ar_view) }) {
+        /*Button(onClick = { navFunction(R.id.fragment_ar_view) }) {
             Text(text = "Navigate")
-        }
+        }*/
     }
 }
