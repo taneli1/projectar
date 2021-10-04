@@ -3,11 +3,12 @@ package com.example.projectar.ui.viewmodel
 import android.graphics.Bitmap
 import androidx.lifecycle.*
 import com.example.projectar.data.datahandlers.product.ProductManager
-import com.example.projectar.data.room.queryfilters.ProductFilter
-import com.example.projectar.data.room.queryfilters.TagFilter
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.file.ImageInfo
+import com.example.projectar.data.room.entity.order.Order
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.data.room.queryfilters.ProductFilter
+import com.example.projectar.data.room.queryfilters.TagFilter
 import com.example.projectar.data.room.utils.ProductCreator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "ProductViewModel"
 
 /**
- * Viewmodel which provides methods to access product data
+ * Provides the functionality to access all the data the app needs.
  */
 class ProductViewModel(private val productManager: ProductManager) : ViewModel() {
     // Default filter for products
@@ -26,20 +27,14 @@ class ProductViewModel(private val productManager: ProductManager) : ViewModel()
         productManager.getProducts(it)
     }
 
-    // List of all the products TODO remove later
-    val products = productManager.getProducts(ProductFilter())
-
-    // ---------------------- Methods ------------------------
-    // ---------------------- Methods ------------------------
     // ---------------------- Methods ------------------------
 
-    /**
-     * Get all data for a single products from the database (Excluding tags)
-     */
+    /** Get data for a single product from the database (Excluding tags)*/
     fun getProductData(productId: Long) = productManager.getProduct(productId)
 
     /**
-     * Apply a filter for products to get from database
+     * Apply a filter for products to get from database.
+     * The filteredProducts field data changes based on the passed filter.
      */
     fun applyFilter(filter: TagFilter) {
         this.filter.postValue(filter)
@@ -49,14 +44,14 @@ class ProductViewModel(private val productManager: ProductManager) : ViewModel()
         return productManager.getProductImage(imageInfo)
     }
 
+    fun getUserOrders(userId: Long): LiveData<List<Order>> {
+        return productManager.getAllOrders(userId)
+    }
+
+    /** Use the instance of the current cart */
     fun getCart() = productManager.useCart()
 
-    //
-    //
-    // ---------------------- For testing purposes ------------------
-    // ---------------------- For testing purposes ------------------
-    //
-    //
+    // -------------------------- TESTING --------------------------
 
     fun createProducts(db: ApplicationDatabase) {
         viewModelScope.launch(Dispatchers.IO) {

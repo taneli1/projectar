@@ -3,15 +3,12 @@ package com.example.projectar.ui.utils
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navArgument
-import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.screens.MainList
 import com.example.projectar.ui.screens.Profile
@@ -31,7 +28,7 @@ object NavUtils {
 
     @Composable
     fun CreateNavigator(navC: NavHostController, viewModel: ProductViewModel) {
-        val data: List<Product> by viewModel.products.observeAsState(listOf())
+        val data: List<Product> by viewModel.filteredProducts.observeAsState(listOf())
 
         NavHost(navController = navC, startDestination = "testList") {
             composable(
