@@ -3,8 +3,12 @@
     package="com.example.projectar">
 
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature
         android:name="android.hardware.camera.ar"
+        android:required="true" />
+    <uses-feature
+        android:glEsVersion="0x00030000"
         android:required="true" />
 
     <application

@@ -6,9 +6,10 @@ import com.example.projectar.data.datahandlers.assets.Model
 import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
-import com.example.projectar.data.room.queryfilters.TagFilter
+import com.example.projectar.data.room.entity.order.Order
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.entity.tag.Tag
+import com.example.projectar.data.room.queryfilters.TagFilter
 
 /**
  * Interface combining different functionalities of the application to provide easy
@@ -22,8 +23,10 @@ interface ProductManager {
     fun getProductTags(productId: Long): LiveData<List<Tag>>
     fun getAllTags(): LiveData<List<Tag>>
 
-    fun getProductImage(imageInfo: ImageInfo): Bitmap
-    fun getProductModel(modelInfo: ModelInfo): Model
+    suspend fun getProductImage(imageInfo: ImageInfo): Bitmap?
+    suspend fun getProductModel(modelInfo: ModelInfo): Model?
+
+    fun getAllOrders(userId: Long): LiveData<List<Order>>
 
     fun useCart(): Cart
     fun placeOrder()

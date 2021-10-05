@@ -17,7 +17,7 @@ import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.utils.ProductCreator
 import com.example.projectar.di.Injector
-import com.example.projectar.ui.viewmodel.ProductViewModel
+import com.example.projectar.ui.functional.viewmodel.ProductViewModelImpl
 
 object TestComposable {
 
@@ -56,10 +56,10 @@ object TestComposable {
         context: Context
     ) {
 
-        val viewModel: ProductViewModel = viewModel(
+        val viewModel: ProductViewModelImpl = viewModel(
             factory = Injector.provideProductViewModelFactory(database, context)
         )
-        val products: List<Product> by viewModel.filteredProducts.observeAsState(listOf())
+        val products: List<Product> by viewModel.products.observeAsState(listOf())
 
 
         TestList(

@@ -3,23 +3,19 @@ package com.example.projectar.ui.utils
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navArgument
-import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.screens.MainList
 import com.example.projectar.ui.screens.Profile
 import com.example.projectar.ui.screens.SingleProduct
-import com.example.projectar.ui.viewmodel.ProductViewModel
 
 typealias NavFunction = (id: Int) -> Unit
-
 
 object NavUtils {
     /** Navigate to destination, pops everything from backstack? */
@@ -43,7 +39,7 @@ object NavUtils {
                 backStackEntry.arguments?.getLong("product")?.let { json ->
                     val product = data.find { it.data.id == json }
                     if (product != null) {
-                        SingleProduct(product = product, navC, viewModel.getCart())
+                        SingleProduct(product = product, navC, viewModel.useCart())
                     }
                 }
             }
