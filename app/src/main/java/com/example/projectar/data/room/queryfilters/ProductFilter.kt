@@ -8,5 +8,6 @@ import com.example.projectar.data.utils.TagUtils
  */
 data class ProductFilter(
     override val searchTerm: String = "",
-    override val tags: List<ProductTag> = TagUtils.getAllTags()
+    override val tags: List<ProductTag> = TagUtils.getAllTags(),
+    override val sortBy: SortBy = SortBy.DEFAULT
 ) : TagFilter

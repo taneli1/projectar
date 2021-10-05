@@ -25,7 +25,6 @@ import java.lang.ref.WeakReference
 object Injector {
     private const val FAKE_USER_ID = 1244L
 
-
     fun provideArViewManager(
         viewModel: ProductViewModel,
         arFragment: ArFragment,

@@ -3,6 +3,7 @@ package com.example.projectar
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectar.data.datahandlers.assets.ARTAG
 import com.example.projectar.data.datahandlers.assets.ModelBuilder
@@ -35,11 +36,12 @@ class MainActivity : AppCompatActivity(), ArViewUiProvider {
     }
 
 
+    @ExperimentalAnimationApi
     override fun setupInterface(arFragment: ArFragment) {
         ArViewUtils.attachArHud(
             binding.composeView,
             Injector.provideArViewManager(viewModel, arFragment, ::buildModelRenderable),
-            db
+            viewModel
         )
     }
 

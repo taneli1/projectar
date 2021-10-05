@@ -13,7 +13,7 @@ import java.lang.ref.WeakReference
 const val ARTAG = "ARTAG"
 
 /**
- * Get 3dModels from resources
+ * Get 3dModels from assets
  */
 class ResourceModelManager(
     private val context: WeakReference<Context>
