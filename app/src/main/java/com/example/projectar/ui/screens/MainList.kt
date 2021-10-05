@@ -13,10 +13,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.navigation.NavController
 import com.example.projectar.MainActivity
+import com.example.projectar.data.appdata.tags.ProductTags
 import com.example.projectar.data.datahandlers.product.ProductManager
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.queryfilters.ProductFilter
 import com.example.projectar.data.room.queryfilters.TagFilter
+import com.example.projectar.data.utils.TagUtils
 import com.example.projectar.ui.components.*
 import com.example.projectar.ui.viewmodel.ProductViewModel
 
@@ -30,15 +32,20 @@ fun MainList(
     viewModel: ProductViewModel,
     navigate: (productId: Long) -> Unit
 ) {
+    val items = TagUtils.getAllTags()
+    val selectedItems: MutableList<ProductTags> = remember {
+        items.toMutableList()
+    }
+
     val textState = remember { mutableStateOf(TextFieldValue("")) }
     fun applyFilter(textState: String) {
         viewModel.applyFilter(ProductFilter(textState))
     }
-    Scaffold( topBar = { TopBarWithBurger(navController) },  bottomBar = { BottomBar() }, content = {
+    Scaffold(topBar = { TopBarWithBurger(navController) }, bottomBar = { BottomBar() }, content = {
         Column {
-            SearchView(state = textState, filter = {applyFilter(textState.toString())})
+            SearchView(state = textState, filter = { applyFilter(textState.toString()) })
             Log.d("textState", textState.value.text)
-            Dropdown()
+            Dropdown(items, selectedItems)
             LazyVerticalGrid(
                 cells = GridCells.Fixed(2)
             ) {

@@ -1,5 +1,6 @@
 package com.example.projectar
 
+import android.content.Context
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.projectar.data.appdata.tags.ProductTags
+import com.example.projectar.data.utils.TagUtils
 import com.example.projectar.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

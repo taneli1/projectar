@@ -12,21 +12,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.projectar.data.appdata.tags.ProductTags
-import com.example.projectar.data.datahandlers.product.ProductManager
 import com.example.projectar.data.utils.TagUtils
-import com.example.projectar.ui.theme.darkGrey
-import org.intellij.lang.annotations.JdkConstants
 
 
 @Composable
-fun Dropdown() {
+fun Dropdown(items: List<ProductTags>, selectedItems: MutableList<ProductTags>) {
     var expanded by remember { mutableStateOf(false) }
-
-    val items = TagUtils.getAllTags()
-    val selectedItems: MutableList<ProductTags> = items.toMutableList()
 
     var selectedIndex by remember { mutableStateOf(0) }
     Box(
