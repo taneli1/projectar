@@ -20,7 +20,7 @@ object FakeProductList {
     private val fakeModelInfo = ModelInfo(
         0,
         0,
-        "box.gltf"
+        "boxdata"
     )
 
     private fun productData(number: Int) = ProductData(

@@ -1,9 +1,10 @@
 package com.example.projectar.data.datahandlers.assets
 
 import android.graphics.Bitmap
+import com.example.projectar.data.room.entity.file.FileInfo
 import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
-import com.example.projectar.data.room.entity.file.FileInfo
+import com.google.ar.sceneform.rendering.ModelRenderable
 
 /**
  * Objects that can provide data for assets defined
@@ -14,7 +15,7 @@ import com.example.projectar.data.room.entity.file.FileInfo
  * @see FileInfo
  */
 interface AssetManager<T : FileInfo, U> {
-    fun getAsset(info: T): U
+    suspend fun getAsset(info: T): U?
 }
 
 /**
@@ -24,4 +25,4 @@ typealias ImageAssetManager = AssetManager<ImageInfo, Bitmap>;
 typealias ModelAssetManager = AssetManager<ModelInfo, Model>;
 
 /** Placeholder for the model type */
-typealias Model = String
+typealias Model = ModelRenderable.Builder

@@ -37,12 +37,12 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
         this.filter.postValue(filter)
     }
 
-    override fun getImage(imageInfo: ImageInfo): Bitmap {
-        return productManager.getProductImage(imageInfo)
+    override suspend fun getImage(imageInfo: ImageInfo): Bitmap {
+        return productManager.getProductImage(imageInfo)!!
     }
 
-    override fun getModel(modelInfo: ModelInfo): Model {
-        return productManager.getProductModel(modelInfo)
+    override suspend fun getModel(modelInfo: ModelInfo): Model {
+        return productManager.getProductModel(modelInfo)!!
     }
 
     override fun getUserOrders(userId: Long): LiveData<List<Order>> {

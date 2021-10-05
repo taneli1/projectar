@@ -23,8 +23,8 @@ interface ProductManager {
     fun getProductTags(productId: Long): LiveData<List<Tag>>
     fun getAllTags(): LiveData<List<Tag>>
 
-    fun getProductImage(imageInfo: ImageInfo): Bitmap
-    fun getProductModel(modelInfo: ModelInfo): Model
+    suspend fun getProductImage(imageInfo: ImageInfo): Bitmap?
+    suspend fun getProductModel(modelInfo: ModelInfo): Model?
 
     fun getAllOrders(userId: Long): LiveData<List<Order>>
 

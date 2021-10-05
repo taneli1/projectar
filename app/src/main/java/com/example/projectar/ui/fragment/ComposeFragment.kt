@@ -16,7 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
 import com.example.projectar.R
 import com.example.projectar.databinding.FragmentComposeBinding
-import com.example.projectar.ui.functional.viewmodel.ProductViewModel
+import com.example.projectar.ui.functional.viewmodel.ProductViewModelImpl
 import com.example.projectar.ui.theme.ProjectarTheme
 import com.example.projectar.ui.utils.NavFunction
 import com.example.projectar.ui.utils.NavUtils
@@ -55,7 +55,7 @@ class ComposeFragment : Fragment() {
 
     @Composable
     fun SetUp(navFunction: NavFunction) {
-        val viewModel: ProductViewModel = viewModel(requireActivity())
+        val viewModel: ProductViewModelImpl = viewModel(requireActivity())
         val navController = rememberNavController()
 
         NavUtils.CreateNavigator(navController, viewModel)

@@ -1,8 +1,10 @@
 package com.example.projectar
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.projectar.data.datahandlers.assets.Model
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.databinding.ActivityMainBinding
 import com.example.projectar.di.Injector
@@ -10,6 +12,8 @@ import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.functional.viewmodel.ProductViewModelImpl
 import com.example.projectar.ui.utils.ArViewUiProvider
 import com.example.projectar.ui.utils.ArViewUtils
+import com.google.ar.sceneform.rendering.ModelRenderable
+import com.google.ar.sceneform.ux.ArFragment
 
 class MainActivity : AppCompatActivity(), ArViewUiProvider {
     private val db by lazy { ApplicationDatabase.get(applicationContext) }
@@ -29,12 +33,25 @@ class MainActivity : AppCompatActivity(), ArViewUiProvider {
         setContentView(binding.root)
     }
 
-    override fun showInterface() {
-        ArViewUtils.attachArHud(binding.composeView, viewModel)
+    override fun setupInterface(arFragment: ArFragment) {
+        Log.d("DEBUGTEST", "setupInterface: DEBUGTEST " + viewModel.products.value?.size)
+        ArViewUtils.attachArHud(
+            binding.composeView,
+            Injector.provideArViewManager(viewModel, arFragment, ::buildModel),
+            db
+        )
     }
 
     override fun hideInterface() {
         ArViewUtils.releaseArHud(binding.composeView)
+    }
+
+    private fun buildModel(model: Model, function: (model: ModelRenderable) -> Unit) {
+        runOnUiThread {
+            model.build().thenAccept {
+                function(it)
+            }
+        }
     }
 }
 

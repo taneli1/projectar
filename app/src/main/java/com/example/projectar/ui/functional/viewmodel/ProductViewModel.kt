@@ -26,10 +26,10 @@ interface ProductViewModel {
     fun getProductData(productId: Long): LiveData<Product>
 
     /** Get the Bitmap for the product */
-    fun getImage(imageInfo: ImageInfo): Bitmap
+    suspend fun getImage(imageInfo: ImageInfo): Bitmap
 
     /** Get the 3d-Model for the product */
-    fun getModel(modelInfo: ModelInfo): Model
+    suspend fun getModel(modelInfo: ModelInfo): Model
 
 
     // --- Cart + Orders ---
