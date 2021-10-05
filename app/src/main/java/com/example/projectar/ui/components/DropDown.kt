@@ -10,22 +10,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.projectar.data.appdata.tags.ProductTags
+import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.utils.TagUtils
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 
 
 @Composable
 fun Dropdown(
-    items: List<ProductTags>,
-    selectedItems: MutableList<ProductTags>,
+    items: List<ProductTag>,
+    selectedItems: MutableList<ProductTag>,
     viewModel: ProductViewModel,
     filters: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(0) }
 
-    fun filterCheckChange(isChecked: MutableState<Boolean>, it: Boolean, productTag: ProductTags) {
+    fun filterCheckChange(isChecked: MutableState<Boolean>, it: Boolean, productTag: ProductTag) {
         isChecked.value = it
         if (!isChecked.value) {
             selectedItems.remove(productTag)

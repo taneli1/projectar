@@ -8,17 +8,11 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.navigation.NavController
-import com.example.projectar.MainActivity
-import com.example.projectar.data.appdata.tags.ProductTags
-import com.example.projectar.data.datahandlers.assets.Model
-import com.example.projectar.data.datahandlers.product.ProductManager
+import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.queryfilters.ProductFilter
-import com.example.projectar.data.room.queryfilters.TagFilter
 import com.example.projectar.data.utils.TagUtils
 import com.example.projectar.ui.components.*
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
@@ -34,7 +28,7 @@ fun MainList(
     navigate: (productId: Long) -> Unit
 ) {
     val items = TagUtils.getAllTags()
-    val selectedItems: MutableList<ProductTags> = remember {
+    val selectedItems: MutableList<ProductTag> = remember {
         items.toMutableList()
     }
 
@@ -55,7 +49,7 @@ fun MainList(
     }
 
     val textState = remember { mutableStateOf(TextFieldValue("")) }
-    fun applyFilter(textState: String, tags: MutableList<ProductTags>) {
+    fun applyFilter(textState: String, tags: MutableList<ProductTag>) {
         Log.d("APPLIED TAGS: ", selectedItems.toString())
         viewModel.applyFilter(ProductFilter(textState, tags))
     }
