@@ -2,25 +2,26 @@ package com.example.projectar.ui.screens
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.navigation.NavController
 import com.example.projectar.MainActivity
 import com.example.projectar.data.appdata.tags.ProductTags
+import com.example.projectar.data.datahandlers.assets.Model
 import com.example.projectar.data.datahandlers.product.ProductManager
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.queryfilters.ProductFilter
 import com.example.projectar.data.room.queryfilters.TagFilter
 import com.example.projectar.data.utils.TagUtils
 import com.example.projectar.ui.components.*
-import com.example.projectar.ui.viewmodel.ProductViewModel
+import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -37,19 +38,47 @@ fun MainList(
         items.toMutableList()
     }
 
+
+    val orderingOptions = listOf("Alphabetical", "Price")
+    var trueProductList = products
+
+    fun doOrdering(ordering: String) {
+        if (ordering == "Alphabetical") {
+            trueProductList = trueProductList.sortedBy { it.data.id }
+
+        } else if (ordering == "Price") {
+            trueProductList = trueProductList.sortedBy { it.data.price }
+            for (Product: Product in trueProductList){
+                Log.d("Prices", Product.data.price.toString())
+            }
+        }
+    }
+
     val textState = remember { mutableStateOf(TextFieldValue("")) }
-    fun applyFilter(textState: String) {
-        viewModel.applyFilter(ProductFilter(textState))
+    fun applyFilter(textState: String, tags: MutableList<ProductTags>) {
+        Log.d("APPLIED TAGS: ", selectedItems.toString())
+        viewModel.applyFilter(ProductFilter(textState, tags))
     }
     Scaffold(topBar = { TopBarWithBurger(navController) }, bottomBar = { BottomBar() }, content = {
         Column {
-            SearchView(state = textState, filter = { applyFilter(textState.toString()) })
+            SearchView(
+                state = textState,
+                filter = { applyFilter(textState.toString(), selectedItems) })
             Log.d("textState", textState.value.text)
-            Dropdown(items, selectedItems)
-            LazyVerticalGrid(
-                cells = GridCells.Fixed(2)
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                items(products) { Product ->
+                Dropdown(
+                    items,
+                    selectedItems,
+                    viewModel,
+                    filters = { applyFilter(textState.toString(), selectedItems) })
+                OrderingDropdown(orderingOptions, ordering = ::doOrdering)
+            }
+            LazyVerticalGrid(
+                cells = GridCells.Fixed(2),
+            ) {
+                items(trueProductList) { Product ->
                     ItemBox(Product, navigate)
                 }
             }

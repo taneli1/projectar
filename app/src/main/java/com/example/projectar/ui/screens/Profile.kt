@@ -27,7 +27,6 @@ fun Profile(
 ) {
     Scaffold(
         topBar = { TopBar(navController, route = "testList") },
-        bottomBar = { BottomBar() },
         content = {
             Column(Modifier.padding(20.dp)) {
                 Text(

@@ -39,6 +39,10 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
         Log.d("Filter: ", filter.searchTerm)
     }
 
+    override fun getFilter(): TagFilter {
+        return this.filter.value?: ProductFilter()
+    }
+
     override suspend fun getImage(imageInfo: ImageInfo): Bitmap {
         return productManager.getProductImage(imageInfo)!!
     }

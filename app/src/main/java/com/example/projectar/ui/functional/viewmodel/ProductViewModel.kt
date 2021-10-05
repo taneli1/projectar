@@ -17,6 +17,8 @@ interface ProductViewModel {
     /** Set a filter for searched products */
     fun applyFilter(filter: TagFilter)
 
+    fun getFilter(): TagFilter
+
 
     // --- Product data ---
     // --- Product data ---

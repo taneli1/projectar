@@ -1,19 +1,11 @@
 package com.example.projectar
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectar.data.datahandlers.assets.Model
 import com.example.projectar.data.room.db.ApplicationDatabase
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.projectar.data.appdata.tags.ProductTags
-import com.example.projectar.data.utils.TagUtils
 import com.example.projectar.databinding.ActivityMainBinding
 import com.example.projectar.di.Injector
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
