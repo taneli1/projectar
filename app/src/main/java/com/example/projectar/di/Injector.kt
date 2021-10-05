@@ -1,7 +1,7 @@
 package com.example.projectar.di
 
 import android.content.Context
-import com.example.projectar.data.datahandlers.assets.Model
+import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.datahandlers.assets.ResourceImageManager
 import com.example.projectar.data.datahandlers.assets.ResourceModelManager
 import com.example.projectar.data.datahandlers.cart.CartImpl
@@ -25,11 +25,10 @@ import java.lang.ref.WeakReference
 object Injector {
     private const val FAKE_USER_ID = 1244L
 
-
     fun provideArViewManager(
         viewModel: ProductViewModel,
         arFragment: ArFragment,
-        builder: (model: Model, function: (model: ModelRenderable) -> Unit) -> Unit
+        builder: (modelBuilder: ModelBuilder, function: (model: ModelRenderable) -> Unit) -> Unit
     ): ArViewManager {
         return ArViewManagerImpl(viewModel, WeakReference(arFragment), builder)
     }

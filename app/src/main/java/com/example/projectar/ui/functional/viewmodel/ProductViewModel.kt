@@ -2,7 +2,7 @@ package com.example.projectar.ui.functional.viewmodel
 
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
-import com.example.projectar.data.datahandlers.assets.Model
+import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
@@ -31,7 +31,7 @@ interface ProductViewModel {
     suspend fun getImage(imageInfo: ImageInfo): Bitmap
 
     /** Get the 3d-Model for the product */
-    suspend fun getModel(modelInfo: ModelInfo): Model
+    suspend fun getModel(modelInfo: ModelInfo): ModelBuilder
 
 
     // --- Cart + Orders ---

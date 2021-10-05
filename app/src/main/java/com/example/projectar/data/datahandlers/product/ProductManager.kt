@@ -2,7 +2,7 @@ package com.example.projectar.data.datahandlers.product
 
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
-import com.example.projectar.data.datahandlers.assets.Model
+import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
@@ -24,7 +24,7 @@ interface ProductManager {
     fun getAllTags(): LiveData<List<Tag>>
 
     suspend fun getProductImage(imageInfo: ImageInfo): Bitmap?
-    suspend fun getProductModel(modelInfo: ModelInfo): Model?
+    suspend fun getProductModel(modelInfo: ModelInfo): ModelBuilder?
 
     fun getAllOrders(userId: Long): LiveData<List<Order>>
 

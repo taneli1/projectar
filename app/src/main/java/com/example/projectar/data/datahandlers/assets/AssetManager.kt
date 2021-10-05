@@ -22,7 +22,7 @@ interface AssetManager<T : FileInfo, U> {
  * Typealiases for image and model Managers
  */
 typealias ImageAssetManager = AssetManager<ImageInfo, Bitmap>;
-typealias ModelAssetManager = AssetManager<ModelInfo, Model>;
+typealias ModelAssetManager = AssetManager<ModelInfo, ModelBuilder>;
 
 /** Placeholder for the model type */
-typealias Model = ModelRenderable.Builder
+typealias ModelBuilder = ModelRenderable.Builder

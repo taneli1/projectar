@@ -3,7 +3,7 @@ package com.example.projectar.data.datahandlers.product
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import com.example.projectar.data.datahandlers.assets.ImageAssetManager
-import com.example.projectar.data.datahandlers.assets.Model
+import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.datahandlers.assets.ModelAssetManager
 import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.datahandlers.order.builder.OrderBuilder
@@ -50,7 +50,7 @@ class ProductManagerImpl(
     override suspend fun getProductImage(imageInfo: ImageInfo): Bitmap? =
         imageManager.getAsset(imageInfo)
 
-    override suspend fun getProductModel(modelInfo: ModelInfo): Model? =
+    override suspend fun getProductModel(modelInfo: ModelInfo): ModelBuilder? =
         modelManager.getAsset(modelInfo)
 
     // Orders

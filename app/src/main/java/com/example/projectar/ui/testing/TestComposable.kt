@@ -10,6 +10,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -17,6 +19,7 @@ import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.utils.ProductCreator
 import com.example.projectar.di.Injector
+import com.example.projectar.ui.functional.ar.ArViewManager
 import com.example.projectar.ui.functional.viewmodel.ProductViewModelImpl
 
 object TestComposable {
@@ -30,6 +33,17 @@ object TestComposable {
             Button(onClick = { ProductCreator.createProducts(db) }) {
                 Text(text = "Create")
             }
+        }
+    }
+
+    @Composable
+    fun AllButtons(
+        arViewManager: ArViewManager,
+        db: ApplicationDatabase // TODO Remove
+    ) {
+        DbButtons(db)
+        Button(onClick = { arViewManager.addModel(0L) }) {
+            Text(text = "Add Obj")
         }
     }
 
@@ -55,7 +69,6 @@ object TestComposable {
         database: ApplicationDatabase,
         context: Context
     ) {
-
         val viewModel: ProductViewModelImpl = viewModel(
             factory = Injector.provideProductViewModelFactory(database, context)
         )

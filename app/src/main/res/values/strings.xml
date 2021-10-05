@@ -5,4 +5,7 @@
     <string name="profile">Profile</string>
     <string name="cart">Cart</string>
     <string name="rooms">Rooms</string>
+    <string name="icon_arrow_forward">Arrow forward</string>
+    <string name="header_items">Items</string>
+    <string name="content_desc_placeholder">placeholder</string>
 </resources>
