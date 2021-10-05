@@ -1,7 +1,6 @@
 package com.example.projectar.data.room.queryfilters
 
-import com.example.projectar.data.appdata.tags.ProductTags
-import com.example.projectar.data.utils.TagUtils
+import com.example.projectar.data.appdata.tags.ProductTag
 
 /**
  * Filter used by room to match tags in queries with search param.
@@ -11,5 +10,5 @@ interface TagFilter {
     val searchTerm: String;
 
     /** Get entities from database which have the Tags listed */
-    val tags: List<ProductTags>
+    val tags: List<ProductTag>
 }

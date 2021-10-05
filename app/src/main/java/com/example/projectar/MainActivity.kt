@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.projectar.data.datahandlers.assets.Model
+import com.example.projectar.data.datahandlers.assets.ARTAG
+import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.databinding.ActivityMainBinding
 import com.example.projectar.di.Injector
@@ -33,11 +34,11 @@ class MainActivity : AppCompatActivity(), ArViewUiProvider {
         setContentView(binding.root)
     }
 
+
     override fun setupInterface(arFragment: ArFragment) {
-        Log.d("DEBUGTEST", "setupInterface: DEBUGTEST " + viewModel.products.value?.size)
         ArViewUtils.attachArHud(
             binding.composeView,
-            Injector.provideArViewManager(viewModel, arFragment, ::buildModel),
+            Injector.provideArViewManager(viewModel, arFragment, ::buildModelRenderable),
             db
         )
     }
@@ -46,10 +47,21 @@ class MainActivity : AppCompatActivity(), ArViewUiProvider {
         ArViewUtils.releaseArHud(binding.composeView)
     }
 
-    private fun buildModel(model: Model, function: (model: ModelRenderable) -> Unit) {
+
+    /**
+     * A method to build a ModelRenderable on UIThread
+     * @param function to run when the model has been built
+     */
+    private fun buildModelRenderable(
+        modelBuilder: ModelBuilder,
+        function: (model: ModelRenderable) -> Unit
+    ) {
         runOnUiThread {
-            model.build().thenAccept {
+            modelBuilder.build().thenAccept {
                 function(it)
+            }.exceptionally { throwable ->
+                Log.d(ARTAG, "buildModel: ${throwable.stackTraceToString()}")
+                null
             }
         }
     }

@@ -4,10 +4,10 @@ import android.graphics.Point
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.projectar.data.datahandlers.assets.ARTAG
-import com.example.projectar.data.datahandlers.assets.Model
+import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
+import com.google.ar.core.Plane
 import com.google.ar.sceneform.AnchorNode
-import com.google.ar.sceneform.collision.Plane
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.TransformableNode
@@ -16,12 +16,19 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 
-typealias FunctionModelBuilder = (model: Model, onComplete: (model: ModelRenderable) -> Unit) -> Unit
+typealias ModelBuilderHandler = (modelBuilder: ModelBuilder, onComplete: (model: ModelRenderable) -> Unit) -> Unit
 
+/**
+ * Implementation for ArViewManager
+ * @param vm ViewModel to get the product data from
+ * @param _fragment A weak reference to the current ArFragment
+ * @param buildModelHandler A function that can handle the building for the provided ModelBuilder.
+ * (ModelBuilder.build() must be run on UI Thread - Defined by the library providing the object)
+ */
 class ArViewManagerImpl(
     private val vm: ProductViewModel,
     private val _fragment: WeakReference<ArFragment>,
-    private val buildModel: FunctionModelBuilder
+    private val buildModelHandler: ModelBuilderHandler
 ) : ArViewManager {
     private var _loading = false
     override val loading: MutableLiveData<Boolean> = MutableLiveData(_loading)
@@ -29,6 +36,7 @@ class ArViewManagerImpl(
 
     private val job: Job = Job()
     private val scope = CoroutineScope(job)
+
     // -------------------------------- Public --------------------------------
     // -------------------------------- Public --------------------------------
 
@@ -39,10 +47,8 @@ class ArViewManagerImpl(
         setLoading(true)
 
         scope.launch {
-
             val product = vm.products.value?.find { it.data.id == it.data.id }
 
-            Log.d(ARTAG, "addModel: DEBUGTEST," + product.toString())
             // Get the model for the product
             val model = product?.model?.let { vm.getModel(it) }
 
@@ -75,21 +81,20 @@ class ArViewManagerImpl(
         loading.postValue(_loading)
     }
 
-    private fun addModelToScene(model: Model) {
-
-        Log.d(ARTAG, "GOTHERE")
-
+    private fun addModelToScene(modelBuilder: ModelBuilder) {
+        Log.d(ARTAG, "addModelToScene")
         try {
-            buildModel(model) {
+            buildModelHandler(modelBuilder) {
                 setToView(it)
             }
         } catch (e: Exception) {
+            Log.e(ARTAG, "addModelToScene error: " + e.message)
         }
     }
 
     private fun setToView(model: ModelRenderable) {
         val frame = fragment.arSceneView?.arFrame
-        val pt = Point(100, 100)
+        val pt = Point((fragment.view?.width ?: 0) / 2, (fragment.view?.height ?: 0) / 2)
 
         val hits = frame?.hitTest(pt.x.toFloat(), pt.y.toFloat())
         if (hits != null) {

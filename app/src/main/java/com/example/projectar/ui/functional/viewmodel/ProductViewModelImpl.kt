@@ -2,7 +2,7 @@ package com.example.projectar.ui.functional.viewmodel
 
 import android.graphics.Bitmap
 import androidx.lifecycle.*
-import com.example.projectar.data.datahandlers.assets.Model
+import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.datahandlers.product.ProductManager
 import com.example.projectar.data.room.db.ApplicationDatabase
@@ -41,7 +41,7 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
         return productManager.getProductImage(imageInfo)!!
     }
 
-    override suspend fun getModel(modelInfo: ModelInfo): Model {
+    override suspend fun getModel(modelInfo: ModelInfo): ModelBuilder {
         return productManager.getProductModel(modelInfo)!!
     }
 

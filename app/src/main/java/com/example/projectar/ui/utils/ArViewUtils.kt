@@ -12,10 +12,10 @@ import com.google.ar.sceneform.ux.ArFragment
  * Interface used by MainActivity to provide required UI for AR-View
  */
 interface ArViewUiProvider {
-    /** Call to show the UI HUD*/
+    /** Call to show the UI for AR-View*/
     fun setupInterface(arFragment: ArFragment)
 
-    /** Call to hide the UI HUD*/
+    /** Call to hide the UI for AR-View*/
     fun hideInterface()
 }
 

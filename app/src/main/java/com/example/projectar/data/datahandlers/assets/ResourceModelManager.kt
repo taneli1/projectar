@@ -10,7 +10,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import java.lang.ref.WeakReference
 
-const val ARTAG = "AR TAG FOR DEV"
+const val ARTAG = "ARTAG"
 
 /**
  * Get 3dModels from resources
@@ -27,17 +27,19 @@ class ResourceModelManager(
         const val RESOURCES_RAW = "raw"
     }
 
-    override suspend fun getAsset(info: ModelInfo): Model? {
-        var builder: Model? = null
+    override suspend fun getAsset(info: ModelInfo): ModelBuilder? {
+        var builder: ModelBuilder? = null
 
         try {
             builder = scope.async {
                 context.get()?.let { context ->
                     return@async ModelRenderable.builder()
-                        .setSource(context, Uri.parse(info.filename))
-                        .setAsyncLoadEnabled(true)
+                        .setSource(
+                            context,
+                            Uri.parse(info.filename)
+                        )
                         .setIsFilamentGltf(true)
-
+                        .setAsyncLoadEnabled(true)
                 }
             }.await()
 
