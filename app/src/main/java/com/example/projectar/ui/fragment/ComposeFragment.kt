@@ -58,13 +58,6 @@ class ComposeFragment : Fragment() {
         val viewModel: ProductViewModelImpl = viewModel(requireActivity())
         val navController = rememberNavController()
 
-        NavUtils.CreateNavigator(navController, viewModel)
-
-        Row() {
-            Button(
-                onClick = { navFunction(R.id.fragment_ar_view) }) {
-                Text(text = "Open AR")
-            }
-        }
+        NavUtils.CreateNavigator(navController, viewModel, navFunction)
     }
 }

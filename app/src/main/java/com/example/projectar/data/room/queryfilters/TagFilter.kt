@@ -10,7 +10,6 @@ enum class SortBy {
     PRICE_DESC,
 }
 
-
 /**
  * Filter used by room to match tags in queries with search param.
  */
