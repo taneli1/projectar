@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.queryfilters.ProductFilter
+import com.example.projectar.data.room.queryfilters.SortBy
 import com.example.projectar.data.utils.TagUtils
 import com.example.projectar.ui.components.*
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
@@ -32,33 +33,31 @@ fun MainList(
         items.toMutableList()
     }
 
+    val orderingOptions = mutableMapOf<String, SortBy>()
+    orderingOptions["Default"] = SortBy.DEFAULT
+    orderingOptions["Price Ascending"] = SortBy.PRICE_ASC
+    orderingOptions["Price Descending"] = SortBy.PRICE_DESC
+    orderingOptions["Alphabetical Ascending"] = SortBy.ALPHABETICAL_ASC
+    orderingOptions["Alphabetical Descending"] = SortBy.ALPHABETICAL_DESC
+    val selectedSorting = remember { mutableStateOf(orderingOptions["Price Ascending"]) }
 
-    val orderingOptions = listOf("Alphabetical", "Price")
-    var trueProductList = products
-
-    fun doOrdering(ordering: String) {
-        if (ordering == "Alphabetical") {
-            trueProductList = trueProductList.sortedBy { it.data.id }
-
-        } else if (ordering == "Price") {
-            trueProductList = trueProductList.sortedBy { it.data.price }
-            for (Product: Product in trueProductList){
-                Log.d("Prices", Product.data.price.toString())
-            }
-        }
-    }
 
     val textState = remember { mutableStateOf(TextFieldValue("")) }
-    fun applyFilter(textState: String, tags: MutableList<ProductTag>) {
-        Log.d("APPLIED TAGS: ", selectedItems.toString())
-        viewModel.applyFilter(ProductFilter(textState, tags))
+    fun applyFilter(textState: String, tags: MutableList<ProductTag>, sortBy: SortBy) {
+        Log.d("KEY HERE", sortBy.toString())
+        viewModel.applyFilter(ProductFilter(textState, tags, sortBy))
     }
     Scaffold(topBar = { TopBarWithBurger(navController) }, bottomBar = { BottomBar() }, content = {
         Column {
             SearchView(
                 state = textState,
-                filter = { applyFilter(textState.toString(), selectedItems) })
-            Log.d("textState", textState.value.text)
+                filter = {
+                    selectedSorting.value?.let { it1 ->
+                        applyFilter(textState.toString(), selectedItems,
+                            it1
+                        )
+                    }
+                })
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -66,13 +65,27 @@ fun MainList(
                     items,
                     selectedItems,
                     viewModel,
-                    filters = { applyFilter(textState.toString(), selectedItems) })
-                OrderingDropdown(orderingOptions, ordering = ::doOrdering)
+                    filters = {
+                        selectedSorting.value?.let { it1 ->
+                            applyFilter(textState.toString(), selectedItems,
+                                it1
+                            )
+                        }
+                    })
+                OrderingDropdown(orderingOptions, selectedSorting) {
+                    selectedSorting.value?.let { it1 ->
+                        applyFilter(
+                            textState.toString(),
+                            selectedItems,
+                            it1
+                        )
+                    }
+                }
             }
             LazyVerticalGrid(
                 cells = GridCells.Fixed(2),
             ) {
-                items(trueProductList) { Product ->
+                items(products) { Product ->
                     ItemBox(Product, navigate)
                 }
             }

@@ -19,10 +19,9 @@ import androidx.navigation.NavController
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.theme.Orange
 import com.example.projectar.ui.theme.Shapes
-import com.example.projectar.ui.theme.darkGrey
+import com.example.projectar.ui.theme.DarkGrey
 import com.example.projectar.R
 import com.example.projectar.data.datahandlers.cart.Cart
-import com.example.projectar.data.datahandlers.cart.CartImpl
 import com.example.projectar.ui.components.BottomBar
 import com.example.projectar.ui.components.TopBar
 
@@ -50,7 +49,7 @@ fun SingleProduct(product: Product, navController: NavController, trueCart: Cart
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(darkGrey)
+                        .background(DarkGrey)
                         .padding(10.dp)
                 ) {
                     Text(text = product.data.title, color = Color.White)
@@ -59,7 +58,7 @@ fun SingleProduct(product: Product, navController: NavController, trueCart: Cart
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(darkGrey)
+                        .background(DarkGrey)
                         .padding(20.dp)
                 ) {
                     product.data.description?.let { Text(text = it, color = Color.White) }

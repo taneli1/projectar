@@ -1,25 +1,17 @@
 package com.example.projectar.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.projectar.ui.components.BottomBar
-import com.example.projectar.ui.components.ItemBox
 import com.example.projectar.ui.components.TopBar
-import com.example.projectar.ui.components.TopBarWithBurger
 import com.example.projectar.ui.theme.Orange
-import com.example.projectar.ui.theme.darkGrey
+import com.example.projectar.ui.theme.DarkGrey
 
 @Composable
 fun Profile(
@@ -42,7 +34,7 @@ fun Profile(
                 Text(
                     modifier = Modifier.padding(start = 10.dp),
                     text = "Total orders: 1",
-                    color = darkGrey
+                    color = DarkGrey
                 )
                 Text(
                     modifier = Modifier.padding(vertical = 40.dp),

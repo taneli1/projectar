@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.theme.Shapes
-import com.example.projectar.ui.theme.darkGrey
+import com.example.projectar.ui.theme.DarkGrey
 
 @Composable
 fun ItemBox(product: Product, navigate: (productId: Long) -> Unit) {
@@ -37,7 +37,7 @@ fun ItemBox(product: Product, navigate: (productId: Long) -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(darkGrey)
+                .background(DarkGrey)
                 .padding(5.dp)
         ) {
             Text(text = product.data.title, color = Color.White)
