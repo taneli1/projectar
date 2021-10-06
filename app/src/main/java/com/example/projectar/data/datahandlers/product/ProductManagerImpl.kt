@@ -1,14 +1,18 @@
 package com.example.projectar.data.datahandlers.product
 
 import android.graphics.Bitmap
-import com.example.projectar.data.datahandlers.assets.*
+import androidx.lifecycle.LiveData
+import com.example.projectar.data.datahandlers.assets.ImageAssetManager
+import com.example.projectar.data.datahandlers.assets.ModelBuilder
+import com.example.projectar.data.datahandlers.assets.ModelAssetManager
 import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.datahandlers.order.builder.OrderBuilder
 import com.example.projectar.data.datahandlers.order.handler.OrderHandler
-import com.example.projectar.data.room.queryfilters.TagFilter
 import com.example.projectar.data.repository.interfaces.ProductRepository
 import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
+import com.example.projectar.data.room.entity.order.Order
+import com.example.projectar.data.room.queryfilters.TagFilter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -43,8 +47,15 @@ class ProductManagerImpl(
     override fun getAllTags() = productRepository.getAllTags()
 
     // Product assets
-    override fun getProductImage(imageInfo: ImageInfo): Bitmap = imageManager.getAsset(imageInfo)
-    override fun getProductModel(modelInfo: ModelInfo): Model = modelManager.getAsset(modelInfo)
+    override suspend fun getProductImage(imageInfo: ImageInfo): Bitmap? =
+        imageManager.getAsset(imageInfo)
+
+    override suspend fun getProductModel(modelInfo: ModelInfo): ModelBuilder? =
+        modelManager.getAsset(modelInfo)
+
+    // Orders
+    override fun getAllOrders(userId: Long): LiveData<List<Order>> =
+        productRepository.getOrders(userId)
 
     // Cart
     override fun useCart(): Cart = cart

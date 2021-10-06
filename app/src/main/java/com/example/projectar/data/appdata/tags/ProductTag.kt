@@ -13,7 +13,7 @@ private const val TAG_ID_SURFACE = 5L
  *
  * All tags need to define a resource id, which returns the appropriate string for the tag.
  */
-enum class ProductTags {
+enum class ProductTag {
 
     BED {
         override fun id(): Long = TAG_ID_BED

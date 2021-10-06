@@ -1,12 +1,11 @@
 package com.example.projectar.data.room.utils
 
 import com.example.projectar.data.appdata.products.FakeProductList
-import com.example.projectar.data.appdata.tags.ProductTags
+import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.utils.TagUtils
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.tag.Tag
 import com.example.projectar.data.room.entity.tag.TagLink
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -19,7 +18,7 @@ object ProductCreator {
         GlobalScope.launch {
 
             // Update tags
-            for (tag in ProductTags.values()) {
+            for (tag in ProductTag.values()) {
                 database.tagDao()
                     .insert(Tag(tag.id()))
             }

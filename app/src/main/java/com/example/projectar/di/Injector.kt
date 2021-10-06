@@ -1,6 +1,7 @@
 package com.example.projectar.di
 
 import android.content.Context
+import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.datahandlers.assets.ResourceImageManager
 import com.example.projectar.data.datahandlers.assets.ResourceModelManager
 import com.example.projectar.data.datahandlers.cart.CartImpl
@@ -10,7 +11,12 @@ import com.example.projectar.data.datahandlers.product.ProductManagerImpl
 import com.example.projectar.data.repository.ProductRepositoryImpl
 import com.example.projectar.data.repository.interfaces.ProductRepository
 import com.example.projectar.data.room.db.ApplicationDatabase
-import com.example.projectar.ui.viewmodel.ProductViewModel
+import com.example.projectar.ui.functional.ar.ArViewManager
+import com.example.projectar.ui.functional.ar.ArViewManagerImpl
+import com.example.projectar.ui.functional.viewmodel.ProductViewModel
+import com.example.projectar.ui.functional.viewmodel.ProductViewModelImpl
+import com.google.ar.sceneform.rendering.ModelRenderable
+import com.google.ar.sceneform.ux.ArFragment
 import java.lang.ref.WeakReference
 
 /**
@@ -19,6 +25,14 @@ import java.lang.ref.WeakReference
 object Injector {
     private const val FAKE_USER_ID = 1244L
 
+    fun provideArViewManager(
+        viewModel: ProductViewModel,
+        arFragment: ArFragment,
+        builder: (modelBuilder: ModelBuilder, function: (model: ModelRenderable) -> Unit) -> Unit
+    ): ArViewManager {
+        return ArViewManagerImpl(viewModel, WeakReference(arFragment), builder)
+    }
+
     /**
      * Provides a ViewModelFactory for a ProductViewModel.
      * !Currently creates a new instance for the repo for each call!
@@ -26,7 +40,7 @@ object Injector {
     fun provideProductViewModelFactory(
         database: ApplicationDatabase,
         context: Context
-    ): ProductViewModel.ProductViewModelFactory {
+    ): ProductViewModelImpl.ProductViewModelFactory {
         val repo = productRepository(database)
         return productViewModelFactory(repo, context)
     }
@@ -39,8 +53,8 @@ object Injector {
 
     private fun productViewModelFactory(
         repo: ProductRepository, context: Context
-    ): ProductViewModel.ProductViewModelFactory {
-        return ProductViewModel.ProductViewModelFactory(
+    ): ProductViewModelImpl.ProductViewModelFactory {
+        return ProductViewModelImpl.ProductViewModelFactory(
             ProductManagerImpl(
                 repo,
                 ResourceImageManager(WeakReference(context)),
