@@ -24,44 +24,36 @@ abstract class TagDao : BaseDao<Tag> {
     @Query("SELECT * FROM tag AS tags INNER JOIN tagLink AS links ON tags.tagId = links.tagId WHERE links.id = :productId")
     abstract fun getAllTagsForProduct(productId: Long): LiveData<List<Tag>>
 
-
     @Transaction
     @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags)")
     abstract fun getAllProductsForTags(tags: List<Long>): LiveData<List<Product>>
 
-    @Transaction
-    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) ORDER BY title ASC")
-    abstract fun getAllProductsForTagsAlphabeticalOrderAsc(
-        tags: List<Long>,
-    ): LiveData<List<Product>>
-
-    @Transaction
-    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) ORDER BY title DESC")
-    abstract fun getAllProductsForTagsAlphabeticalOrderDesc(
-        tags: List<Long>,
-    ): LiveData<List<Product>>
-
-    @Transaction
-    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) ORDER BY price ASC")
-    abstract fun getAllProductsForTagsPriceAsc(
-        tags: List<Long>,
-    ): LiveData<List<Product>>
-
-    @Transaction
-    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) ORDER BY price DESC")
-    abstract fun getAllProductsForTagsPriceDesc(
-        tags: List<Long>,
-    ): LiveData<List<Product>>
-
     fun getProductsFiltered(filter: TagFilter): LiveData<List<Product>> {
         val list = filter.tags.map { it.id() }
         return when (filter.sortBy) {
-            SortBy.ALPHABETICAL_ASC -> getAllProductsForTagsAlphabeticalOrderAsc(list)
-            SortBy.ALPHABETICAL_DESC -> getAllProductsForTagsAlphabeticalOrderDesc(list)
-            SortBy.PRICE_ASC -> getAllProductsForTagsPriceAsc(list)
-            SortBy.PRICE_DESC -> getAllProductsForTagsPriceDesc(list)
+            SortBy.ALPHABETICAL_ASC -> sortAlphabeticalASC(list)
+            SortBy.ALPHABETICAL_DESC -> sortAlphabeticalDESC(list)
+            SortBy.PRICE_ASC -> sortPriceASC(list)
+            SortBy.PRICE_DESC -> sortPriceDESC(list)
             else -> getAllProductsForTags(list)
         }
-
     }
+
+    // Ugly copy paste to get products with ordering queries for the above method
+
+    @Transaction
+    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) ORDER BY title ASC")
+    abstract fun sortAlphabeticalASC(tags: List<Long>): LiveData<List<Product>>
+
+    @Transaction
+    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) ORDER BY title DESC")
+    abstract fun sortAlphabeticalDESC(tags: List<Long>): LiveData<List<Product>>
+
+    @Transaction
+    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) ORDER BY price ASC")
+    abstract fun sortPriceASC(tags: List<Long>): LiveData<List<Product>>
+
+    @Transaction
+    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) ORDER BY price DESC")
+    abstract fun sortPriceDESC(tags: List<Long>): LiveData<List<Product>>
 }

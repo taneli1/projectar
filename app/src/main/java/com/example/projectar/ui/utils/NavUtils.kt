@@ -1,59 +1,170 @@
 package com.example.projectar.ui.utils
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
+import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.projectar.R
+import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.ui.components.common.CartFAB
+import com.example.projectar.ui.components.navigation.NavWrapper
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
-import com.example.projectar.ui.screens.MainList
-import com.example.projectar.ui.screens.Profile
-import com.example.projectar.ui.screens.SingleProduct
+import com.example.projectar.ui.screens.*
 
 typealias NavFunction = (id: Int) -> Unit
 
+// Nav destinations
+
+const val NAV_SINGLE_SCREEN_PARAM = "product"
+
+sealed class Screen(val route: String, @StringRes val resourceId: Int) {
+    object Home : Screen("home", R.string.nav_home)
+    object Search : Screen("search", R.string.nav_search)
+    object Ar : Screen("ar", R.string.nav_ar)
+    object Profile : Screen("profile", R.string.nav_profile)
+    object Cart : Screen("cart", R.string.nav_cart)
+    object Rooms : Screen("rooms", R.string.nav_rooms)
+    object SingleProduct : Screen("single/{product}", R.string.nav_single)
+}
+
 object NavUtils {
-    /** Navigate to destination, pops everything from backstack? */
-    fun navigate(navController: NavController, route: String) {
-        navController.navigate(route) {
-            popUpTo("testBox") { inclusive = true }
+
+    /** List of top level destinations in the app, made into bottom tabs */
+    private val topLevelDest = listOf(
+        Screen.Home,
+        Screen.Search,
+        Screen.Ar
+    )
+
+    /**
+     * Return a res id for a drawable representing a screen
+     */
+    fun getScreenDrawable(screen: Screen): Int {
+        return when (screen) {
+            Screen.Home -> R.drawable.ic_baseline_home_24
+            Screen.Search -> R.drawable.ic_baseline_search_24
+            Screen.Ar -> R.drawable.augmented_reality
+            else -> R.drawable.ic_baseline_delete_outline_24
         }
     }
 
-    @Composable
-    fun CreateNavigator(navC: NavHostController, viewModel: ProductViewModel) {
-        val data: List<Product> by viewModel.products.observeAsState(listOf())
+    /**
+     * Return a res id for a title of a destination based on a route
+     */
+    fun getRouteTitle(route: String): Int {
+        return when (route) {
+            Screen.Home.route -> Screen.Home.resourceId
+            Screen.Search.route -> Screen.Search.resourceId
+            Screen.Ar.route -> Screen.Ar.resourceId
+            Screen.Profile.route -> Screen.Profile.resourceId
+            Screen.Cart.route -> Screen.Cart.resourceId
+            Screen.Rooms.route -> Screen.Rooms.resourceId
+            Screen.SingleProduct.route -> Screen.SingleProduct.resourceId
+            else -> R.string.content_desc_placeholder
+        }
+    }
 
-        NavHost(navController = navC, startDestination = "testList") {
-            composable(
-                "singleProduct/{product}",
-                arguments = listOf(navArgument("product") {
-                    type = NavType.LongType
-                })
-            ) { backStackEntry ->
-                backStackEntry.arguments?.getLong("product")?.let { json ->
-                    val product = data.find { it.data.id == json }
-                    if (product != null) {
-                        SingleProduct(product = product, navC, viewModel.useCart())
+    /**
+     * Creates a navigator for the application
+     */
+    @Composable
+    fun CreateNavigator(
+        navController: NavHostController,
+        viewModel: ProductViewModel,
+        navigateToFragment: NavFunction
+    ) {
+        val productList: List<Product> by viewModel.products.observeAsState(listOf())
+        val listOfDestinations = topLevelDest
+
+
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
+
+        NavWrapper(navController = navController, listOfDestinations, currentDestination, {
+            FloatingActionButtonCart(
+                navController = navController,
+                currentDestination = currentDestination,
+                cart = viewModel.useCart()
+            )
+        }) {
+            NavHost(navController = navController, startDestination = Screen.Home.route) {
+
+                composable(
+                    Screen.SingleProduct.route,
+                    arguments = listOf(navArgument(NAV_SINGLE_SCREEN_PARAM) {
+                        type = NavType.LongType
+                    })
+                ) { backStackEntry ->
+                    // Get selected item id from navArguments and provide the data for the screen
+                    backStackEntry.arguments?.getLong(NAV_SINGLE_SCREEN_PARAM)?.let { id ->
+                        productList.find { it.data.id == id }?.let { product ->
+                            SingleProduct(product, navController, viewModel.useCart())
+                        }
                     }
                 }
-            }
-            composable("testList") {
-                MainList(data, navC, viewModel) {
-                    navigate(
-                        navC,
-                        "singleProduct/$it"
-                    )
+
+                composable(Screen.Search.route) {
+                    MainList(productList, navController, viewModel) {
+                        // Navigate to single screen with the clicked product id
+                        navController.navigate(
+                            Screen.SingleProduct.route.replace(
+                                "{$NAV_SINGLE_SCREEN_PARAM}", it.toString()
+                            )
+                        )
+                    }
+                }
+
+                composable(Screen.Profile.route) {
+                    Profile(navController)
+                }
+
+
+                composable(Screen.Home.route) {
+                    Home()
+                }
+
+                composable(Screen.Cart.route) {
+                    Cart()
+                }
+
+                composable(Screen.Rooms.route) {
+                    Rooms()
+                }
+
+                composable(Screen.Ar.route) {
+                    navigateToFragment(R.id.fragment_ar_view)
                 }
             }
-            composable("profile") {
-                Profile(navC)
-            }
         }
+    }
+
+    /**
+     * Cart FAB with functionality
+     */
+    @Composable
+    private fun FloatingActionButtonCart(
+        navController: NavController,
+        currentDestination: NavDestination?,
+        cart: Cart
+    ) {
+        val cartButtonHiddenRoutes = listOf(
+            Screen.Cart.route,
+            Screen.Profile.route,
+            Screen.Rooms.route,
+            Screen.Ar.route,
+        )
+        val cartNotEmpty = cart.getAll().isNotEmpty()
+        val showFab =
+            if (cartButtonHiddenRoutes.contains(currentDestination?.route)) false else cartNotEmpty
+
+        CartFAB(
+            onClick = { navController.navigate(Screen.Cart.route) },
+            visible = showFab
+        )
     }
 }

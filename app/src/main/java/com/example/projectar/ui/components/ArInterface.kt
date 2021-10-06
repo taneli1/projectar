@@ -97,7 +97,7 @@ fun ArInterface(
         // Button to open the extended UI
         IconButton(
             onClick = { expanded.value = !expanded.value },
-            drawableRes = if (expanded.value) R.drawable.ic_baseline_arrow_back_24 else R.drawable.ic_baseline_arrow_forward_24
+            drawableRes = if (expanded.value) R.drawable.ic_baseline_arrow_back_32 else R.drawable.ic_baseline_arrow_forward_24
         )
     }
 }
