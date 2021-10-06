@@ -9,12 +9,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.example.projectar.data.room.queryfilters.SortBy
 import com.example.projectar.ui.theme.Orange
 
 @Composable
-fun OrderingDropdown(orderingOptions: List<String>, ordering: (ordering: String) -> Unit) {
+fun OrderingDropdown(orderingOptions: MutableMap<String, SortBy>, sortBy: MutableState<SortBy?>, filters: () -> Unit) {
+    val tempList = orderingOptions.keys.toMutableList()
     var expanded by remember { mutableStateOf(false) }
-    var selectedItem: String by remember { mutableStateOf(orderingOptions[0]) }
+    var selectedItem: String by remember { mutableStateOf(tempList[0]) }
 
     Surface(
         modifier = Modifier
@@ -36,12 +38,13 @@ fun OrderingDropdown(orderingOptions: List<String>, ordering: (ordering: String)
             expanded = expanded,
             onDismissRequest = { expanded = false },
         ) {
-            orderingOptions.forEach { title ->
+            tempList.forEach { title ->
                 DropdownMenuItem(
                     onClick = {
                         expanded = false
                         selectedItem = title
-                        ordering(selectedItem)
+                        sortBy.value = orderingOptions[selectedItem]!!
+                        filters()
                     }) {
                     val isSelected = title == selectedItem
                     val style = if (isSelected) {
