@@ -19,10 +19,17 @@ interface Cart {
      * */
     fun removeItem(productId: Long): Int
 
-    fun getProductAmount(productId: Long): LiveData<Int>
+    fun getProductAmount(productId: Long): Int
 
     /** Total amount of products in the cart */
     fun getCartTotal(): LiveData<Int>
 
-    fun getAll(): Map<Long, Int>
+    /** User selected products + their counts */
+    fun getAll(): LiveData<Map<Long, Int>>
+
+    /** Remove items from cart with values 0 */
+    fun removeUnselected()
+
+    /** Remove all cart items */
+    fun clear()
 }

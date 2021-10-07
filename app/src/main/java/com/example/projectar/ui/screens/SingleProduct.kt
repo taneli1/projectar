@@ -1,6 +1,5 @@
 package com.example.projectar.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -22,9 +21,10 @@ import androidx.navigation.NavController
 import com.example.projectar.R
 import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.ui.theme.DarkGrey
 import com.example.projectar.ui.theme.Orange
 import com.example.projectar.ui.theme.Shapes
-import com.example.projectar.ui.theme.DarkGrey
+import com.example.projectar.ui.utils.StringUtils
 
 @Composable
 fun SingleProduct(product: Product, navController: NavController, trueCart: Cart) {
@@ -50,7 +50,7 @@ fun SingleProduct(product: Product, navController: NavController, trueCart: Cart
                 .padding(10.dp)
         ) {
             Text(text = product.data.title, color = Color.White)
-            Text(text = product.data.price.toString(), color = Color.White)
+            Text(text = StringUtils.formatFloat(product.data.price) + "€", color = Color.White)
         }
         Row(
             modifier = Modifier
@@ -74,7 +74,6 @@ fun SingleProduct(product: Product, navController: NavController, trueCart: Cart
                 .padding(10.dp),
             onClick = {
                 trueCart.addItem(product.data.id)
-                Log.d("CART", trueCart.getAll().keys.toString())
             }, colors = ButtonDefaults.textButtonColors(
                 backgroundColor = Orange,
                 contentColor = Color.White,

@@ -1,12 +1,12 @@
 package com.example.projectar.data.repository
 
 import androidx.lifecycle.LiveData
-import com.example.projectar.data.room.queryfilters.TagFilter
 import com.example.projectar.data.repository.interfaces.ProductRepository
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.order.Order
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.entity.tag.Tag
+import com.example.projectar.data.room.queryfilters.TagFilter
 
 /**
  * Repository for product data.
