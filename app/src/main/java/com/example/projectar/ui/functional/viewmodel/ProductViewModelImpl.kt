@@ -3,6 +3,7 @@ package com.example.projectar.ui.functional.viewmodel
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.datahandlers.product.ProductManager
@@ -11,6 +12,7 @@ import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
 import com.example.projectar.data.room.entity.order.Order
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.data.room.entity.tag.Tag
 import com.example.projectar.data.room.queryfilters.ProductFilter
 import com.example.projectar.data.room.queryfilters.TagFilter
 import com.example.projectar.data.room.utils.ProductCreator
@@ -34,13 +36,21 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
 
     override fun getProductData(productId: Long) = productManager.getProduct(productId)
 
+    override fun getProductTags(productId: Long): LiveData<List<Tag>> =
+        productManager.getProductTags(productId)
+
+    override fun getProductsWithTags(tags: List<ProductTag>): LiveData<List<Product>> =
+        productManager.getProducts(ProductFilter(tags = tags))
+
+
     override fun applyFilter(filter: TagFilter) {
         this.filter.postValue(filter)
         Log.d("Filter: ", filter.searchTerm)
+
     }
 
     override fun getFilter(): TagFilter {
-        return this.filter.value?: ProductFilter()
+        return this.filter.value ?: ProductFilter()
     }
 
     override suspend fun getImage(imageInfo: ImageInfo): Bitmap {

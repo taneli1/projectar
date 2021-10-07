@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.navigation.NavController
 import com.example.projectar.data.appdata.tags.ProductTag
@@ -28,9 +29,7 @@ import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainList(
-    //Todo no need to pass products
     products: List<Product>,
-    navController: NavController,
     viewModel: ProductViewModel,
     navigate: (productId: Long) -> Unit
 ) {
@@ -50,7 +49,6 @@ fun MainList(
 
     val textState = remember { mutableStateOf(TextFieldValue("")) }
     fun applyFilter(textState: String, tags: MutableList<ProductTag>, sortBy: SortBy) {
-        Log.d("KEY HERE", sortBy.toString())
         viewModel.applyFilter(ProductFilter(textState, tags, sortBy))
     }
     
@@ -92,7 +90,7 @@ fun MainList(
                 cells = GridCells.Fixed(2),
             ) {
                 items(products) { Product ->
-                    ItemBox(Product, navigate)
+                    ItemBox(Product, 1.0f, navigate)
                 }
             }
         }

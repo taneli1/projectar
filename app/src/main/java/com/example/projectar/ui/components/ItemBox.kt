@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,12 +19,13 @@ import com.example.projectar.ui.theme.Shapes
 import com.example.projectar.ui.theme.DarkGrey
 
 @Composable
-fun ItemBox(product: Product, navigate: (productId: Long) -> Unit) {
+fun ItemBox(product: Product, width: Float, navigate: (productId: Long) -> Unit) {
     Column(
         Modifier
+            .fillMaxWidth(width)
             .padding(10.dp)
             .clip(Shapes.medium)
-            .selectable(selected = true, onClick = { navigate(product.data.id) })
+            .selectable(selected = true, onClick = { navigate(product.data.id) }),
     ) {
         Image(
             painter = painterResource(R.drawable.blenny),
@@ -42,6 +44,7 @@ fun ItemBox(product: Product, navigate: (productId: Long) -> Unit) {
         ) {
             Text(text = product.data.title, color = Color.White)
             Text(text = product.data.price.toString(), color = Color.White)
+
         }
     }
 }
