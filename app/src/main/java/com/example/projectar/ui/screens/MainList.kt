@@ -29,9 +29,7 @@ import com.example.projectar.ui.theme.PADDING_MD
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainList(
-    //Todo no need to pass products
     products: List<Product>,
-    navController: NavController,
     viewModel: ProductViewModel,
     navigate: (productId: Long) -> Unit
 ) {
@@ -51,7 +49,6 @@ fun MainList(
 
     val textState = remember { mutableStateOf(TextFieldValue("")) }
     fun applyFilter(textState: String, tags: MutableList<ProductTag>, sortBy: SortBy) {
-        Log.d("KEY HERE", sortBy.toString())
         viewModel.applyFilter(ProductFilter(textState, tags, sortBy))
     }
 

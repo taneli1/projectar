@@ -5,13 +5,19 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.projectar.R
+import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.data.room.queryfilters.ProductFilter
+import com.example.projectar.data.utils.TagUtils
 import com.example.projectar.ui.components.common.CartFAB
 import com.example.projectar.ui.components.navigation.NavWrapper
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
@@ -81,6 +87,31 @@ object NavUtils {
         navigateToFragment: NavFunction
     ) {
         val productList: List<Product> by viewModel.products.observeAsState(listOf())
+
+        /**
+         * Creates random lists for home view to use and show
+         */
+
+        val allTags = TagUtils.getAllTags().toMutableList().shuffled()
+        val tag = remember {
+            mutableListOf(allTags[0])
+        }
+        val tag1 = remember {
+            mutableListOf(allTags[1]
+            )
+        }
+        val tag2 = remember {
+            mutableListOf(allTags[2]
+            )
+        }
+        val filteredProducts = viewModel.getProductsWithTags(tag).observeAsState(listOf())
+        val filteredProducts1 = viewModel.getProductsWithTags(tag1).observeAsState(listOf())
+        val filteredProducts2 = viewModel.getProductsWithTags(tag2).observeAsState(listOf())
+        /*val randomizedList =
+            viewModel.getProductsWithTags(allTags).value?.shuffled()?.toMutableList()
+                ?.filterIndexed { index, _ -> index < 4 } ?: emptyList()
+
+         */
         val listOfDestinations = topLevelDest
 
         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -110,7 +141,7 @@ object NavUtils {
                 }
 
                 composable(Screen.Search.route) {
-                    MainList(productList, navController, viewModel) {
+                    MainList(productList, viewModel) {
                         // Navigate to single screen with the clicked product id
                         navController.navigate(
                             Screen.SingleProduct.route.replace(
@@ -124,9 +155,22 @@ object NavUtils {
                     Profile(viewModel)
                 }
 
-
                 composable(Screen.Home.route) {
-                    Home()
+                    Home(
+                        productList,
+                        viewModel,
+                        filteredProducts.value,
+                        filteredProducts1.value,
+                        filteredProducts2.value,
+                        tag[0],
+                        tag1[0]
+                    ) {
+                        navController.navigate(
+                            Screen.SingleProduct.route.replace(
+                                "{$NAV_SINGLE_SCREEN_PARAM}", it.toString()
+                            )
+                        )
+                    }
                 }
 
                 composable(Screen.Cart.route) {
