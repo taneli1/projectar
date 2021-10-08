@@ -15,4 +15,10 @@
     <string name="nav_cart">Cart</string>
     <string name="nav_rooms">Rooms</string>
     <string name="nav_single">Product</string>
+    <string name="cart_items">Items in cart (%s)</string>
+    <string name="place_order">Place order</string>
+    <string name="order_success">Order was successfully placed!</string>
+    <string name="ar_empty_cart">Products added to cart will be listed here</string>
+    <string name="search_placeholder">Search products…</string>
+    <string name="categories">Categories</string>
 </resources>

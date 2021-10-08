@@ -2,16 +2,16 @@ package com.example.projectar.ui.screens
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.room.entity.product.Product
@@ -23,6 +23,7 @@ import com.example.projectar.ui.components.ItemBox
 import com.example.projectar.ui.components.OrderingDropdown
 import com.example.projectar.ui.components.SearchView
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
+import com.example.projectar.ui.theme.PADDING_MD
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -53,47 +54,89 @@ fun MainList(
         Log.d("KEY HERE", sortBy.toString())
         viewModel.applyFilter(ProductFilter(textState, tags, sortBy))
     }
-    
-        Column {
-            SearchView(
-                state = textState,
-                filter = {
+
+
+    @Composable
+    fun Header() {
+        SearchView(
+            state = textState,
+            filter = {
+                selectedSorting.value?.let { it1 ->
+                    applyFilter(
+                        textState.toString(), selectedItems,
+                        it1
+                    )
+                }
+            })
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = PADDING_MD, end = PADDING_MD, bottom = PADDING_MD)
+        ) {
+            Dropdown(
+                items,
+                selectedItems,
+                filters = {
                     selectedSorting.value?.let { it1 ->
-                        applyFilter(textState.toString(), selectedItems,
+                        applyFilter(
+                            textState.toString(), selectedItems,
                             it1
                         )
                     }
                 })
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Dropdown(
-                    items,
-                    selectedItems,
-                    viewModel,
-                    filters = {
-                        selectedSorting.value?.let { it1 ->
-                            applyFilter(textState.toString(), selectedItems,
-                                it1
-                            )
-                        }
-                    })
-                OrderingDropdown(orderingOptions, selectedSorting) {
-                    selectedSorting.value?.let { it1 ->
-                        applyFilter(
-                            textState.toString(),
-                            selectedItems,
-                            it1
-                        )
-                    }
-                }
-            }
-            LazyVerticalGrid(
-                cells = GridCells.Fixed(2),
-            ) {
-                items(products) { Product ->
-                    ItemBox(Product, navigate)
+            OrderingDropdown(orderingOptions, selectedSorting) {
+                selectedSorting.value?.let { it1 ->
+                    applyFilter(
+                        textState.toString(),
+                        selectedItems,
+                        it1
+                    )
                 }
             }
         }
+    }
+
+
+    LazyColumn() {
+        item {
+            Header()
+        }
+        itemsIndexed(products) { index, _ ->
+            val even = index % 2 == 0
+            val isLastProduct = index == products.lastIndex
+
+            when (even) {
+                true -> {
+                    if (isLastProduct) {
+                        ProductRowWrapper(products = listOf(products[index]), navigate = navigate)
+                    } else {
+                        val pair = listOf(products[index], products[index + 1])
+                        ProductRowWrapper(products = pair, navigate = navigate)
+                    }
+                }
+            }
+        }
+        item {
+            Spacer(modifier = Modifier.size(50.dp))
+        }
+    }
 }
+
+@Composable
+private fun ProductRowWrapper(
+    products: List<Product>,
+    navigate: (productId: Long) -> Unit,
+    addExtra: Int = 0
+) {
+    Row(Modifier.fillMaxWidth()) {
+        products.forEachIndexed { index, product ->
+            // Calculate the width percentage that the box can take
+            val percentage = (100f / (products.size - index)) / 100f
+            Surface(Modifier.fillMaxWidth(percentage)) {
+                ItemBox(product, navigate)
+            }
+        }
+    }
+}
+

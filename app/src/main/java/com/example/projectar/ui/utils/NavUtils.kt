@@ -1,6 +1,7 @@
 package com.example.projectar.ui.utils
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -72,6 +73,7 @@ object NavUtils {
     /**
      * Creates a navigator for the application
      */
+    @OptIn(ExperimentalAnimationApi::class)
     @Composable
     fun CreateNavigator(
         navController: NavHostController,
@@ -80,7 +82,6 @@ object NavUtils {
     ) {
         val productList: List<Product> by viewModel.products.observeAsState(listOf())
         val listOfDestinations = topLevelDest
-
 
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
@@ -92,7 +93,7 @@ object NavUtils {
                 cart = viewModel.useCart()
             )
         }) {
-            NavHost(navController = navController, startDestination = Screen.Home.route) {
+            NavHost(navController = navController, startDestination = Screen.Search.route) {
 
                 composable(
                     Screen.SingleProduct.route,
@@ -120,7 +121,7 @@ object NavUtils {
                 }
 
                 composable(Screen.Profile.route) {
-                    Profile(navController)
+                    Profile(viewModel)
                 }
 
 
@@ -129,7 +130,7 @@ object NavUtils {
                 }
 
                 composable(Screen.Cart.route) {
-                    Cart()
+                    Cart(viewModel, navController)
                 }
 
                 composable(Screen.Rooms.route) {
@@ -152,19 +153,24 @@ object NavUtils {
         currentDestination: NavDestination?,
         cart: Cart
     ) {
+        val totalItems: Int by cart.getCartTotal().observeAsState(0)
+
         val cartButtonHiddenRoutes = listOf(
             Screen.Cart.route,
             Screen.Profile.route,
             Screen.Rooms.route,
             Screen.Ar.route,
+            Screen.SingleProduct.route,
         )
-        val cartNotEmpty = cart.getAll().isNotEmpty()
+        val cartNotEmpty = cart.getAll().value?.isNotEmpty()
+
         val showFab =
             if (cartButtonHiddenRoutes.contains(currentDestination?.route)) false else cartNotEmpty
 
         CartFAB(
             onClick = { navController.navigate(Screen.Cart.route) },
-            visible = showFab
+            visible = showFab == true,
+            itemCount = totalItems
         )
     }
 }

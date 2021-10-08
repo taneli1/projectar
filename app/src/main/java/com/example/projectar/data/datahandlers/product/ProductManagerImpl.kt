@@ -3,8 +3,8 @@ package com.example.projectar.data.datahandlers.product
 import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import com.example.projectar.data.datahandlers.assets.ImageAssetManager
-import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.datahandlers.assets.ModelAssetManager
+import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.datahandlers.order.builder.OrderBuilder
 import com.example.projectar.data.datahandlers.order.handler.OrderHandler
@@ -61,10 +61,9 @@ class ProductManagerImpl(
     override fun useCart(): Cart = cart
     override fun placeOrder() {
         scope.launch {
-            val order = orderBuilder.buildOrder(cart.getAll())
-            // placeOrder returns a boolean based on whether the op was successful, could do sth
-            // with it
-            val successful = orderHandler.placeOrder(order)
+            val order = orderBuilder.buildOrder(cart.getAll().value ?: mapOf())
+            orderHandler.placeOrder(order)
+            cart.clear()
         }
     }
 }

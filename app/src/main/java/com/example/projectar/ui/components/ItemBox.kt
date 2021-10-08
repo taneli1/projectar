@@ -14,14 +14,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
-import com.example.projectar.ui.theme.Shapes
 import com.example.projectar.ui.theme.DarkGrey
+import com.example.projectar.ui.theme.Shapes
+import com.example.projectar.ui.utils.StringUtils
 
 @Composable
 fun ItemBox(product: Product, navigate: (productId: Long) -> Unit) {
+
     Column(
         Modifier
-            .padding(10.dp)
+            .padding(8.dp)
             .clip(Shapes.medium)
             .selectable(selected = true, onClick = { navigate(product.data.id) })
     ) {
@@ -41,7 +43,8 @@ fun ItemBox(product: Product, navigate: (productId: Long) -> Unit) {
                 .padding(5.dp)
         ) {
             Text(text = product.data.title, color = Color.White)
-            Text(text = product.data.price.toString(), color = Color.White)
+            Text(text = StringUtils.formatFloat(product.data.price) + "€", color = Color.White)
         }
     }
+
 }
