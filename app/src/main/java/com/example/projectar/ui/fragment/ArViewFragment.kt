@@ -20,5 +20,4 @@ class ArViewFragment : ArFragment() {
         uiProvider?.hideInterface()
         uiProvider = null
     }
-
 }

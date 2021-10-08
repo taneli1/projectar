@@ -67,6 +67,10 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
 
     override fun useCart(): Cart = productManager.useCart()
 
+    override fun placeOrder() {
+        productManager.placeOrder()
+    }
+
 
     // -------------------------- TESTING --------------------------
 

@@ -51,4 +51,6 @@ interface ProductViewModel {
 
     /** Get instance of the current cart */
     fun useCart(): Cart
+
+    fun placeOrder()
 }

@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -25,7 +22,7 @@ import com.example.projectar.ui.utils.NavUtils
 
 
 class ComposeFragment : Fragment() {
-    //private val db by lazy { ApplicationDatabase.get(requireContext()) }
+    private val db by lazy { ApplicationDatabase.get(requireContext()) }
     private var _binding: FragmentComposeBinding? = null
     private val binding get() = _binding!!
 
@@ -43,9 +40,6 @@ class ComposeFragment : Fragment() {
                     SetUp() { dest ->
                         findNavController().navigate(dest)
                     }
-                    /*TestComposable.DbButtons(
-                        db = db
-                    )*/
                 }
             }
         }

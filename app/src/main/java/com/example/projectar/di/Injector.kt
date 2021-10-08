@@ -23,7 +23,7 @@ import java.lang.ref.WeakReference
  * Inject dependencies for the objects of the application
  */
 object Injector {
-    private const val FAKE_USER_ID = 1244L
+    const val FAKE_USER_ID = 1244L
 
     fun provideArViewManager(
         viewModel: ProductViewModel,

@@ -9,8 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -19,9 +21,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.components.animated.AnimateHorizontal
@@ -47,13 +52,20 @@ fun ArInterface(
         mutableStateOf(false)
     }
 
-
     val marginLeft: Dp by animateDpAsState(
         if (expanded.value) 0.dp else MARGIN_MD
     )
 
-    // TODO Change to cart items
-    val products = viewModel.products.value ?: listOf()
+    val products: List<Product> by viewModel.useCart().getAll().switchMap {
+        val list = mutableListOf<Product>()
+        it.forEach { entry ->
+            val p = viewModel.products.value?.find { product -> product.data.id == entry.key }
+            p?.let { pNotNull ->
+                list.add(pNotNull)
+            }
+        }
+        return@switchMap MutableLiveData(list)
+    }.observeAsState(listOf())
 
     Row(
         modifier = Modifier
@@ -79,15 +91,30 @@ fun ArInterface(
                         item {
                             HeaderWithPadding(text = stringResource(id = R.string.header_items))
                         }
-                        // List of items in the shelf
-                        items(products) { product ->
-                            ProductArComponent(product) { id ->
-                                arViewManager.addModel(id)
-                                expanded.value = !expanded.value
+
+                        if (products.isEmpty()) {
+                            item {
+                                Text(
+                                    text = stringResource(id = R.string.ar_empty_cart),
+                                    color = Color.White,
+                                    modifier = Modifier.padding(
+                                        vertical = 20.dp,
+                                        horizontal = 40.dp
+                                    ),
+                                    textAlign = TextAlign.Center
+                                )
                             }
-                        }
-                        item {
-                            Spacer(modifier = Modifier.size(40.dp))
+                        } else {
+                            // List of items in the shelf
+                            items(products) { product ->
+                                ProductArComponent(product) { id ->
+                                    arViewManager.addModel(id)
+                                    expanded.value = !expanded.value
+                                }
+                            }
+                            item {
+                                Spacer(modifier = Modifier.size(40.dp))
+                            }
                         }
                     }
                 }
@@ -117,12 +144,10 @@ fun ProductArComponent(
         IconButton(
             onClick = { /*TODO*/ },
             drawableRes = R.drawable.ic_baseline_delete_outline_24,
-            scale = 1.2f
         )
         IconButton(
             onClick = { /*TODO*/ },
             drawableRes = R.drawable.ic_baseline_shopping_cart_24,
-            scale = 1.2f
         )
     }
 
