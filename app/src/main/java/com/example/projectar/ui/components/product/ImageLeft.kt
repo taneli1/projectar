@@ -24,12 +24,16 @@ import com.example.projectar.ui.theme.PADDING_XS
 import com.example.projectar.ui.utils.StringUtils
 import kotlin.random.Random
 
+/**
+ * Returns a layout to show products, with +/- buttons.
+ * If functions were not provided for the buttons, they do not render.
+ */
 @Composable
 fun ProductCartItem(
     product: Product,
     count: Int?,
-    onMinusPressed: (productId: Long) -> Unit,
-    onPlusPressed: (productId: Long) -> Unit
+    onMinusPressed: ((productId: Long) -> Unit)?,
+    onPlusPressed: ((productId: Long) -> Unit)?
 ) {
     val image = if (Random.nextBoolean()) R.drawable.goat else R.drawable.blenny
 
@@ -68,19 +72,22 @@ fun ProductCartItem(
                         .padding(bottom = 18.dp),
                     fontSize = 18.sp
                 )
-                Row() {
-                    IconButton(
-                        onClick = { onMinusPressed(product.data.id) },
-                        drawableRes = R.drawable.ic_baseline_remove_24,
-                        shape = RoundedCornerShape(6.dp),
-                        buttonSize = 36.dp
-                    )
-                    IconButton(
-                        onClick = { onPlusPressed(product.data.id) },
-                        drawableRes = R.drawable.ic_baseline_add_24,
-                        shape = RoundedCornerShape(6.dp),
-                        buttonSize = 36.dp
-                    )
+                // Hide buttons if functions for them were not provided
+                if (onMinusPressed != null && onPlusPressed != null) {
+                    Row() {
+                        IconButton(
+                            onClick = { onMinusPressed(product.data.id) },
+                            drawableRes = R.drawable.ic_baseline_remove_24,
+                            shape = RoundedCornerShape(6.dp),
+                            buttonSize = 36.dp
+                        )
+                        IconButton(
+                            onClick = { onPlusPressed(product.data.id) },
+                            drawableRes = R.drawable.ic_baseline_add_24,
+                            shape = RoundedCornerShape(6.dp),
+                            buttonSize = 36.dp
+                        )
+                    }
                 }
             }
         }

@@ -1,6 +1,5 @@
 package com.example.projectar.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,7 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.queryfilters.ProductFilter
@@ -131,7 +129,7 @@ private fun ProductRowWrapper(
             // Calculate the width percentage that the box can take
             val percentage = (100f / (products.size - index)) / 100f
             Surface(Modifier.fillMaxWidth(percentage)) {
-                ItemBox(product, navigate)
+                ItemBox(product, navigate = navigate)
             }
         }
     }

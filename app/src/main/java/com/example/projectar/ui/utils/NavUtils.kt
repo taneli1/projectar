@@ -124,7 +124,7 @@ object NavUtils {
                 cart = viewModel.useCart()
             )
         }) {
-            NavHost(navController = navController, startDestination = Screen.Search.route) {
+            NavHost(navController = navController, startDestination = Screen.Profile.route) {
 
                 composable(
                     Screen.SingleProduct.route,
