@@ -26,6 +26,9 @@ fun Dropdown(
     selectedItems: MutableList<ProductTag>,
     filters: () -> Unit
 ) {
+    /**
+     * Dropdown for filtering items used in MainList screen. 2nd of 3 filtering/sorting fields
+     */
     var expanded by remember { mutableStateOf(false) }
 
     fun filterCheckChange(isChecked: MutableState<Boolean>, productTag: ProductTag) {
