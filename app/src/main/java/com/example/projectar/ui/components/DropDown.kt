@@ -27,10 +27,9 @@ fun Dropdown(
     filters: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedIndex by remember { mutableStateOf(0) }
 
-    fun filterCheckChange(isChecked: MutableState<Boolean>, it: Boolean, productTag: ProductTag) {
-        isChecked.value = it
+    fun filterCheckChange(isChecked: MutableState<Boolean>, productTag: ProductTag) {
+        isChecked.value = !isChecked.value
         if (!isChecked.value) {
             selectedItems.remove(productTag)
         } else selectedItems.add(productTag)
@@ -64,13 +63,12 @@ fun Dropdown(
             onDismissRequest = { expanded = false },
         ) {
             items.forEachIndexed { index, productTag ->
+                val isChecked = remember {
+                    mutableStateOf(selectedItems.contains(productTag))
+                }
                 DropdownMenuItem(onClick = {
-                    selectedIndex = index
-                    expanded = false
+                    filterCheckChange(isChecked, productTag)
                 }) {
-                    val isChecked = remember {
-                        mutableStateOf(selectedItems.contains(productTag))
-                    }
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier
@@ -80,7 +78,9 @@ fun Dropdown(
                         Text(text = productTag.toString())
                         Checkbox(
                             checked = isChecked.value,
-                            onCheckedChange = { filterCheckChange(isChecked, it, productTag) },
+                            onCheckedChange = {
+                                filterCheckChange(isChecked, productTag)
+                            },
                         )
                     }
                 }
