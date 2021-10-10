@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -16,7 +15,6 @@ import androidx.compose.ui.unit.sp
 import com.example.projectar.R
 import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.room.entity.product.Product
-import com.example.projectar.data.utils.TagUtils
 import com.example.projectar.ui.components.ItemBox
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 
@@ -44,28 +42,38 @@ fun Home(
                     text = stringResource(R.string.Randompicksforyou)
                 )
                 Row() {
-                    ItemBox(
-                        product = randomizedList[0],
-                        width = 0.5f,
-                        navigate = navigate
-                    )
-                    ItemBox(
-                        product = randomizedList[1],
-                        width = 1.0f,
-                        navigate = navigate,
-                    )
+                    randomizedList.getOrNull(0)?.let {
+                        ItemBox(
+                            product = it,
+                            width = 0.5f,
+                            navigate = navigate
+                        )
+                    }
+
+                    randomizedList.getOrNull(1)?.let {
+                        ItemBox(
+                            product = it,
+                            width = 1.0f,
+                            navigate = navigate,
+                        )
+                    }
                 }
                 Row() {
-                    ItemBox(
-                        product = randomizedList[2],
-                        width = 0.5f,
-                        navigate = navigate
-                    )
-                    ItemBox(
-                        product = randomizedList[3],
-                        width = 1.0f,
-                        navigate = navigate,
-                    )
+                    randomizedList.getOrNull(2)?.let {
+                        ItemBox(
+                            product = it,
+                            width = 0.5f,
+                            navigate = navigate,
+                        )
+                    }
+
+                    randomizedList.getOrNull(3)?.let {
+                        ItemBox(
+                            product = it,
+                            width = 1.0f,
+                            navigate = navigate,
+                        )
+                    }
                 }
             }
             item() {

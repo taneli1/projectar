@@ -29,6 +29,8 @@ import com.example.projectar.ui.theme.FONT_MD
 import com.example.projectar.ui.theme.Orange
 import com.example.projectar.ui.theme.Success
 import com.example.projectar.ui.utils.StringUtils
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 @Composable
@@ -148,11 +150,11 @@ fun OrderSuccess() {
     // "Fade in Animation" for components
     val iconColor by animateColorAsState(
         if (bool.value) Color.White else Success,
-        animationSpec = tween(durationMillis = 1000)
+        animationSpec = tween(durationMillis = 1500)
     )
     val textColor by animateColorAsState(
         if (bool.value) Color.White else Color.Black,
-        animationSpec = tween(durationMillis = 1000)
+        animationSpec = tween(durationMillis = 1500)
     )
 
     Column(
@@ -173,10 +175,23 @@ fun OrderSuccess() {
                 tint = iconColor
             )
             Text(text = stringResource(id = R.string.order_success), color = textColor)
+            if (bool.value) {
+                CircularProgressIndicator(
+                    color = Orange
+                )
+            }
         }
     }
-    // Change after component renders for the first time
-    bool.value = false
+
+    val scope = rememberCoroutineScope()
+
+    // Fake delay hide loading indicator after delay, show successful
+    LaunchedEffect(true) {
+        scope.launch {
+            delay(1500)
+            bool.value = false
+        }
+    }
 }
 
 @Composable

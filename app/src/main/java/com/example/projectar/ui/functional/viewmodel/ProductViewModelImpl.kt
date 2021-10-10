@@ -45,8 +45,7 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
 
     override fun applyFilter(filter: TagFilter) {
         this.filter.postValue(filter)
-        Log.d("Filter: ", filter.searchTerm)
-
+        Log.d("Filter: ", filter.searchTerm + " " + filter.sortBy)
     }
 
     override fun getFilter(): TagFilter {

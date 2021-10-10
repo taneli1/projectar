@@ -19,9 +19,6 @@ import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
 import java.lang.ref.WeakReference
 
-/**
- * Inject dependencies for the objects of the application
- */
 object Injector {
     const val FAKE_USER_ID = 1244L
 
@@ -35,7 +32,7 @@ object Injector {
 
     /**
      * Provides a ViewModelFactory for a ProductViewModel.
-     * !Currently creates a new instance for the repo for each call!
+     * !Creates a new instance for the repo for each call!
      */
     fun provideProductViewModelFactory(
         database: ApplicationDatabase,

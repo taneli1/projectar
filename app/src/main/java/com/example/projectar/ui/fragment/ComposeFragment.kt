@@ -15,12 +15,14 @@ import com.example.projectar.R
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.databinding.FragmentComposeBinding
 import com.example.projectar.ui.functional.viewmodel.ProductViewModelImpl
-import com.example.projectar.ui.testing.TestComposable.DbButtons
 import com.example.projectar.ui.theme.ProjectarTheme
 import com.example.projectar.ui.utils.NavFunction
 import com.example.projectar.ui.utils.NavUtils
 
 
+/**
+ * Provides all screens for the application, except for the AR functionality.
+ */
 class ComposeFragment : Fragment() {
     private val db by lazy { ApplicationDatabase.get(requireContext()) }
     private var _binding: FragmentComposeBinding? = null
@@ -37,9 +39,9 @@ class ComposeFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ProjectarTheme {
-                    SetUp() { dest ->
-                        findNavController().navigate(dest)
-
+                    SetUp() { destResId ->
+                        // Function to navigate between the navGraph destinations
+                        findNavController().navigate(destResId)
                     }
                 }
             }
