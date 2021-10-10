@@ -1,18 +1,19 @@
 package com.example.projectar.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.queryfilters.ProductFilter
@@ -29,7 +30,6 @@ import com.example.projectar.ui.theme.PADDING_MD
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainList(
-    products: List<Product>,
     viewModel: ProductViewModel,
     navigate: (productId: Long) -> Unit
 ) {
@@ -37,6 +37,8 @@ fun MainList(
     val selectedItems: MutableList<ProductTag> = remember {
         items.toMutableList()
     }
+
+    val products: List<Product> by viewModel.products.observeAsState(listOf())
 
     val orderingOptions = mutableMapOf<String, SortBy>()
     orderingOptions["Default"] = SortBy.DEFAULT
@@ -46,21 +48,21 @@ fun MainList(
     orderingOptions["Alphabetical Descending"] = SortBy.ALPHABETICAL_DESC
     val selectedSorting = remember { mutableStateOf(orderingOptions["Price Ascending"]) }
 
-
     val textState = remember { mutableStateOf(TextFieldValue("")) }
     fun applyFilter(textState: String, tags: MutableList<ProductTag>, sortBy: SortBy) {
         viewModel.applyFilter(ProductFilter(textState, tags, sortBy))
     }
 
-
     @Composable
     fun Header() {
+        Text(text = "Current count: ${products.count()}")
         SearchView(
             state = textState,
             filter = {
                 selectedSorting.value?.let { it1 ->
                     applyFilter(
-                        textState.toString(), selectedItems,
+                        textState.value.text,
+                        selectedItems,
                         it1
                     )
                 }
@@ -77,7 +79,8 @@ fun MainList(
                 filters = {
                     selectedSorting.value?.let { it1 ->
                         applyFilter(
-                            textState.toString(), selectedItems,
+                            textState.value.text,
+                            selectedItems,
                             it1
                         )
                     }
@@ -85,7 +88,7 @@ fun MainList(
             OrderingDropdown(orderingOptions, selectedSorting) {
                 selectedSorting.value?.let { it1 ->
                     applyFilter(
-                        textState.toString(),
+                        textState.value.text,
                         selectedItems,
                         it1
                     )
@@ -131,7 +134,7 @@ private fun ProductRowWrapper(
             // Calculate the width percentage that the box can take
             val percentage = (100f / (products.size - index)) / 100f
             Surface(Modifier.fillMaxWidth(percentage)) {
-                ItemBox(product, navigate)
+                ItemBox(product, navigate = navigate)
             }
         }
     }

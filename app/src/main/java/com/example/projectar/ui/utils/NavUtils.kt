@@ -6,23 +6,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.switchMap
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.projectar.R
-import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.room.entity.product.Product
-import com.example.projectar.data.room.queryfilters.ProductFilter
 import com.example.projectar.data.utils.TagUtils
 import com.example.projectar.ui.components.common.CartFAB
 import com.example.projectar.ui.components.navigation.NavWrapper
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.screens.*
 
+/**
+ * Function to navigate between the fragments in the navGraph.
+ * (For this application, ArFragment + ComposeFragment)
+ */
 typealias NavFunction = (id: Int) -> Unit
 
 // Nav destinations
@@ -42,7 +42,7 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int) {
 object NavUtils {
 
     /** List of top level destinations in the app, made into bottom tabs */
-    private val topLevelDest = listOf(
+    val topLevelDest = listOf(
         Screen.Home,
         Screen.Search,
         Screen.Ar
@@ -77,7 +77,7 @@ object NavUtils {
     }
 
     /**
-     * Creates a navigator for the application
+     * Creates a navigator for the application, containing all the screens. (except ar)
      */
     @OptIn(ExperimentalAnimationApi::class)
     @Composable
@@ -97,11 +97,13 @@ object NavUtils {
             mutableListOf(allTags[0])
         }
         val tag1 = remember {
-            mutableListOf(allTags[1]
+            mutableListOf(
+                allTags[1]
             )
         }
         val tag2 = remember {
-            mutableListOf(allTags[2]
+            mutableListOf(
+                allTags[2]
             )
         }
         val filteredProducts = viewModel.getProductsWithTags(tag).observeAsState(listOf())
@@ -124,7 +126,7 @@ object NavUtils {
                 cart = viewModel.useCart()
             )
         }) {
-            NavHost(navController = navController, startDestination = Screen.Search.route) {
+            NavHost(navController = navController, startDestination = Screen.Home.route) {
 
                 composable(
                     Screen.SingleProduct.route,
@@ -141,7 +143,7 @@ object NavUtils {
                 }
 
                 composable(Screen.Search.route) {
-                    MainList(productList, viewModel) {
+                    MainList(viewModel) {
                         // Navigate to single screen with the clicked product id
                         navController.navigate(
                             Screen.SingleProduct.route.replace(
