@@ -134,6 +134,7 @@ private fun ProductRowWrapper(
             // Calculate the width percentage that the box can take
             val percentage = (100f / (products.size - index)) / 100f
             Surface(Modifier.fillMaxWidth(percentage)) {
+
                 ItemBox(product, navigate = navigate)
             }
         }
