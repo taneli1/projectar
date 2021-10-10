@@ -23,4 +23,6 @@
     <string name="search_placeholder">Search products…</string>
     <string name="categories">Categories</string>
     <string name="addedToCart">Added to cart</string>
+    <string name="string_x">x%s</string>
+    <string name="items_in_order">Products:</string>
 </resources>

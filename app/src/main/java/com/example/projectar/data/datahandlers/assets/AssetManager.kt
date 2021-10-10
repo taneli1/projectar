@@ -24,5 +24,5 @@ interface AssetManager<T : FileInfo, U> {
 typealias ImageAssetManager = AssetManager<ImageInfo, Bitmap>;
 typealias ModelAssetManager = AssetManager<ModelInfo, ModelBuilder>;
 
-/** Placeholder for the model type */
+/** Typealias for ModelRenderable.Builder */
 typealias ModelBuilder = ModelRenderable.Builder

@@ -34,6 +34,7 @@ import com.example.projectar.ui.components.common.HeaderWithPadding
 import com.example.projectar.ui.components.common.IconButton
 import com.example.projectar.ui.functional.ar.ArViewManager
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
+import com.example.projectar.ui.theme.DarkGrey
 import com.example.projectar.ui.theme.ELEVATION_MD
 import com.example.projectar.ui.theme.MARGIN_MD
 
@@ -77,10 +78,10 @@ fun ArInterface(
             visible = expanded,
             content = {
                 Surface(
-                    color = Color.DarkGray,
+                    color = DarkGrey,
                     modifier = Modifier
                         .fillMaxWidth(fraction = 0.8f)
-                        .fillMaxHeight(),
+                        .fillMaxHeight(fraction = 0.9f),
                     elevation = ELEVATION_MD,
                     shape = RoundedCornerShape(topEnd = 30f, bottomEnd = 30f),
                 ) {
