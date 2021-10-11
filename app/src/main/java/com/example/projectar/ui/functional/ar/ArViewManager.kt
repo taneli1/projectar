@@ -1,10 +1,21 @@
 package com.example.projectar.ui.functional.ar
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+
 /**
  * Provides functionality for AR-View.
  * Manages the models in the view etc...
  */
 interface ArViewManager {
+
+    /**
+     * If a model is ready to be set to the scene, this field
+     * emits the value back which was set from setModelSelected().
+     * If there is no model selected, value in livedata is null.
+     */
+    val modelSelected: MutableLiveData<Long?>
+
     /**
      * Set a product model to be currently selected.
      *

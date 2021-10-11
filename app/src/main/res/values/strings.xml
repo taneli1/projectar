@@ -6,7 +6,7 @@
     <string name="cart">Cart</string>
     <string name="rooms">Rooms</string>
     <string name="icon_arrow_forward">Arrow forward</string>
-    <string name="header_items">Items</string>
+    <string name="header_items">Cart products</string>
     <string name="content_desc_placeholder">placeholder</string>
     <string name="nav_home">Home</string>
     <string name="nav_search">Search</string>
@@ -26,4 +26,5 @@
     <string name="string_x">x%s</string>
     <string name="items_in_order">Products:</string>
     <string name="btn_delete">delete</string>
+    <string name="ar_view_guide">Select a product by tapping its image</string>
 </resources>
