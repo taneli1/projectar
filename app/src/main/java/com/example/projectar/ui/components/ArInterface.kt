@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -37,6 +38,7 @@ import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.theme.DarkGrey
 import com.example.projectar.ui.theme.ELEVATION_MD
 import com.example.projectar.ui.theme.MARGIN_MD
+import com.example.projectar.ui.theme.Shapes
 
 
 /**
@@ -68,12 +70,17 @@ fun ArInterface(
         return@switchMap MutableLiveData(list)
     }.observeAsState(listOf())
 
+    // Has the user selected a product, which is to be added to the scene
+    val selectedModelProductName: String? by arViewManager.modelSelected.switchMap {
+        val p = viewModel.products.value?.find { product -> product.data.id == it }
+        return@switchMap MutableLiveData(p?.data?.title)
+    }.observeAsState()
+
     Row(
         modifier = Modifier
             .padding(horizontal = marginLeft, vertical = MARGIN_MD)
             .fillMaxHeight(),
     ) {
-
         AnimateHorizontal(
             visible = expanded,
             content = {
@@ -106,6 +113,13 @@ fun ArInterface(
                                 )
                             }
                         } else {
+                            item {
+                                Text(
+                                    modifier = Modifier.padding(top = 16.dp),
+                                    color = Color.Gray,
+                                    text = stringResource(id = R.string.ar_view_guide)
+                                )
+                            }
                             // List of items in the shelf
                             items(products) { product ->
                                 ProductArComponent(product) { id ->
@@ -119,14 +133,36 @@ fun ArInterface(
                         }
                     }
                 }
+
             }
         )
 
-        // Button to open the extended UI
-        IconButton(
-            onClick = { expanded.value = !expanded.value },
-            drawableRes = if (expanded.value) R.drawable.ic_baseline_arrow_back_32 else R.drawable.ic_baseline_arrow_forward_24
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            // Button to open the extended UI
+            IconButton(
+                onClick = { expanded.value = !expanded.value },
+                drawableRes = if (expanded.value) R.drawable.ic_baseline_arrow_back_32 else R.drawable.ic_baseline_arrow_forward_24
+            )
+
+            // Small guide when model is selected
+            if (selectedModelProductName != null && !expanded.value) {
+                Surface(
+                    color = DarkGrey,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .clip(Shapes.medium)
+                ) {
+                    Text(
+                        color = Color.White,
+                        text = "Click on a plane to place ${selectedModelProductName.toString()}",
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
+            }
+        }
     }
 }
 

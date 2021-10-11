@@ -3,6 +3,7 @@ package com.example.projectar.ui.functional.ar
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import com.example.projectar.R
 import com.example.projectar.data.datahandlers.assets.ARTAG
 import com.example.projectar.data.datahandlers.assets.ModelBuilder
@@ -38,6 +39,7 @@ class ArViewManagerImpl(
     private val _fragment: WeakReference<ArFragment>,
     private val buildModelHandler: ModelBuilderHandler
 ) : ArViewManager {
+    override val modelSelected: MutableLiveData<Long?> = MutableLiveData(null)
     private val fragment get() = _fragment.get()!!
 
     private val job: Job = Job()
@@ -82,6 +84,8 @@ class ArViewManagerImpl(
 
             // If model was found, save it to class field
             selectedModel = Pair(product, model)
+            // Set the livedata value to passed product id, to tell the UI the model is ready
+            modelSelected.postValue(productId)
         }
     }
 
@@ -115,6 +119,7 @@ class ArViewManagerImpl(
 
                 // Clear the selected model
                 selectedModel = null
+                modelSelected.postValue(null)
             }
         } catch (e: Exception) {
             Log.e(ARTAG, "addModelToScene error: " + e.message)
