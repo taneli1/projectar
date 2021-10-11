@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.projectar.R
@@ -27,14 +29,32 @@ fun BigItem(product: Product, navigate: (productId: Long) -> Unit) {
             .background(Beige)
             .padding(start = 50.dp, bottom = 25.dp)
             .selectable(selected = true, onClick = { navigate(product.data.id) }),
-        ) {
+    ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(bottom = 25.dp, top = 25.dp, end = 10.dp)
         ) {
-            Text(text = product.data.title, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 25.sp)
-            Text(text = StringUtils.formatFloat(product.data.price) + "€", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 25.sp)
+            Text(
+                text = product.data.title,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 25.sp,
+                modifier = Modifier.fillMaxWidth(0.5f),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2,
+                )
+            Text(
+                text = StringUtils.formatFloat(product.data.price) + "€",
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 25.sp,
+                modifier = Modifier.fillMaxWidth(1.0f),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                textAlign = TextAlign.Right
+            )
         }
         Image(
             painter = painterResource(R.drawable.blenny),
@@ -44,6 +64,13 @@ fun BigItem(product: Product, navigate: (productId: Long) -> Unit) {
                 .fillMaxWidth()
                 .height(225.dp)
         )
-        Text(text = product.data.description.toString(), color = Color.White, modifier = Modifier.background(color = Background).fillMaxWidth().padding(5.dp))
+        Text(
+            text = product.data.description.toString(),
+            color = Color.White,
+            modifier = Modifier
+                .background(color = Background)
+                .fillMaxWidth()
+                .padding(5.dp)
+        )
     }
 }

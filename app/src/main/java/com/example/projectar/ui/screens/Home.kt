@@ -17,6 +17,7 @@ import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.components.BigItem
 import com.example.projectar.ui.components.ItemBox
+import com.example.projectar.ui.components.product.ItemBoxForScroll
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -38,7 +39,7 @@ fun Home(
                 Text(
                     modifier = Modifier.padding(20.dp),
                     fontSize = 30.sp,
-                    text = stringResource(R.string.Randompicksforyou)
+                    text = stringResource(R.string.pics)
                 )
                 Row() {
                     randomizedList.getOrNull(1)?.let {
@@ -82,7 +83,7 @@ fun Home(
                 Text(
                     modifier = Modifier.padding(5.dp),
                     fontSize = 20.sp,
-                    text = "Random picks from category $tag"
+                    text = "$tag"
                 )
                 Row(
                     Modifier.horizontalScroll(
@@ -93,7 +94,7 @@ fun Home(
                     )
                 ) {
                     for (item in filteredProducts) {
-                        ItemBox(product = item, width = 1.0f, navigate = navigate)
+                        ItemBoxForScroll(product = item, navigate = navigate)
                     }
                 }
             }
@@ -101,7 +102,7 @@ fun Home(
                 Text(
                     modifier = Modifier.padding(5.dp),
                     fontSize = 20.sp,
-                    text = "Random picks from category $tag1"
+                    text = "$tag1"
                 )
                 Row(
                     Modifier.horizontalScroll(
@@ -112,7 +113,7 @@ fun Home(
                     )
                 ) {
                     for (item in filteredProducts1) {
-                        ItemBox(product = item, width = 1.0f, navigate = navigate)
+                        ItemBoxForScroll(product = item, navigate = navigate)
                     }
                 }
             }
