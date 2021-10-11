@@ -25,13 +25,13 @@ fun OrderingDropdown(
     /**
      * Dropdown menu for item sorting used in MainList screen. 3rd of 3 filtering/sorting fields
      */
-    orderingOptions: MutableMap<String, SortBy>,
-    sortBy: MutableState<SortBy?>,
+    orderingOptions: MutableMap<SortBy, String>,
+    sortBy: MutableState<SortBy>,
     filters: () -> Unit
 ) {
     val tempList = orderingOptions.keys.toMutableList()
     var expanded by remember { mutableStateOf(false) }
-    var selectedItem: String by remember { mutableStateOf(tempList[0]) }
+    var selectedItem: SortBy = sortBy.value
 
     Surface(
         modifier = Modifier
@@ -49,7 +49,7 @@ fun OrderingDropdown(
                 )
         ) {
             Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "Test")
-            Text(text = selectedItem)
+            orderingOptions[selectedItem]?.let { Text(text = it) }
         }
 
         DropdownMenu(
@@ -62,7 +62,7 @@ fun OrderingDropdown(
                     onClick = {
                         expanded = false
                         selectedItem = title
-                        sortBy.value = orderingOptions[selectedItem]!!
+                        sortBy.value = selectedItem
                         filters()
                     }) {
                     val isSelected = title == selectedItem
@@ -77,7 +77,7 @@ fun OrderingDropdown(
                             color = MaterialTheme.colors.onSurface
                         )
                     }
-                    Text(text = title, style = style)
+                    Text(text = orderingOptions[title].toString(), style = style)
                 }
             }
         }

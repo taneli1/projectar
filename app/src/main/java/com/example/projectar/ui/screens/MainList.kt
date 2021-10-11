@@ -35,37 +35,36 @@ fun MainList(
 ) {
     val items = TagUtils.getAllTags()
     val selectedItems: MutableList<ProductTag> = remember {
-        items.toMutableList()
+        viewModel.getFilter().tags.toMutableList()
     }
-
     val products: List<Product> by viewModel.products.observeAsState(listOf())
 
-    val orderingOptions = mutableMapOf<String, SortBy>()
-    orderingOptions["Default"] = SortBy.DEFAULT
-    orderingOptions["Price Ascending"] = SortBy.PRICE_ASC
-    orderingOptions["Price Descending"] = SortBy.PRICE_DESC
-    orderingOptions["Alphabetical Ascending"] = SortBy.ALPHABETICAL_ASC
-    orderingOptions["Alphabetical Descending"] = SortBy.ALPHABETICAL_DESC
-    val selectedSorting = remember { mutableStateOf(orderingOptions["Price Ascending"]) }
 
-    val textState = remember { mutableStateOf(TextFieldValue("")) }
+    val orderingOptions = mutableMapOf<SortBy, String>()
+    orderingOptions[SortBy.DEFAULT] = "Default"
+    orderingOptions[SortBy.PRICE_ASC] = "Price Ascending"
+    orderingOptions[SortBy.PRICE_DESC] = "Price Descending"
+    orderingOptions[SortBy.ALPHABETICAL_ASC] = "Alphabetical Ascending"
+    orderingOptions[SortBy.ALPHABETICAL_DESC] = "Alphabetical Descending"
+    val selectedSorting = remember { mutableStateOf(viewModel.getFilter().sortBy) }
+
+
+    val searchTerm = viewModel.getFilter().searchTerm
+    val textState = remember { mutableStateOf(TextFieldValue(searchTerm)) }
     fun applyFilter(textState: String, tags: MutableList<ProductTag>, sortBy: SortBy) {
         viewModel.applyFilter(ProductFilter(textState, tags, sortBy))
     }
-
     @Composable
     fun Header() {
         Text(text = "Current count: ${products.count()}")
         SearchView(
             state = textState,
             filter = {
-                selectedSorting.value?.let { it1 ->
-                    applyFilter(
-                        textState.value.text,
-                        selectedItems,
-                        it1
-                    )
-                }
+                applyFilter(
+                    textState.value.text,
+                    selectedItems,
+                    selectedSorting.value
+                )
             })
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -77,22 +76,18 @@ fun MainList(
                 items,
                 selectedItems,
                 filters = {
-                    selectedSorting.value?.let { it1 ->
-                        applyFilter(
-                            textState.value.text,
-                            selectedItems,
-                            it1
-                        )
-                    }
-                })
-            OrderingDropdown(orderingOptions, selectedSorting) {
-                selectedSorting.value?.let { it1 ->
                     applyFilter(
                         textState.value.text,
                         selectedItems,
-                        it1
+                        selectedSorting.value
                     )
-                }
+                })
+            OrderingDropdown(orderingOptions, selectedSorting) {
+                applyFilter(
+                    textState.value.text,
+                    selectedItems,
+                    selectedSorting.value
+                )
             }
         }
     }
