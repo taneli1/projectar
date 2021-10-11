@@ -45,7 +45,7 @@ object ArViewUtils {
     @ExperimentalAnimationApi
     fun attachArHud(
         composeView: ComposeView,
-        arViewManager: ArViewManager,
+        arViewManager: ArViewManager<Long>,
         viewModel: ProductViewModel,
         navHostController: NavController
     ) {

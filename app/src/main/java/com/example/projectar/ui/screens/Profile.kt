@@ -1,9 +1,5 @@
 package com.example.projectar.ui.screens
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -202,7 +198,7 @@ private fun OrderProductList(
                     onPlusPressed = null
                 )
             }
-            Divider(modifier = Modifier.size(8.dp))
+            Divider(modifier = Modifier.size(8.dp), color = Color.White)
         }
     }
     Spacer(modifier = Modifier.size(20.dp))

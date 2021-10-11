@@ -17,10 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.components.common.IconButton
-import com.example.projectar.ui.theme.ELEVATION_SM
-import com.example.projectar.ui.theme.FONT_XS
-import com.example.projectar.ui.theme.PADDING_SM
-import com.example.projectar.ui.theme.PADDING_XS
+import com.example.projectar.ui.theme.*
 import com.example.projectar.ui.utils.StringUtils
 import kotlin.random.Random
 
@@ -42,7 +39,9 @@ fun ProductCartItem(
             .padding(horizontal = 20.dp)
             .fillMaxWidth()
     ) {
-        Surface(elevation = ELEVATION_SM) {
+        Surface(
+            elevation = ELEVATION_SM, modifier = Modifier.clip(RoundedCornerShape(8.dp)),
+        ) {
             Image(
                 modifier = Modifier
                     .height(85.dp)

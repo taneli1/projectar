@@ -35,7 +35,7 @@ fun MainList(
 ) {
     val items = TagUtils.getAllTags()
     val selectedItems: MutableList<ProductTag> = remember {
-        items.toMutableList()
+        viewModel.getFilter().tags.toMutableList()
     }
 
     val products: List<Product> by viewModel.products.observeAsState(listOf())

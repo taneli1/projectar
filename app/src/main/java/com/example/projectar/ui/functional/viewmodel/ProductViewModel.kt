@@ -38,7 +38,7 @@ interface ProductViewModel {
     /** Get the Bitmap for the product */
     suspend fun getImage(imageInfo: ImageInfo): Bitmap
 
-    /** Get the 3d-Model for the product */
+    /** Get the ModelBuilder for the product */
     suspend fun getModel(modelInfo: ModelInfo): ModelBuilder
 
 
