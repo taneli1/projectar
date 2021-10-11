@@ -109,7 +109,7 @@ fun ArInterface(
                             // List of items in the shelf
                             items(products) { product ->
                                 ProductArComponent(product) { id ->
-                                    arViewManager.addModel(id)
+                                    arViewManager.setModelSelected(id)
                                     expanded.value = !expanded.value
                                 }
                             }

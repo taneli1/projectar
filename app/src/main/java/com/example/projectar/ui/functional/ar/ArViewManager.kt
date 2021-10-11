@@ -5,10 +5,13 @@ package com.example.projectar.ui.functional.ar
  * Manages the models in the view etc...
  */
 interface ArViewManager {
-
-    /** Add model for Product in the current active AR Scene*/
-    fun addModel(productId: Long)
-
-    /** Remove a model for a Product if it is currently in the scene */
-    fun removeModel(productId: Long)
+    /**
+     * Set a product model to be currently selected.
+     *
+     * Tapping a plane after selecting a model adds it to the ar scene.
+     *
+     * Selected model gets reset after tapping a plane, so this
+     * method needs to be called again to add another model.
+     */
+    fun setModelSelected(productId: Long)
 }
