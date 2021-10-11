@@ -22,6 +22,9 @@ import com.example.projectar.ui.theme.Shapes
 
 @Composable
 fun OrderingDropdown(
+    /**
+     * Dropdown menu for item sorting used in MainList screen. 3rd of 3 filtering/sorting fields
+     */
     orderingOptions: MutableMap<String, SortBy>,
     sortBy: MutableState<SortBy?>,
     filters: () -> Unit

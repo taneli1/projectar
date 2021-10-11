@@ -29,9 +29,13 @@ import com.example.projectar.ui.theme.Orange
 @Composable
 fun SearchView(filter: () -> Unit, state: MutableState<TextFieldValue>) {
     Surface(
+        /**
+         * TextBox used in MainList screen. 1st of 3 filtering/sorting fields
+         */
         elevation = ELEVATION_XS,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp)
     ) {
+        // Fetch new set of items everytime textfield's value is changed
         TextField(
             value = state.value,
             onValueChange = { value ->
@@ -58,6 +62,7 @@ fun SearchView(filter: () -> Unit, state: MutableState<TextFieldValue>) {
                         onClick = {
                             state.value =
                                 TextFieldValue("") // Remove text from TextField when you press the 'X' icon
+                            filter()
                         }
                     ) {
                         Icon(

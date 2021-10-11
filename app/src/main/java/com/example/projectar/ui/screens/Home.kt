@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.example.projectar.R
 import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.ui.components.BigItem
 import com.example.projectar.ui.components.ItemBox
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 
@@ -31,8 +32,6 @@ fun Home(
     navigate: (productId: Long) -> Unit
 ) {
 
-    //TODO empty array will crash the app
-
     if (randomizedList.isNotEmpty()) {
         LazyColumn(Modifier.padding(bottom = 50.dp)) {
             item() {
@@ -42,7 +41,7 @@ fun Home(
                     text = stringResource(R.string.Randompicksforyou)
                 )
                 Row() {
-                    randomizedList.getOrNull(0)?.let {
+                    randomizedList.getOrNull(1)?.let {
                         ItemBox(
                             product = it,
                             width = 0.5f,
@@ -50,7 +49,7 @@ fun Home(
                         )
                     }
 
-                    randomizedList.getOrNull(1)?.let {
+                    randomizedList.getOrNull(2)?.let {
                         ItemBox(
                             product = it,
                             width = 1.0f,
@@ -59,7 +58,7 @@ fun Home(
                     }
                 }
                 Row() {
-                    randomizedList.getOrNull(2)?.let {
+                    randomizedList.getOrNull(3)?.let {
                         ItemBox(
                             product = it,
                             width = 0.5f,
@@ -67,7 +66,7 @@ fun Home(
                         )
                     }
 
-                    randomizedList.getOrNull(3)?.let {
+                    randomizedList.getOrNull(4)?.let {
                         ItemBox(
                             product = it,
                             width = 1.0f,
@@ -75,6 +74,9 @@ fun Home(
                         )
                     }
                 }
+            }
+            item {
+                BigItem(randomizedList[0], navigate = navigate)
             }
             item() {
                 Text(
