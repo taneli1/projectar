@@ -9,7 +9,6 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.projectar.data.datahandlers.assets.ARTAG
 import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.room.db.ApplicationDatabase
-import com.example.projectar.data.room.utils.ProductCreator
 import com.example.projectar.databinding.ActivityMainBinding
 import com.example.projectar.di.Injector
 import com.example.projectar.ui.fragment.ArViewFragment

@@ -1,6 +1,5 @@
 package com.example.projectar.ui.functional.ar
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 /**
@@ -23,6 +22,7 @@ interface ArViewManager {
      *
      * Selected model gets reset after tapping a plane, so this
      * method needs to be called again to add another model.
+     * (to prevent accidental model additions)
      */
     fun setModelSelected(productId: Long)
 }

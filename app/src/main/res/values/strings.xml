@@ -27,4 +27,9 @@
     <string name="items_in_order">Products:</string>
     <string name="btn_delete">delete</string>
     <string name="ar_view_guide">Select a product by tapping its image</string>
+    <string name="ar_view_tap_guide">Tap me!</string>
+    <string name="price_string">%s€</string>
+    <string name="string">%s</string>
+    <string name="ar_click_guide">Click on a plane to place %s</string>
+    <string name="ar_add_guide">Open the list to add products to view</string>
 </resources>

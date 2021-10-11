@@ -50,15 +50,21 @@ fun ArInterface(
     viewModel: ProductViewModel,
     arViewManager: ArViewManager
 ) {
-    // State of Expanding shelf
+    // Initial guide shown
+    val guideShown = remember {
+        mutableStateOf(false)
+    }
+
+    // State of Expanding shelf which lists the products
     val expanded = remember {
         mutableStateOf(false)
     }
 
-    val marginLeft: Dp by animateDpAsState(
+    val stateMargin: Dp by animateDpAsState(
         if (expanded.value) 0.dp else MARGIN_MD
     )
 
+    // Get the product data for the selected productIds, since cart does not contain the product data itself.
     val products: List<Product> by viewModel.useCart().getAll().switchMap {
         val list = mutableListOf<Product>()
         it.forEach { entry ->
@@ -73,12 +79,17 @@ fun ArInterface(
     // Has the user selected a product, which is to be added to the scene
     val selectedModelProductName: String? by arViewManager.modelSelected.switchMap {
         val p = viewModel.products.value?.find { product -> product.data.id == it }
+        // When the user has selected a product, guide no longer needs to be shown
+        if (p != null) {
+            guideShown.value = true
+        }
         return@switchMap MutableLiveData(p?.data?.title)
     }.observeAsState()
 
+
     Row(
         modifier = Modifier
-            .padding(horizontal = marginLeft, vertical = MARGIN_MD)
+            .padding(horizontal = stateMargin, vertical = MARGIN_MD)
             .fillMaxHeight(),
     ) {
         AnimateHorizontal(
@@ -147,7 +158,23 @@ fun ArInterface(
                 drawableRes = if (expanded.value) R.drawable.ic_baseline_arrow_back_32 else R.drawable.ic_baseline_arrow_forward_24
             )
 
-            // Small guide when model is selected
+            // Initial guide
+            if (!guideShown.value && !expanded.value) {
+                Surface(
+                    color = DarkGrey,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .clip(Shapes.medium)
+                ) {
+                    Text(
+                        color = Color.White,
+                        text = stringResource(id = R.string.ar_add_guide),
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
+            }
+
+            // Guide text when model is selected
             if (selectedModelProductName != null && !expanded.value) {
                 Surface(
                     color = DarkGrey,
@@ -157,7 +184,10 @@ fun ArInterface(
                 ) {
                     Text(
                         color = Color.White,
-                        text = "Click on a plane to place ${selectedModelProductName.toString()}",
+                        text = stringResource(
+                            id = R.string.ar_click_guide,
+                            selectedModelProductName.toString()
+                        ),
                         modifier = Modifier.padding(8.dp)
                     )
                 }

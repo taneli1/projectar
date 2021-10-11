@@ -32,7 +32,7 @@ typealias ModelBuilderHandler = (modelBuilder: ModelBuilder, onComplete: (model:
  * @param _fragment A weak reference to the current ArFragment
  * @param buildModelHandler A function that can handle the building of the model for the
  * provided ModelBuilder.
- * (ModeRenderable.Builder.build() must be run on UI Thread - Defined by the library providing the obj.)
+ * (ModeRenderable.Builder.build() must be run on UI Thread - defined by the library)
  */
 class ArViewManagerImpl(
     private val vm: ProductViewModel,
@@ -50,6 +50,9 @@ class ArViewManagerImpl(
 
     // Nodes, which have the additional layout open
     private val nodesWithLayoutOpen = mutableListOf<Node>()
+
+    // If the model added is the first one, show a guide on top of the it
+    private var guideShown = false
 
     init {
         fragment.setOnTapArPlaneListener { hitResult, _, _ ->
@@ -98,17 +101,18 @@ class ArViewManagerImpl(
         try {
             buildModelHandler(data.second) {
                 val anchor = hitResult.createAnchor()
-                val anchorNode = AnchorNode(anchor)
-                anchorNode.setParent(fragment.arSceneView.scene)
+                val anchorNode = AnchorNode(anchor).apply {
+                    setParent(fragment.arSceneView.scene)
+                }
 
-                val viewNode = TransformableNode(fragment.transformationSystem)
-                viewNode.apply {
+                val viewNode = TransformableNode(fragment.transformationSystem).apply {
                     scaleController.maxScale = 0.31f
                     scaleController.minScale = 0.3f
                     renderable = it
                     setParent(anchorNode)
                     select()
 
+                    // Show layout on top of model when clicked
                     setOnTapListener { hitTestResult, _ ->
                         val node = hitTestResult.node
                         if (node != null) {
@@ -117,7 +121,12 @@ class ArViewManagerImpl(
                     }
                 }
 
-                // Clear the selected model
+                if (!guideShown) {
+                    renderGuide(parentNode = viewNode)
+                    guideShown = true
+                }
+
+                // Clear the selected model to prevent accidental model additions to the scene
                 selectedModel = null
                 modelSelected.postValue(null)
             }
@@ -138,12 +147,7 @@ class ArViewManagerImpl(
         }
         nodesWithLayoutOpen.add(modelNode)
 
-
-        val viewNode = Node().apply {
-            setParent(modelNode)
-            isEnabled = false
-            localPosition = Vector3(0.0f, 1.0f, 0.0f)
-        }
+        val viewNode = buildNodeAboveAnother(modelNode)
 
         ViewRenderable.builder()
             .setView(fragment.context, R.layout.view_ar_model_actions)
@@ -157,33 +161,76 @@ class ArViewManagerImpl(
                     viewRenderable.view.findViewById<TextView>(R.id.view_ar_product_title)
                         .text = product.data.title
                     viewRenderable.view.findViewById<TextView>(R.id.view_ar_product_price)
-                        .text = StringUtils.formatFloat(product.data.price) + "€"
+                        .text = fragment.context?.getString(R.string.price_string, StringUtils.formatFloat(product.data.price))
 
                     // Remove the entire model when delete button is pressed
                     viewRenderable.view.findViewById<Button>(R.id.view_ar_delete_button).setOnClickListener {
-                        removeNode(modelNode)
+                        removeSceneNode(modelNode)
                     }
 
 
-                    // Remove the layout onTap
+                    // Remove this layout onTap
                     setOnTapListener { hitRes, _ ->
                         val resNode = hitRes.node ?: return@setOnTapListener
 
-                        // Get the node of the model to which this view is attached to
-                        // and remove this view from the nodes children.
-                        fragment.arSceneView.scene.children.find { it == modelNode }?.removeChild(resNode)
-                        resNode.setParent(null)
-                        resNode.renderable = null
+                        removeNestedNode(modelNode, resNode)
                         nodesWithLayoutOpen.remove(modelNode)
                     }
                 }
             }
     }
 
-    private fun removeNode(node: Node) {
+    // Render a guide text above a node, telling to tap the model
+    private fun renderGuide(parentNode: Node) {
+        val viewNode = buildNodeAboveAnother(parentNode)
+
+        ViewRenderable.builder()
+            .setView(fragment.context, R.layout.view_ar_text)
+            .build()
+            .thenAccept { viewRenderable ->
+                viewNode.apply {
+                    renderable = viewRenderable
+                    isEnabled = true
+
+                    // Set the guide text
+                    viewRenderable.view.findViewById<TextView>(R.id.ar_view_text_field)
+                        .text = fragment.context?.getString(R.string.ar_view_tap_guide)
+                }
+            }
+
+        // Remove the guide when something else is touched
+        fragment.arSceneView.scene.setOnTouchListener { _, _ ->
+            removeNestedNode(parentNode, viewNode)
+            false
+        }
+    }
+
+    private fun buildNodeAboveAnother(parent: Node): Node {
+        return Node().apply {
+            setParent(parent)
+            isEnabled = false
+            localPosition = Vector3(0.0f, 1.0f, 0.0f)
+        }
+    }
+
+    /**
+     * Removes a node which is a direct child of the scene
+     */
+    private fun removeSceneNode(node: Node) {
         fragment.arSceneView.scene.removeChild(node);
         node.setParent(null);
         node.renderable = null
+    }
+
+    /**
+     * Remove a nested node from the scene
+     * @param parent direct child of the scene
+     * @param child child of the parent
+     */
+    private fun removeNestedNode(parent: Node, child: Node) {
+        fragment.arSceneView.scene.children.find { it == parent }?.removeChild(child)
+        child.setParent(null)
+        child.renderable = null
     }
 }
 
