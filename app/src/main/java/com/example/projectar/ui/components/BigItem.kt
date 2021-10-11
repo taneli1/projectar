@@ -3,6 +3,7 @@ package com.example.projectar.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,13 +20,14 @@ import com.example.projectar.ui.theme.*
 import com.example.projectar.ui.utils.StringUtils
 
 @Composable
-fun BigItem(product: Product) {
+fun BigItem(product: Product, navigate: (productId: Long) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(Beige)
             .padding(start = 50.dp, bottom = 25.dp)
-    ) {
+            .selectable(selected = true, onClick = { navigate(product.data.id) }),
+        ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()

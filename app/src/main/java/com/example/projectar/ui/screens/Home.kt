@@ -76,7 +76,7 @@ fun Home(
                 }
             }
             item {
-                BigItem(randomizedList[0])
+                BigItem(randomizedList[0], navigate = navigate)
             }
             item() {
                 Text(
