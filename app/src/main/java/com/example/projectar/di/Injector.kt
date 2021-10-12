@@ -1,6 +1,7 @@
 package com.example.projectar.di
 
 import android.content.Context
+import android.util.Log
 import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.datahandlers.assets.ResourceImageManager
 import com.example.projectar.data.datahandlers.assets.ResourceModelManager
@@ -11,8 +12,10 @@ import com.example.projectar.data.datahandlers.product.ProductManagerImpl
 import com.example.projectar.data.repository.ProductRepositoryImpl
 import com.example.projectar.data.repository.interfaces.ProductRepository
 import com.example.projectar.data.room.db.ApplicationDatabase
-import com.example.projectar.ui.functional.ar.ArViewManager
-import com.example.projectar.ui.functional.ar.ProductArViewManager
+import com.example.projectar.ui.functional.ar.impl.ProductArViewManager
+import com.example.projectar.ui.functional.ar.impl.ProductNodeBundler
+import com.example.projectar.ui.functional.ar.intf.ArViewManager
+import com.example.projectar.ui.functional.ar.intf.NodeBundle
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.functional.viewmodel.ProductViewModelImpl
 import com.google.ar.sceneform.rendering.ModelRenderable
@@ -22,12 +25,15 @@ import java.lang.ref.WeakReference
 object Injector {
     const val FAKE_USER_ID = 1244L
 
+    private var bundle: NodeBundle<Long>? = null
+
     fun provideArViewManager(
         viewModel: ProductViewModel,
         arFragment: ArFragment,
         builder: (modelBuilder: ModelBuilder, function: (model: ModelRenderable) -> Unit) -> Unit
     ): ArViewManager<Long> {
-        return ProductArViewManager(viewModel, WeakReference(arFragment), builder)
+        Log.d("DEBUG", "Injecting ArViewManager ")
+        return ProductArViewManager(viewModel, WeakReference(arFragment), builder, ProductNodeBundler(savedBundle = bundle, save = { bundle = it }))
     }
 
     /**
@@ -58,7 +64,7 @@ object Injector {
                 ResourceModelManager(WeakReference(context)),
                 CartImpl(),
                 LocalOrderHandler(repo),
-                OrderBuilderImpl(FAKE_USER_ID)
+                OrderBuilderImpl(FAKE_USER_ID),
             )
         )
     }

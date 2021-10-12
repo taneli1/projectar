@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -36,7 +37,7 @@ import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.components.animated.AnimateHorizontal
 import com.example.projectar.ui.components.common.HeaderWithPadding
 import com.example.projectar.ui.components.common.IconButton
-import com.example.projectar.ui.functional.ar.ArViewManager
+import com.example.projectar.ui.functional.ar.intf.ArViewManager
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.theme.*
 
@@ -89,11 +90,15 @@ fun ArInterface(
     // Counts of rendered product models
     val modelCounts: Map<Long, Int> by arViewManager.renderedModels.observeAsState(mapOf())
 
+
     Row(
         modifier = Modifier
             .padding(horizontal = stateMargin, vertical = MARGIN_MD)
             .fillMaxHeight(),
     ) {
+        Button(onClick = { arViewManager.saveBundle() }, Modifier.height(50.dp)) {
+            Text(text = "Save bundle")
+        }
         AnimateHorizontal(
             visible = expanded,
             content = {

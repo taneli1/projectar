@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.projectar.R
 import com.example.projectar.ui.components.ArInterface
-import com.example.projectar.ui.functional.ar.ArViewManager
+import com.example.projectar.ui.functional.ar.intf.ArViewManager
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.theme.DarkGrey
 import com.example.projectar.ui.theme.ProjectarTheme

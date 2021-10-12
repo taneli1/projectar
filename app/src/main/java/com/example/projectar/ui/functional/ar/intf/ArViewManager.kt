@@ -1,4 +1,4 @@
-package com.example.projectar.ui.functional.ar
+package com.example.projectar.ui.functional.ar.intf
 
 import androidx.lifecycle.MutableLiveData
 
@@ -38,4 +38,6 @@ interface ArViewManager<T> {
      * If there are multiple models listed under the parameter, removes the last added model.
      */
     fun removeModel(data: T)
+
+    fun saveBundle()
 }

@@ -17,7 +17,7 @@ import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.utils.ProductCreator
 import com.example.projectar.di.Injector
-import com.example.projectar.ui.functional.ar.ArViewManager
+import com.example.projectar.ui.functional.ar.intf.ArViewManager
 import com.example.projectar.ui.functional.viewmodel.ProductViewModelImpl
 
 object TestComposable {

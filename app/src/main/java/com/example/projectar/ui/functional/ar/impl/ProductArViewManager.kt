@@ -1,4 +1,4 @@
-package com.example.projectar.ui.functional.ar
+package com.example.projectar.ui.functional.ar.impl
 
 import android.util.Log
 import android.widget.Button
@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.projectar.R
 import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.ui.functional.ar.intf.ArViewManager
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.utils.StringUtils
 import com.google.ar.core.HitResult
@@ -41,7 +42,8 @@ typealias ModelBuilderFunc =
 class ProductArViewManager(
     private val vm: ProductViewModel,
     private val _fragment: WeakReference<ArFragment>,
-    private val buildModelFunc: ModelBuilderFunc
+    private val buildModelFunc: ModelBuilderFunc,
+    private val nodeBundler: ProductNodeBundler,
 ) // Using ProductIds (Long) to figure out which models are targeted.
     : ArViewManager<Long> {
     override val modelSelected: MutableLiveData<Long?> = MutableLiveData(null)
@@ -61,18 +63,47 @@ class ProductArViewManager(
     private var guideShown = false
 
     // (ProductId - List<Node>) Nodes added to the scene mapped to corresponding product IDs
-    private val nodeMap = mutableMapOf<Long, MutableList<Node>>()
+    private val nodeMap: MutableMap<Long, MutableList<Node>>
 
     init {
-        // Add currently selected model to scene on tap
-        fragment.setOnTapArPlaneListener { hitResult, _, _ ->
-            scope.launch {
-                val m = selectedModel
-                if (m != null) {
-                    addModelToScene(hitResult, m)
+        // Get saved nodes if they exist
+        val savedNodes = nodeBundler.loadSavedNodes()
+        nodeMap = when (savedNodes) {
+            null -> mutableMapOf()
+            else -> savedNodes.data.mapValues {
+                it.value.toMutableList()
+            }.toMutableMap()
+        }
+
+        if (nodeMap.isEmpty()) {
+            // Add currently selected model to scene on tap
+            fragment.setOnTapArPlaneListener { hitResult, _, _ ->
+                scope.launch {
+                    val m = selectedModel
+                    if (m != null) {
+                        addModelToScene(hitResult, m)
+                    }
                 }
             }
         }
+
+        // Add currently selected model to scene on tap
+        fragment.setOnTapArPlaneListener { hitResult, _, _ ->
+            scope.launch {
+                val anchor = hitResult.createAnchor()
+                val anchorNode = AnchorNode(anchor).apply {
+                    setParent(fragment.arSceneView.scene)
+                }
+
+                nodeMap.values.forEach {
+                    it.forEach { node ->
+                        node.setParent(anchorNode)
+                    }
+                }
+            }
+        }
+
+
     }
 
     // -------------------------------- Public --------------------------------
@@ -309,6 +340,10 @@ class ProductArViewManager(
                 removeModelNode(product.data.id, modelNode)
             }
         }
+    }
+
+    override fun saveBundle() {
+        nodeBundler.saveNodePositions(nodeMap)
     }
 }
 
