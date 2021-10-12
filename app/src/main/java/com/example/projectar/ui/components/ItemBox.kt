@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,7 +19,6 @@ import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.theme.DarkGrey
 import com.example.projectar.ui.theme.Shapes
 import com.example.projectar.ui.utils.StringUtils
-import com.google.android.filament.utils.length
 
 @Composable
 fun ItemBox(product: Product, width: Float = 1.0f, navigate: (productId: Long) -> Unit) {
