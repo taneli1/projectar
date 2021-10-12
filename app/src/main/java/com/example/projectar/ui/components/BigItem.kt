@@ -80,25 +80,5 @@ fun BigItem(product: Product, viewModel: ProductViewModel, navigate: (productId:
                     .padding(5.dp)
             )
         }
-
-        product.image?.let { viewModel.getImage(it).asImageBitmap() }?.let {
-            Image(
-                bitmap = it,
-                contentDescription = "picture",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(225.dp)
-            )
-        }
-        Text(
-            text = product.data.description.toString(),
-            color = Color.White,
-            modifier = Modifier
-                .background(color = Background)
-                .fillMaxWidth()
-                .padding(5.dp)
-        )
-
     }
 }
