@@ -1,7 +1,7 @@
 package com.example.projectar.data.utils
 
 import android.content.Context
-import com.example.projectar.data.appdata.tags.ProductTags
+import com.example.projectar.data.appdata.tags.ProductTag
 import kotlin.random.Random
 
 /**
@@ -14,12 +14,12 @@ object TagUtils {
      */
     fun getRandomTagValue(): Long {
         return Random.nextLong(
-            ProductTags.values().size.toLong()
+            ProductTag.values().size.toLong()
         )
     }
 
-    fun getAllTags(): List<ProductTags> {
-        return ProductTags.values()
+    fun getAllTags(): List<ProductTag> {
+        return ProductTag.values()
             .toList()
     }
 
@@ -31,7 +31,7 @@ object TagUtils {
         context: Context
     ): String {
         // Check all the defined tags, return a string if matched
-        for (tag in ProductTags.values()) {
+        for (tag in ProductTag.values()) {
             if (tag.id() == tagId) {
                 return context.getString(tag.resourceStringId())
             }

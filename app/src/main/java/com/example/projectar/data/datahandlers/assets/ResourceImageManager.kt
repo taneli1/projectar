@@ -6,8 +6,6 @@ import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import com.example.projectar.data.room.entity.file.ImageInfo
-import java.lang.Error
-import java.lang.Exception
 import java.lang.ref.WeakReference
 
 /**
@@ -22,7 +20,7 @@ class ResourceImageManager(
         const val RESOURCES_DRAWABLE = "drawable"
     }
 
-    override fun getAsset(info: ImageInfo): Bitmap {
+    override suspend fun getAsset(info: ImageInfo): Bitmap {
         try {
             context.get()
                 ?.let {
@@ -40,7 +38,7 @@ class ResourceImageManager(
         } catch (e: Exception) {
             Log.d(
                 TAG,
-                "getAsset: Error getting image from resources $e"
+                " getAsset: Error getting image from resources $e"
             )
         }
 

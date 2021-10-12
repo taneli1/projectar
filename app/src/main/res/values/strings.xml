@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">projectar</string>
+    <string name="AddToCart">Add to cart and augmented reality</string>
+    <string name="AddToAr">Add to augmented reality</string>
+    <string name="profile">Profile</string>
+    <string name="cart">Cart</string>
+    <string name="rooms">Rooms</string>
+    <string name="icon_arrow_forward">Arrow forward</string>
+    <string name="header_items">Cart products</string>
+    <string name="content_desc_placeholder">placeholder</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_ar">Ar</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_cart">Cart</string>
+    <string name="nav_rooms">Rooms</string>
+    <string name="nav_single">Product</string>
+    <string name="pics">Picks for you</string>
+    <string name="cart_items">Items in cart (%s)</string>
+    <string name="place_order">Place order</string>
+    <string name="order_success">Order was successfully placed!</string>
+    <string name="ar_empty_cart">Products added to cart will be listed here</string>
+    <string name="search_placeholder">Search products…</string>
+    <string name="categories">Categories</string>
+    <string name="addedToCart">Added to cart</string>
+    <string name="string_x">x%s</string>
+    <string name="items_in_order">Products:</string>
+    <string name="btn_delete">delete</string>
+    <string name="ar_view_guide">Select a product by tapping its image</string>
 </resources>

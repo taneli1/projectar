@@ -2,57 +2,72 @@ package com.example.projectar.data.datahandlers.cart
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.projectar.data.datahandlers.order.handler.OrderHandler
+import androidx.lifecycle.switchMap
 
 class CartImpl(
-    private val selections: MutableLiveData<MutableMap<Long, Int>> = MutableLiveData(mutableMapOf()),
+    private var _selections: Map<Long, Int> = mutableMapOf(),
+    private val selections: MutableLiveData<Map<Long, Int>> = MutableLiveData(_selections),
 ) : Cart {
 
     override fun addItem(productId: Long): Int {
-        when (val current = selections[productId]) {
-            null -> selections[productId] = 1
-            else -> selections[productId] = (current + 1)
-        }
+        val copy = _selections.toMutableMap()
 
-        return selections[productId]!!
+        when (val current = copy[productId]) {
+            null -> copy[productId] = 1
+            else -> copy[productId] = (current + 1)
+        }
+        updateMaps(copy)
+        return copy[productId]!!
     }
 
     override fun removeItem(productId: Long): Int {
-        when (val current = selections[productId]) {
+        val copy = _selections.toMutableMap()
+
+        when (val current = copy[productId]) {
             null -> return 0
             0 -> return 0
-            else -> selections[productId] = current - 1
+            else -> copy[productId] = current - 1
         }
 
-        return selections[productId]!!
+        updateMaps(copy)
+        return copy[productId]!!
     }
 
-    override fun getProductAmount(productId: Long): LiveData<Int> {
-        return MutableLiveData(selections[productId] ?: 0)
+    override fun getProductAmount(productId: Long): Int {
+        return _selections[productId] ?: -1
     }
 
     override fun getCartTotal(): LiveData<Int> {
-        return MutableLiveData(selections.value?.values?.reduceOrNull { prev, next -> prev + next }
-            ?: 0)
+        return selections.switchMap {
+            return@switchMap MutableLiveData(it.values.reduceOrNull { acc, i -> acc + i } ?: 0)
+        }
     }
 
-    override fun getAll(): Map<Long, Int> {
-        return selections.value ?: mutableMapOf()
+    override fun getAll(): LiveData<Map<Long, Int>> = selections
+
+    override fun removeUnselected() {
+        val copy = _selections.toMutableMap()
+
+        _selections.forEach {
+            if (it.value == 0) {
+                copy.remove(it.key)
+            }
+        }
+
+        updateMaps(copy)
+    }
+
+    override fun clear() {
+        updateMaps(mapOf())
     }
 
     // ----- Methods to make livedata map accessing more readable above --------
     // ----- Methods to make livedata map accessing more readable above --------
     // ----- Methods to make livedata map accessing more readable above --------
 
-    private operator fun <T : MutableMap<Long, Int>> MutableLiveData<T>.set(
-        productId: Long,
-        value: Int
-    ) {
-        this.value?.set(productId, value)
-    }
-
-    private operator fun <T : Map<Long, Int>> MutableLiveData<T>.get(productId: Long): Int? {
-        return this.value?.get(productId)
+    private fun updateMaps(newMap: Map<Long, Int>) {
+        _selections = newMap
+        selections.postValue(newMap)
     }
 }
 

@@ -20,14 +20,14 @@ object FakeProductList {
     private val fakeModelInfo = ModelInfo(
         0,
         0,
-        "none"
+        "box/box.gltf"
     )
 
     private fun productData(number: Int) = ProductData(
         0,
-        "Product $number",
+        "Product $number Product $number Product $number Product $number",
         (Math.random() * 500).toFloat(),
-        "Description for product $number"
+        "Description for product $number Description for product $number Description for product $number Description for product $number Description for product $number"
     )
 
     val data: List<Product> = List(20) {
