@@ -37,35 +37,34 @@ fun MainList(
     val selectedItems: MutableList<ProductTag> = remember {
         viewModel.getFilter().tags.toMutableList()
     }
-
     val products: List<Product> by viewModel.products.observeAsState(listOf())
 
-    val orderingOptions = mutableMapOf<String, SortBy>()
-    orderingOptions["Default"] = SortBy.DEFAULT
-    orderingOptions["Price Ascending"] = SortBy.PRICE_ASC
-    orderingOptions["Price Descending"] = SortBy.PRICE_DESC
-    orderingOptions["Alphabetical Ascending"] = SortBy.ALPHABETICAL_ASC
-    orderingOptions["Alphabetical Descending"] = SortBy.ALPHABETICAL_DESC
-    val selectedSorting = remember { mutableStateOf(orderingOptions["Price Ascending"]) }
 
-    val textState = remember { mutableStateOf(TextFieldValue("")) }
+    val orderingOptions = mutableMapOf<SortBy, String>()
+    orderingOptions[SortBy.DEFAULT] = "Default"
+    orderingOptions[SortBy.PRICE_ASC] = "Price Ascending"
+    orderingOptions[SortBy.PRICE_DESC] = "Price Descending"
+    orderingOptions[SortBy.ALPHABETICAL_ASC] = "Alphabetical Ascending"
+    orderingOptions[SortBy.ALPHABETICAL_DESC] = "Alphabetical Descending"
+    val selectedSorting = remember { mutableStateOf(viewModel.getFilter().sortBy) }
+
+
+    val searchTerm = viewModel.getFilter().searchTerm
+    val textState = remember { mutableStateOf(TextFieldValue(searchTerm)) }
     fun applyFilter(textState: String, tags: MutableList<ProductTag>, sortBy: SortBy) {
         viewModel.applyFilter(ProductFilter(textState, tags, sortBy))
     }
-
     @Composable
     fun Header() {
         Text(text = "Current count: ${products.count()}")
         SearchView(
             state = textState,
             filter = {
-                selectedSorting.value?.let { it1 ->
-                    applyFilter(
-                        textState.value.text,
-                        selectedItems,
-                        it1
-                    )
-                }
+                applyFilter(
+                    textState.value.text,
+                    selectedItems,
+                    selectedSorting.value
+                )
             })
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -77,22 +76,18 @@ fun MainList(
                 items,
                 selectedItems,
                 filters = {
-                    selectedSorting.value?.let { it1 ->
-                        applyFilter(
-                            textState.value.text,
-                            selectedItems,
-                            it1
-                        )
-                    }
-                })
-            OrderingDropdown(orderingOptions, selectedSorting) {
-                selectedSorting.value?.let { it1 ->
                     applyFilter(
                         textState.value.text,
                         selectedItems,
-                        it1
+                        selectedSorting.value
                     )
-                }
+                })
+            OrderingDropdown(orderingOptions, selectedSorting) {
+                applyFilter(
+                    textState.value.text,
+                    selectedItems,
+                    selectedSorting.value
+                )
             }
         }
     }
@@ -109,10 +104,10 @@ fun MainList(
             when (even) {
                 true -> {
                     if (isLastProduct) {
-                        ProductRowWrapper(products = listOf(products[index]), navigate = navigate)
+                        ProductRowWrapper(products = listOf(products[index]), navigate = navigate, viewModel)
                     } else {
                         val pair = listOf(products[index], products[index + 1])
-                        ProductRowWrapper(products = pair, navigate = navigate)
+                        ProductRowWrapper(products = pair, navigate = navigate, viewModel)
                     }
                 }
             }
@@ -127,7 +122,7 @@ fun MainList(
 private fun ProductRowWrapper(
     products: List<Product>,
     navigate: (productId: Long) -> Unit,
-    addExtra: Int = 0
+    viewModel: ProductViewModel
 ) {
     Row(Modifier.fillMaxWidth()) {
         products.forEachIndexed { index, product ->
@@ -135,7 +130,7 @@ private fun ProductRowWrapper(
             val percentage = (100f / (products.size - index)) / 100f
             Surface(Modifier.fillMaxWidth(percentage)) {
 
-                ItemBox(product, navigate = navigate)
+                ItemBox(product, navigate = navigate, viewModel = viewModel)
             }
         }
     }

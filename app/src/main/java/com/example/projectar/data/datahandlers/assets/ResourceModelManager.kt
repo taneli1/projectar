@@ -13,20 +13,20 @@ import java.lang.ref.WeakReference
 class ResourceModelManager(
     private val context: WeakReference<Context>
 ) : ModelAssetManager {
-
-    override suspend fun getAsset(info: ModelInfo): ModelBuilder? {
+    override fun getAsset(info: ModelInfo): ModelBuilder? {
         var builder: ModelBuilder? = null
 
         try {
-            builder = context.get()?.let { context ->
-                return ModelRenderable.builder()
-                    .setSource(
-                        context,
-                        Uri.parse(info.filename)
-                    )
-                    .setIsFilamentGltf(true)
-                    .setAsyncLoadEnabled(true)
-            }
+            builder =
+                context.get()?.let { context ->
+                    return ModelRenderable.builder()
+                        .setSource(
+                            context,
+                            Uri.parse(info.filename)
+                        )
+                        .setIsFilamentGltf(true)
+                        .setAsyncLoadEnabled(true)
+                }
 
         } catch (e: Exception) {
             Log.e("DEBUG", "getAsset: ", e)

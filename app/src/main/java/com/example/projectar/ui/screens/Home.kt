@@ -19,7 +19,7 @@ import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.components.BigItem
 import com.example.projectar.ui.components.ItemBox
-import com.example.projectar.ui.components.product.ItemBoxForScroll
+import com.example.projectar.ui.components.ItemBoxForScroll
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -48,7 +48,8 @@ fun Home(
                         ItemBox(
                             product = it,
                             width = 0.5f,
-                            navigate = navigate
+                            navigate = navigate,
+                            viewModel
                         )
                     }
 
@@ -57,6 +58,7 @@ fun Home(
                             product = it,
                             width = 1.0f,
                             navigate = navigate,
+                            viewModel
                         )
                     }
                 }
@@ -66,6 +68,7 @@ fun Home(
                             product = it,
                             width = 0.5f,
                             navigate = navigate,
+                            viewModel
                         )
                     }
 
@@ -74,11 +77,13 @@ fun Home(
                             product = it,
                             width = 1.0f,
                             navigate = navigate,
+                            viewModel
                         )
                     }
                 }
             }
             item {
+
                 Spacer(modifier = Modifier.size(16.dp))
                 BigItem(randomizedList[0], navigate = navigate)
                 Spacer(modifier = Modifier.size(16.dp))
@@ -98,7 +103,7 @@ fun Home(
                     )
                 ) {
                     for (item in filteredProducts) {
-                        ItemBoxForScroll(product = item, navigate = navigate)
+                        ItemBoxForScroll(product = item, viewModel, navigate = navigate)
                     }
                 }
             }
@@ -117,7 +122,7 @@ fun Home(
                     )
                 ) {
                     for (item in filteredProducts1) {
-                        ItemBoxForScroll(product = item, navigate = navigate)
+                        ItemBoxForScroll(product = item, viewModel, navigate = navigate)
                     }
                 }
             }

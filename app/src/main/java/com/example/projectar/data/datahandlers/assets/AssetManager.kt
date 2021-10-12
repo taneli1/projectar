@@ -15,7 +15,7 @@ import com.google.ar.sceneform.rendering.ModelRenderable
  * @see FileInfo
  */
 interface AssetManager<T : FileInfo, U> {
-    suspend fun getAsset(info: T): U?
+    fun getAsset(info: T): U?
 }
 
 /**

@@ -1,4 +1,4 @@
-package com.example.projectar.ui.components.product
+package com.example.projectar.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -18,12 +19,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.theme.DarkGrey
 import com.example.projectar.ui.theme.Shapes
 import com.example.projectar.ui.utils.StringUtils
 
 @Composable
-fun ItemBoxForScroll(product: Product, navigate: (productId: Long) -> Unit) {
+fun ItemBoxForScroll(product: Product, viewModel: ProductViewModel, navigate: (productId: Long) -> Unit) {
     Column(
         Modifier
             .focusable(enabled = true)
@@ -32,14 +34,16 @@ fun ItemBoxForScroll(product: Product, navigate: (productId: Long) -> Unit) {
             .clip(Shapes.medium)
             .selectable(selected = true, onClick = { navigate(product.data.id) }),
     ) {
-        Image(
-            painter = painterResource(R.drawable.blenny),
-            contentDescription = "picture",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(150.dp)
-        )
+        product.image?.let { viewModel.getImage(it) }?.let {
+            Image(
+                bitmap = it.asImageBitmap(),
+                contentDescription = "picture",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
