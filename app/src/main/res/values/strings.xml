@@ -32,4 +32,10 @@
     <string name="string">%s</string>
     <string name="ar_click_guide">Click on a plane to place %s</string>
     <string name="ar_add_guide">Open the list to add products to view</string>
+    <string name="cat_bed">Beds</string>
+    <string name="cat_chair">Chairs</string>
+    <string name="cat_table">Tables</string>
+    <string name="cat_lamp">Lamps</string>
+    <string name="cat_sofa">Sofas</string>
+    <string name="cat_surface">Surfaces</string>
 </resources>

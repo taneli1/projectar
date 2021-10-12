@@ -1,5 +1,8 @@
 package com.example.projectar.data.appdata.tags
 
+import androidx.annotation.StringRes
+import com.example.projectar.R
+
 private const val TAG_ID_BED = 0L
 private const val TAG_ID_CHAIR = 1L
 private const val TAG_ID_TABLE = 2L
@@ -17,27 +20,39 @@ enum class ProductTag {
 
     BED {
         override fun id(): Long = TAG_ID_BED
-        override fun resourceStringId(): Int = 0
+
+        @StringRes
+        override fun resourceStringId(): Int = R.string.cat_bed
     },
     CHAIR {
         override fun id(): Long = TAG_ID_CHAIR
-        override fun resourceStringId(): Int = 0
+
+        @StringRes
+        override fun resourceStringId(): Int = R.string.cat_chair
     },
     TABLE {
         override fun id(): Long = TAG_ID_TABLE
-        override fun resourceStringId(): Int = 0
+
+        @StringRes
+        override fun resourceStringId(): Int = R.string.cat_table
     },
     LAMP {
         override fun id(): Long = TAG_ID_LAMP
-        override fun resourceStringId(): Int = 0
+
+        @StringRes
+        override fun resourceStringId(): Int = R.string.cat_lamp
     },
     SOFA {
         override fun id(): Long = TAG_ID_SOFA
-        override fun resourceStringId(): Int = 0
+
+        @StringRes
+        override fun resourceStringId(): Int = R.string.cat_sofa
     },
     SURFACE {
         override fun id(): Long = TAG_ID_SURFACE
-        override fun resourceStringId(): Int = 0
+
+        @StringRes
+        override fun resourceStringId(): Int = R.string.cat_surface
     };
 
     abstract fun id(): Long
