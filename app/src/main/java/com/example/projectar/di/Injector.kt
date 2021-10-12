@@ -12,7 +12,7 @@ import com.example.projectar.data.repository.ProductRepositoryImpl
 import com.example.projectar.data.repository.interfaces.ProductRepository
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.ui.functional.ar.ArViewManager
-import com.example.projectar.ui.functional.ar.ArViewManagerImpl
+import com.example.projectar.ui.functional.ar.ProductArViewManager
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.functional.viewmodel.ProductViewModelImpl
 import com.google.ar.sceneform.rendering.ModelRenderable
@@ -26,8 +26,8 @@ object Injector {
         viewModel: ProductViewModel,
         arFragment: ArFragment,
         builder: (modelBuilder: ModelBuilder, function: (model: ModelRenderable) -> Unit) -> Unit
-    ): ArViewManager {
-        return ArViewManagerImpl(viewModel, WeakReference(arFragment), builder)
+    ): ArViewManager<Long> {
+        return ProductArViewManager(viewModel, WeakReference(arFragment), builder)
     }
 
     /**
