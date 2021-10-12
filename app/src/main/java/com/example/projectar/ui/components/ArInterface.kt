@@ -1,5 +1,6 @@
 package com.example.projectar.ui.components
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
@@ -7,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -25,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
@@ -35,10 +38,7 @@ import com.example.projectar.ui.components.common.HeaderWithPadding
 import com.example.projectar.ui.components.common.IconButton
 import com.example.projectar.ui.functional.ar.ArViewManager
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
-import com.example.projectar.ui.theme.DarkGrey
-import com.example.projectar.ui.theme.ELEVATION_MD
-import com.example.projectar.ui.theme.MARGIN_MD
-import com.example.projectar.ui.theme.Shapes
+import com.example.projectar.ui.theme.*
 
 
 /**
@@ -48,17 +48,23 @@ import com.example.projectar.ui.theme.Shapes
 @Composable
 fun ArInterface(
     viewModel: ProductViewModel,
-    arViewManager: ArViewManager
+    arViewManager: ArViewManager<Long>
 ) {
-    // State of Expanding shelf
+    // Initial guide shown
+    val guideShown = remember {
+        mutableStateOf(false)
+    }
+
+    // State of Expanding shelf which lists the products
     val expanded = remember {
         mutableStateOf(false)
     }
 
-    val marginLeft: Dp by animateDpAsState(
+    val stateMargin: Dp by animateDpAsState(
         if (expanded.value) 0.dp else MARGIN_MD
     )
 
+    // Get the product data for the selected productIds, since cart does not contain the product data itself.
     val products: List<Product> by viewModel.useCart().getAll().switchMap {
         val list = mutableListOf<Product>()
         it.forEach { entry ->
@@ -70,15 +76,22 @@ fun ArInterface(
         return@switchMap MutableLiveData(list)
     }.observeAsState(listOf())
 
-    // Has the user selected a product, which is to be added to the scene
+    // Product title of the user selected product, which is to be added to the scene
     val selectedModelProductName: String? by arViewManager.modelSelected.switchMap {
         val p = viewModel.products.value?.find { product -> product.data.id == it }
+        // When the user has selected a product, guide no longer needs to be shown
+        if (p != null) {
+            guideShown.value = true
+        }
         return@switchMap MutableLiveData(p?.data?.title)
     }.observeAsState()
 
+    // Counts of rendered product models
+    val modelCounts: Map<Long, Int> by arViewManager.renderedModels.observeAsState(mapOf())
+
     Row(
         modifier = Modifier
-            .padding(horizontal = marginLeft, vertical = MARGIN_MD)
+            .padding(horizontal = stateMargin, vertical = MARGIN_MD)
             .fillMaxHeight(),
     ) {
         AnimateHorizontal(
@@ -100,32 +113,32 @@ fun ArInterface(
                             HeaderWithPadding(text = stringResource(id = R.string.header_items))
                         }
 
+
                         if (products.isEmpty()) {
                             item {
-                                Text(
-                                    text = stringResource(id = R.string.ar_empty_cart),
-                                    color = Color.White,
-                                    modifier = Modifier.padding(
-                                        vertical = 20.dp,
-                                        horizontal = 40.dp
-                                    ),
-                                    textAlign = TextAlign.Center
-                                )
+                                ListEmptyComponent()
                             }
                         } else {
+                            // Guide text
                             item {
                                 Text(
-                                    modifier = Modifier.padding(top = 16.dp),
+                                    modifier = Modifier.padding(vertical = 16.dp),
                                     color = Color.Gray,
                                     text = stringResource(id = R.string.ar_view_guide)
                                 )
                             }
-                            // List of items in the shelf
+                            // List of the items which can be added to the scene
                             items(products) { product ->
-                                ProductArComponent(product) { id ->
-                                    arViewManager.setModelSelected(id)
-                                    expanded.value = !expanded.value
-                                }
+                                ProductArComponent(
+                                    product,
+                                    amountRendered = modelCounts.getOrDefault(product.data.id, 0),
+                                    removeRenderedModel = arViewManager::removeModel,
+                                    onItemClick = { id ->
+                                        Log.d("DEBUG", "ArInterface:$id ")
+                                        arViewManager.setModelSelected(id)
+                                        expanded.value = !expanded.value
+                                    }
+                                )
                             }
                             item {
                                 Spacer(modifier = Modifier.size(40.dp))
@@ -147,7 +160,23 @@ fun ArInterface(
                 drawableRes = if (expanded.value) R.drawable.ic_baseline_arrow_back_32 else R.drawable.ic_baseline_arrow_forward_24
             )
 
-            // Small guide when model is selected
+            // Initial guide
+            if (!guideShown.value && !expanded.value) {
+                Surface(
+                    color = DarkGrey,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .clip(Shapes.medium)
+                ) {
+                    Text(
+                        color = Color.White,
+                        text = stringResource(id = R.string.ar_add_guide),
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
+            }
+
+            // Guide text when model is selected
             if (selectedModelProductName != null && !expanded.value) {
                 Surface(
                     color = DarkGrey,
@@ -157,7 +186,10 @@ fun ArInterface(
                 ) {
                     Text(
                         color = Color.White,
-                        text = "Click on a plane to place ${selectedModelProductName.toString()}",
+                        text = stringResource(
+                            id = R.string.ar_click_guide,
+                            selectedModelProductName.toString()
+                        ),
                         modifier = Modifier.padding(8.dp)
                     )
                 }
@@ -171,6 +203,8 @@ fun ArInterface(
 fun ProductArComponent(
     product: Product,
     onItemClick: (productId: Long) -> Unit,
+    amountRendered: Int,
+    removeRenderedModel: (productId: Long) -> Unit
 ) {
     Row(
         Modifier
@@ -178,14 +212,24 @@ fun ProductArComponent(
             .offset(y = 20.dp)
             .zIndex(1f), horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        IconButton(
-            onClick = { /*TODO*/ },
-            drawableRes = R.drawable.ic_baseline_delete_outline_24,
-        )
-        IconButton(
-            onClick = { /*TODO*/ },
-            drawableRes = R.drawable.ic_baseline_shopping_cart_24,
-        )
+        if (amountRendered != 0) {
+            IconButton(
+                onClick = { removeRenderedModel(product.data.id) },
+                drawableRes = R.drawable.ic_baseline_clear_24,
+            )
+
+            Surface(color = Orange, shape = CircleShape, modifier = Modifier.size(48.dp)) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .padding(top = 8.dp),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    Text(text = amountRendered.toString(), color = Color.White, fontSize = 20.sp)
+                }
+            }
+        }
     }
 
     Surface(
@@ -206,3 +250,16 @@ fun ProductArComponent(
 
 }
 
+
+@Composable
+private fun ListEmptyComponent() {
+    Text(
+        text = stringResource(id = R.string.ar_empty_cart),
+        color = Color.White,
+        modifier = Modifier.padding(
+            vertical = 20.dp,
+            horizontal = 40.dp
+        ),
+        textAlign = TextAlign.Center
+    )
+}

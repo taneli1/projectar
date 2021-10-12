@@ -38,6 +38,7 @@ interface ProductViewModel {
     /** Get the Bitmap for the product */
     fun getImage(imageInfo: ImageInfo): Bitmap
 
+
     /** Get the 3d-Model for the product */
     fun getModel(modelInfo: ModelInfo): ModelBuilder
 

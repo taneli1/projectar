@@ -26,7 +26,6 @@ class ArViewFragment : ArFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         // Fix to back button errors
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             findNavController().navigate(R.id.action_fragment_ar_view_to_fragment_compose)

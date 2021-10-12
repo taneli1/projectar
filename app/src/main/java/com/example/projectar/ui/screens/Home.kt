@@ -4,7 +4,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -81,13 +83,16 @@ fun Home(
                 }
             }
             item {
-                BigItem(randomizedList[0], viewModel, navigate = navigate)
+
+                Spacer(modifier = Modifier.size(16.dp))
+                BigItem(randomizedList[0], navigate = navigate)
+                Spacer(modifier = Modifier.size(16.dp))
             }
             item() {
                 Text(
-                    modifier = Modifier.padding(5.dp),
+                    modifier = Modifier.padding(vertical = 5.dp, horizontal = 12.dp),
                     fontSize = 20.sp,
-                    text = "$tag"
+                    text = stringResource(id = tag.resourceStringId())
                 )
                 Row(
                     Modifier.horizontalScroll(
@@ -106,7 +111,7 @@ fun Home(
                 Text(
                     modifier = Modifier.padding(5.dp),
                     fontSize = 20.sp,
-                    text = "$tag1"
+                    text = stringResource(id = tag1.resourceStringId())
                 )
                 Row(
                     Modifier.horizontalScroll(

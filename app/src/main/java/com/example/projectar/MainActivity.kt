@@ -7,16 +7,15 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import com.example.projectar.data.datahandlers.assets.ARTAG
 import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.room.db.ApplicationDatabase
-import com.example.projectar.data.room.utils.ProductCreator
 import com.example.projectar.databinding.ActivityMainBinding
 import com.example.projectar.di.Injector
 import com.example.projectar.ui.fragment.ArViewFragment
@@ -72,6 +71,7 @@ class MainActivity : AppCompatActivity(), ArViewUiProvider {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         NotificationBuilder.createNotificationChannel(this)
 
@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity(), ArViewUiProvider {
             modelBuilder.build().thenAccept {
                 function(it)
             }.exceptionally { throwable ->
-                Log.d(ARTAG, "buildModel: ${throwable.stackTraceToString()}")
+                Log.d("DEBUG", "buildModel: ${throwable.stackTraceToString()}")
                 null
             }
         }

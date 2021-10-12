@@ -61,5 +61,8 @@ class ComposeFragment : Fragment() {
         val viewModel: ProductViewModelImpl = viewModel(requireActivity())
         val navController = rememberNavController()
         NavUtils.CreateNavigator(navController, viewModel, navFunction)
+//        TestComposable.DbButtons(
+//            db = db
+//        )
     }
 }

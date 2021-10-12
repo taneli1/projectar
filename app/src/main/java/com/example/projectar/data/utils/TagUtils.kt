@@ -37,8 +37,7 @@ object TagUtils {
             }
         }
 
-        // If this value is returned, database has an error in it.
+        // If this value is returned, database prob has an error in it with tags.
         return "Tag error in database"
     }
-
 }
