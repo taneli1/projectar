@@ -1,5 +1,6 @@
 package com.example.projectar.ui.screens
 
+import android.content.res.Resources
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.*
@@ -16,25 +17,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
 import androidx.navigation.NavController
 import com.example.projectar.R
 import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.theme.DarkGrey
 import com.example.projectar.ui.theme.Orange
 import com.example.projectar.ui.theme.Shapes
 import com.example.projectar.ui.utils.StringUtils
 
 @Composable
-fun SingleProduct(product: Product, navController: NavController, trueCart: Cart) {
+fun SingleProduct(
+    product: Product, viewModel: ProductViewModel,
+    navController: NavController, trueCart: Cart
+) {
     fun checkItemCartStatus(): Int {
         val isInCart = trueCart.getProductAmount(product.data.id)
         Log.d("Amount", "amount of products: $isInCart")
@@ -55,14 +62,16 @@ fun SingleProduct(product: Product, navController: NavController, trueCart: Cart
             .shadow(10.dp)
             .clip(Shapes.medium)
     ) {
-        Image(
-            painter = painterResource(R.drawable.blenny),
-            contentDescription = "picture",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.5f)
-        )
+        product.image?.let { viewModel.getImage(it) }?.let {
+            Image(
+                bitmap = it.asImageBitmap(),
+                contentDescription = "picture",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.5f)
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -116,7 +125,11 @@ fun SingleProduct(product: Product, navController: NavController, trueCart: Cart
                         .padding(10.dp),
                     onClick = {
                         trueCart.removeItem(product.data.id)
-                        Toast.makeText(navController.context, "Removed from cart", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            navController.context,
+                            "Removed from cart",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     }, colors = ButtonDefaults.textButtonColors(
                         backgroundColor = Orange,
@@ -134,7 +147,11 @@ fun SingleProduct(product: Product, navController: NavController, trueCart: Cart
                         .padding(10.dp),
                     onClick = {
                         trueCart.addItem(product.data.id)
-                        Toast.makeText(navController.context, R.string.addedToCart, Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            navController.context,
+                            R.string.addedToCart,
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     }, colors = ButtonDefaults.textButtonColors(
                         backgroundColor = Orange,

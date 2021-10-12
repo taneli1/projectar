@@ -20,7 +20,7 @@ class ResourceImageManager(
         const val RESOURCES_DRAWABLE = "drawable"
     }
 
-    override suspend fun getAsset(info: ImageInfo): Bitmap {
+    override fun getAsset(info: ImageInfo): Bitmap {
         try {
             context.get()
                 ?.let {

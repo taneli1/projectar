@@ -137,7 +137,7 @@ object NavUtils {
                     // Get selected item id from navArguments and provide the data for the screen
                     backStackEntry.arguments?.getLong(NAV_SINGLE_SCREEN_PARAM)?.let { id ->
                         productList.find { it.data.id == id }?.let { product ->
-                            SingleProduct(product, navController, viewModel.useCart())
+                            SingleProduct(product, viewModel, navController, viewModel.useCart())
                         }
                     }
                 }

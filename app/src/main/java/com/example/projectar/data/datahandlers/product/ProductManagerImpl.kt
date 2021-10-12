@@ -47,10 +47,10 @@ class ProductManagerImpl(
     override fun getAllTags() = productRepository.getAllTags()
 
     // Product assets
-    override suspend fun getProductImage(imageInfo: ImageInfo): Bitmap? =
+    override fun getProductImage(imageInfo: ImageInfo): Bitmap? =
         imageManager.getAsset(imageInfo)
 
-    override suspend fun getProductModel(modelInfo: ModelInfo): ModelBuilder? =
+    override fun getProductModel(modelInfo: ModelInfo): ModelBuilder? =
         modelManager.getAsset(modelInfo)
 
     // Orders

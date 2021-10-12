@@ -104,10 +104,10 @@ fun MainList(
             when (even) {
                 true -> {
                     if (isLastProduct) {
-                        ProductRowWrapper(products = listOf(products[index]), navigate = navigate)
+                        ProductRowWrapper(products = listOf(products[index]), navigate = navigate, viewModel)
                     } else {
                         val pair = listOf(products[index], products[index + 1])
-                        ProductRowWrapper(products = pair, navigate = navigate)
+                        ProductRowWrapper(products = pair, navigate = navigate, viewModel)
                     }
                 }
             }
@@ -122,7 +122,7 @@ fun MainList(
 private fun ProductRowWrapper(
     products: List<Product>,
     navigate: (productId: Long) -> Unit,
-    addExtra: Int = 0
+    viewModel: ProductViewModel
 ) {
     Row(Modifier.fillMaxWidth()) {
         products.forEachIndexed { index, product ->
@@ -130,7 +130,7 @@ private fun ProductRowWrapper(
             val percentage = (100f / (products.size - index)) / 100f
             Surface(Modifier.fillMaxWidth(percentage)) {
 
-                ItemBox(product, navigate = navigate)
+                ItemBox(product, navigate = navigate, viewModel = viewModel)
             }
         }
     }

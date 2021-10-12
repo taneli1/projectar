@@ -36,10 +36,10 @@ interface ProductViewModel {
     fun getProductsWithTags(tags: List<ProductTag>): LiveData<List<Product>>
 
     /** Get the Bitmap for the product */
-    suspend fun getImage(imageInfo: ImageInfo): Bitmap
+    fun getImage(imageInfo: ImageInfo): Bitmap
 
     /** Get the 3d-Model for the product */
-    suspend fun getModel(modelInfo: ModelInfo): ModelBuilder
+    fun getModel(modelInfo: ModelInfo): ModelBuilder
 
 
     // --- Cart + Orders ---

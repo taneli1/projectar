@@ -18,22 +18,13 @@ const val ARTAG = "ARTAG"
 class ResourceModelManager(
     private val context: WeakReference<Context>
 ) : ModelAssetManager {
-    private val job = Job()
-    private val scope = CoroutineScope(job)
-
-
-    companion object {
-        private const val TAG = "ResourceModelManager"
-        const val RESOURCES_RAW = "raw"
-    }
-
-    override suspend fun getAsset(info: ModelInfo): ModelBuilder? {
+    override fun getAsset(info: ModelInfo): ModelBuilder? {
         var builder: ModelBuilder? = null
 
         try {
-            builder = scope.async {
+            builder =
                 context.get()?.let { context ->
-                    return@async ModelRenderable.builder()
+                    return ModelRenderable.builder()
                         .setSource(
                             context,
                             Uri.parse(info.filename)
@@ -41,7 +32,6 @@ class ResourceModelManager(
                         .setIsFilamentGltf(true)
                         .setAsyncLoadEnabled(true)
                 }
-            }.await()
 
         } catch (e: Exception) {
             Log.e(ARTAG, "DEBUGTEST getAsset: ", e)

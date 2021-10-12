@@ -52,11 +52,11 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
         return this.filter.value ?: ProductFilter()
     }
 
-    override suspend fun getImage(imageInfo: ImageInfo): Bitmap {
+    override fun getImage(imageInfo: ImageInfo): Bitmap {
         return productManager.getProductImage(imageInfo)!!
     }
 
-    override suspend fun getModel(modelInfo: ModelInfo): ModelBuilder {
+    override fun getModel(modelInfo: ModelInfo): ModelBuilder {
         return productManager.getProductModel(modelInfo)!!
     }
 

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -18,11 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.theme.*
 import com.example.projectar.ui.utils.StringUtils
 
 @Composable
-fun BigItem(product: Product, navigate: (productId: Long) -> Unit) {
+fun BigItem(product: Product, viewModel: ProductViewModel, navigate: (productId: Long) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -56,14 +58,16 @@ fun BigItem(product: Product, navigate: (productId: Long) -> Unit) {
                 textAlign = TextAlign.Right
             )
         }
-        Image(
-            painter = painterResource(R.drawable.blenny),
-            contentDescription = "picture",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(225.dp)
-        )
+        product.image?.let { viewModel.getImage(it).asImageBitmap() }?.let {
+            Image(
+                bitmap = it,
+                contentDescription = "picture",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(225.dp)
+            )
+        }
         Text(
             text = product.data.description.toString(),
             color = Color.White,
