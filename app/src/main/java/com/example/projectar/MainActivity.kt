@@ -1,9 +1,16 @@
 package com.example.projectar
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.projectar.data.datahandlers.assets.ARTAG
@@ -16,18 +23,57 @@ import com.example.projectar.ui.fragment.ArViewFragment
 import com.example.projectar.ui.fragment.ComposeFragment
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.functional.viewmodel.ProductViewModelImpl
+import com.example.projectar.ui.screens.CHANNEL_ID
 import com.example.projectar.ui.utils.ArViewUiProvider
 import com.example.projectar.ui.utils.ArViewUtils
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
+import kotlinx.coroutines.delay
+import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity(), ArViewUiProvider {
     private val db by lazy { ApplicationDatabase.get(applicationContext) }
     private lateinit var viewModel: ProductViewModel
     private lateinit var binding: ActivityMainBinding
 
+
+    object NotificationBuilder {
+        fun createNotificationChannel(context: Context) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    CHANNEL_ID,
+                    "text",
+                    NotificationManager.IMPORTANCE_DEFAULT
+                ).apply {
+                    description = "Content desc"
+                }
+
+                // Register the channel with the system
+                val notificationManager: NotificationManager =
+                    context.getSystemService(NOTIFICATION_SERVICE) as
+                            NotificationManager
+
+                notificationManager.createNotificationChannel(channel)
+            }
+        }
+
+        fun sendTestNotification(context:Context) {
+            // when you want to send the notification
+            val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.goat)
+                .setContentTitle("Order status")
+                .setContentText("Your order has been received")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .build()
+
+            NotificationManagerCompat.from(context).notify(1, notification)
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        NotificationBuilder.createNotificationChannel(this)
 
         // Init ViewModel here, use in fragments to share Cart data etc..
         viewModel = ViewModelProvider(
