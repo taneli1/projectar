@@ -7,17 +7,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.theme.DarkGrey
@@ -25,12 +22,16 @@ import com.example.projectar.ui.theme.Shapes
 import com.example.projectar.ui.utils.StringUtils
 
 @Composable
-fun ItemBoxForScroll(product: Product, viewModel: ProductViewModel, navigate: (productId: Long) -> Unit) {
+fun ItemBoxForScroll(
+    product: Product,
+    viewModel: ProductViewModel,
+    navigate: (productId: Long) -> Unit
+) {
     Column(
         Modifier
             .focusable(enabled = true)
             .width(200.dp)
-            .padding(10.dp)
+            .padding(8.dp)
             .clip(Shapes.medium)
             .selectable(selected = true, onClick = { navigate(product.data.id) }),
     ) {
@@ -48,7 +49,7 @@ fun ItemBoxForScroll(product: Product, viewModel: ProductViewModel, navigate: (p
             modifier = Modifier
                 .fillMaxWidth()
                 .background(DarkGrey)
-                .padding(5.dp)
+                .padding(8.dp)
         ) {
             Text(
                 text = product.data.title,

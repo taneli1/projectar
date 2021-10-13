@@ -16,6 +16,7 @@ import com.example.projectar.data.room.entity.tag.Tag
 import com.example.projectar.data.room.queryfilters.ProductFilter
 import com.example.projectar.data.room.queryfilters.TagFilter
 import com.example.projectar.data.room.utils.ProductCreator
+import com.example.projectar.data.utils.TagUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -31,6 +32,12 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
     override val products: LiveData<List<Product>> = filter.switchMap {
         productManager.getProducts(it)
     }
+
+    // Generated lists of products + tags used for that list
+    private val generatedProductLists =
+        mutableMapOf<String, Pair<LiveData<List<Product>>, List<ProductTag>>>()
+
+    private var unusedTagList = TagUtils.getAllTags().toMutableList()
 
     // ---------------------- Methods ------------------------
 
@@ -52,6 +59,51 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
         return this.filter.value ?: ProductFilter()
     }
 
+    override fun getRandomListOfProducts(
+        generatedListId: String,
+        length: Int?,
+        useSingleCategory: Boolean
+    ): Pair<LiveData<List<Product>>, List<ProductTag>> {
+        if (generatedProductLists.containsKey(generatedListId)) {
+            val data = generatedProductLists[generatedListId]!!
+            if (data.first.value?.size != 0) {
+                return data
+            }
+        }
+
+        viewModelScope.launch(Dispatchers.Default) {
+            // List for the identifier not yet generated, do now in background, return null
+            val generated = mutableListOf<Product>()
+
+            val tags = if (useSingleCategory)
+                listOf(getRandomTag()) else TagUtils.getAllTags()
+
+            val filter = ProductFilter(
+                tags = tags
+            )
+            Log.d("TAG", "getRandomListOfProducts: $filter")
+            val productPool = productManager.getProductsNotLive(filter).toMutableList().also {
+                it.shuffle()
+            }
+
+            val len = if (length == null || length > productPool.size) {
+                4
+            } else length
+
+            for (i in 0 until len) {
+                generated.add(productPool[i])
+            }
+
+            Log.d("TAG", "Saved tags: $tags")
+            generatedProductLists[generatedListId] = Pair(MutableLiveData(generated), filter.tags)
+            Log.d("TAG", "Getting after: ${generatedProductLists[generatedListId]!!.second}")
+
+        }
+
+        // Return empty data while initializing
+        return Pair(MutableLiveData(listOf()), listOf())
+    }
+
     override fun getImage(imageInfo: ImageInfo): Bitmap {
         return productManager.getProductImage(imageInfo)!!
     }
@@ -70,7 +122,30 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
         productManager.placeOrder()
     }
 
+    // -------------------------- PRIVATE --------------------------
+    // -------------------------- PRIVATE --------------------------
 
+    /**
+     * Gets a random "unused" tag.
+     * @see getRandomListOfProducts - useSingleCategory
+     */
+    private fun getRandomTag(): ProductTag {
+        val tag = unusedTagList.randomOrNull()
+        Log.d("TAG", "getRandomTag: Tag $tag")
+        // Case where every tag has been used, reset the list
+        return if (tag == null) {
+            unusedTagList = TagUtils.getAllTags().toMutableList()
+            val t = unusedTagList.random()
+            unusedTagList.remove(t)
+            t
+        } else {
+            unusedTagList.remove(tag)
+            tag
+        }
+    }
+
+
+    // -------------------------- TESTING --------------------------
     // -------------------------- TESTING --------------------------
 
     fun createProducts(db: ApplicationDatabase) {
