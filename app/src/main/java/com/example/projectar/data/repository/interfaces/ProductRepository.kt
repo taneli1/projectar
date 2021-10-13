@@ -22,6 +22,8 @@ interface ProductRepository {
     /** Get all products that match the filters */
     fun getProductsFiltered(filter: TagFilter): LiveData<List<Product>>
 
+    fun getProductsFilteredNotLive(filter: TagFilter): List<Product>
+
     fun getOrders(userId: Long): LiveData<List<Order>>
 
     // -- Insert --

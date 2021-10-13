@@ -12,6 +12,7 @@ import com.example.projectar.data.repository.interfaces.ProductRepository
 import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
 import com.example.projectar.data.room.entity.order.Order
+import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.queryfilters.TagFilter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -40,6 +41,10 @@ class ProductManagerImpl(
 
     // Product data getters
     override fun getProducts(pf: TagFilter) = productRepository.getProductsFiltered(pf)
+
+    override fun getProductsNotLive(pf: TagFilter): List<Product> =
+        productRepository.getProductsFilteredNotLive(pf)
+
     override fun getProduct(productId: Long) = productRepository.getProduct(productId)
 
     // Tag getters

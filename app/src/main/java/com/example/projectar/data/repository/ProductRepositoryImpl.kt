@@ -24,6 +24,9 @@ class ProductRepositoryImpl(private val database: ApplicationDatabase) : Product
             .getProductsFiltered(filter)
     }
 
+    override fun getProductsFilteredNotLive(filter: TagFilter): List<Product> =
+        database.tagDao().getProductsNotLive(filter)
+
     override fun getOrders(userId: Long): LiveData<List<Order>> =
         database.orderDao().getOrders(userId)
 

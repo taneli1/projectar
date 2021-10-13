@@ -21,8 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -130,6 +130,7 @@ fun ArInterface(
                             // List of the items which can be added to the scene
                             items(products) { product ->
                                 ProductArComponent(
+                                    viewModel,
                                     product,
                                     amountRendered = modelCounts.getOrDefault(product.data.id, 0),
                                     removeRenderedModel = arViewManager::removeModel,
@@ -201,6 +202,7 @@ fun ArInterface(
 
 @Composable
 fun ProductArComponent(
+    viewModel: ProductViewModel,
     product: Product,
     onItemClick: (productId: Long) -> Unit,
     amountRendered: Int,
@@ -240,12 +242,14 @@ fun ProductArComponent(
                 onItemClick(product.data.id)
             }
     ) {
-        Image(
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.FillWidth,
-            painter = painterResource(id = R.drawable.goat),
-            contentDescription = stringResource(id = R.string.content_desc_placeholder)
-        )
+        product.image?.let { viewModel.getImage(it).asImageBitmap() }?.let {
+            Image(
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.FillWidth,
+                bitmap = it,
+                contentDescription = stringResource(id = R.string.content_desc_placeholder)
+            )
+        }
     }
 
 }

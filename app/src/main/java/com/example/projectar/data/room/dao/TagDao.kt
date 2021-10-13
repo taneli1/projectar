@@ -31,7 +31,8 @@ abstract class TagDao : BaseDao<Tag> {
 
     fun getProductsFiltered(filter: TagFilter): LiveData<List<Product>> {
         val list = filter.tags.map { it.id() }
-        val q = if (filter.searchTerm.isBlank()) "%" else "%" + filter.searchTerm.toString().trim() + "%"
+        val q = if (filter.searchTerm.isBlank()) "%" else "%" + filter.searchTerm.toString()
+            .trim() + "%"
 
         Log.d("DATABASE", "getProductsFiltered: $q")
         return when (filter.sortBy) {
@@ -59,4 +60,16 @@ abstract class TagDao : BaseDao<Tag> {
     @Transaction
     @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) AND title LIKE :query ORDER BY price DESC")
     abstract fun sortPriceDESC(tags: List<Long>, query: String): LiveData<List<Product>>
+
+
+    @Transaction
+    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) AND title LIKE :query")
+    abstract fun getProductsFilteredNotLive(tags: List<Long>, query: String): List<Product>
+
+    fun getProductsNotLive(filter: TagFilter): List<Product> {
+        val list = filter.tags.map { it.id() }
+        val q = if (filter.searchTerm.isBlank()) "%" else "%" + filter.searchTerm.toString()
+            .trim() + "%"
+        return getProductsFilteredNotLive(list, q)
+    }
 }

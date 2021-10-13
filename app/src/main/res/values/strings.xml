@@ -38,4 +38,5 @@
     <string name="tag_lamp">Lamps</string>
     <string name="tag_sofa">Sofas</string>
     <string name="tag_surface">Surfaces</string>
+    <string name="products_matching_filter">Products (%s)</string>
 </resources>

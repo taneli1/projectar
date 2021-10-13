@@ -17,7 +17,10 @@ import androidx.compose.ui.unit.sp
 import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.components.common.IconButton
-import com.example.projectar.ui.theme.*
+import com.example.projectar.ui.theme.ELEVATION_SM
+import com.example.projectar.ui.theme.FONT_XS
+import com.example.projectar.ui.theme.PADDING_SM
+import com.example.projectar.ui.theme.PADDING_XS
 import com.example.projectar.ui.utils.StringUtils
 import kotlin.random.Random
 
@@ -37,7 +40,6 @@ fun ProductCartItem(
     Row(
         Modifier
             .padding(horizontal = 20.dp)
-            .fillMaxWidth()
     ) {
         Surface(
             elevation = ELEVATION_SM, modifier = Modifier.clip(RoundedCornerShape(8.dp)),
@@ -52,16 +54,23 @@ fun ProductCartItem(
                 contentDescription = stringResource(id = R.string.content_desc_placeholder)
             )
         }
+
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Column(modifier = Modifier.padding(horizontal = PADDING_SM, vertical = PADDING_XS)) {
-                Text(text = product.data.title, fontSize = 18.sp)
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = PADDING_SM, vertical = PADDING_XS)
+            ) {
+                Text(
+                    text = product.data.title,
+                    fontSize = 18.sp,
+                    modifier = Modifier.fillMaxWidth(0.65f)
+                )
                 Text(text = "${StringUtils.formatFloat(product.data.price)}€", fontSize = FONT_XS)
             }
 
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
-                    .fillMaxHeight()
                     .padding(vertical = PADDING_XS)
             ) {
                 Text(
@@ -88,6 +97,7 @@ fun ProductCartItem(
                         )
                     }
                 }
+
             }
         }
     }
