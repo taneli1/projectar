@@ -1,5 +1,6 @@
 package com.example.projectar.ui.components.product
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,7 +23,6 @@ import com.example.projectar.ui.theme.FONT_XS
 import com.example.projectar.ui.theme.PADDING_SM
 import com.example.projectar.ui.theme.PADDING_XS
 import com.example.projectar.ui.utils.StringUtils
-import kotlin.random.Random
 
 /**
  * Returns a layout to show products, with +/- buttons.
@@ -30,12 +30,13 @@ import kotlin.random.Random
  */
 @Composable
 fun ProductCartItem(
+    image: Bitmap?,
     product: Product,
     count: Int?,
     onMinusPressed: ((productId: Long) -> Unit)?,
     onPlusPressed: ((productId: Long) -> Unit)?
 ) {
-    val image = if (Random.nextBoolean()) R.drawable.goat else R.drawable.blenny
+    val img = image ?: Bitmap.createBitmap(100, 100, Bitmap.Config.ALPHA_8)
 
     Row(
         Modifier
@@ -50,7 +51,7 @@ fun ProductCartItem(
                     .width(120.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.FillBounds,
-                painter = painterResource(id = image),
+                bitmap = img.asImageBitmap(),
                 contentDescription = stringResource(id = R.string.content_desc_placeholder)
             )
         }

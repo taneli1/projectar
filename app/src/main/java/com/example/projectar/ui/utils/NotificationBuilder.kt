@@ -9,6 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.projectar.R
 import com.example.projectar.ui.screens.CHANNEL_ID
+import kotlinx.coroutines.*
 
 object NotificationBuilder {
     fun createNotificationChannel(context: Context) {
@@ -31,14 +32,20 @@ object NotificationBuilder {
     }
 
     fun sendTestNotification(context: Context) {
-        // when you want to send the notification
-        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.goat)
-            .setContentTitle("Order status")
-            .setContentText("Your order has been received")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .build()
+        val job = Job()
+        val scope = CoroutineScope(job)
 
-        NotificationManagerCompat.from(context).notify(1, notification)
+        scope.launch(Dispatchers.Default) {
+            delay(7000)
+            // when you want to send the notification
+            val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.goat)
+                .setContentTitle("Order status")
+                .setContentText("Your order has been received")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .build()
+
+            NotificationManagerCompat.from(context).notify(1, notification)
+        }
     }
 }

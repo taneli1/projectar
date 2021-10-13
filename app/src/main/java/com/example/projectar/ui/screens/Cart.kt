@@ -122,6 +122,7 @@ fun Cart(viewModel: ProductViewModel, navController: NavController) {
 
             itemsIndexed(productsWithCounts.entries.toList()) { index, entry ->
                 ProductCartItem(
+                    entry.key.image?.let { viewModel.getImage(it) },
                     entry.key,
                     entry.value,
                     onMinusPressed = ::onMinusPress,
