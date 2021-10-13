@@ -12,8 +12,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.example.projectar.R
 import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.queryfilters.ProductFilter
@@ -54,9 +56,9 @@ fun MainList(
     fun applyFilter(textState: String, tags: MutableList<ProductTag>, sortBy: SortBy) {
         viewModel.applyFilter(ProductFilter(textState, tags, sortBy))
     }
+
     @Composable
     fun Header() {
-        Text(text = "Current count: ${products.count()}")
         SearchView(
             state = textState,
             filter = {
@@ -90,6 +92,10 @@ fun MainList(
                 )
             }
         }
+        Text(
+            text = stringResource(id = R.string.products_matching_filter, products.count()),
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+        )
     }
 
 
@@ -104,7 +110,11 @@ fun MainList(
             when (even) {
                 true -> {
                     if (isLastProduct) {
-                        ProductRowWrapper(products = listOf(products[index]), navigate = navigate, viewModel)
+                        ProductRowWrapper(
+                            products = listOf(products[index]),
+                            navigate = navigate,
+                            viewModel
+                        )
                     } else {
                         val pair = listOf(products[index], products[index + 1])
                         ProductRowWrapper(products = pair, navigate = navigate, viewModel)
@@ -119,7 +129,7 @@ fun MainList(
 }
 
 @Composable
-private fun ProductRowWrapper(
+fun ProductRowWrapper(
     products: List<Product>,
     navigate: (productId: Long) -> Unit,
     viewModel: ProductViewModel
@@ -129,7 +139,6 @@ private fun ProductRowWrapper(
             // Calculate the width percentage that the box can take
             val percentage = (100f / (products.size - index)) / 100f
             Surface(Modifier.fillMaxWidth(percentage)) {
-
                 ItemBox(product, navigate = navigate, viewModel = viewModel)
             }
         }

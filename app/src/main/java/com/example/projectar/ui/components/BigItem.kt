@@ -8,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -18,23 +17,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
-import com.example.projectar.ui.functional.viewmodel.ProductViewModel
-import com.example.projectar.ui.theme.*
 import com.example.projectar.ui.theme.Background
-import com.example.projectar.ui.theme.Beige
+import com.example.projectar.ui.utils.ColorUtils
 import com.example.projectar.ui.utils.StringUtils
 
 @Composable
-fun BigItem(product: Product, viewModel: ProductViewModel, navigate: (productId: Long) -> Unit) {
+fun BigItem(product: Product, navigate: (productId: Long) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .selectable(selected = true, onClick = { navigate(product.data.id) }),
+            .selectable(selected = true, onClick = { navigate(product.data.id) })
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Beige)
+                .background(
+                    ColorUtils.getBackGroundColor(
+                        product.data.price
+                    )
+                )
                 .padding(start = 50.dp, bottom = 25.dp)
         ) {
             Row(
@@ -70,6 +71,7 @@ fun BigItem(product: Product, viewModel: ProductViewModel, navigate: (productId:
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(225.dp)
+
             )
             Text(
                 text = product.data.description.toString(),
@@ -77,7 +79,7 @@ fun BigItem(product: Product, viewModel: ProductViewModel, navigate: (productId:
                 modifier = Modifier
                     .background(color = Background)
                     .fillMaxWidth()
-                    .padding(5.dp)
+                    .padding(8.dp)
             )
         }
     }

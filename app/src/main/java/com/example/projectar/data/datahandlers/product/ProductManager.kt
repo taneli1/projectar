@@ -18,6 +18,7 @@ import com.example.projectar.data.room.queryfilters.TagFilter
  */
 interface ProductManager {
     fun getProducts(pf: TagFilter): LiveData<List<Product>>
+    fun getProductsNotLive(pf: TagFilter): List<Product>
     fun getProduct(productId: Long): LiveData<Product>
 
     fun getProductTags(productId: Long): LiveData<List<Tag>>
