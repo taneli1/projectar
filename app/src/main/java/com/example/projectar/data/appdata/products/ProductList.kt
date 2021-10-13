@@ -14,11 +14,40 @@ object ProductList {
         createProduct(
             "White table",
             "White table with metal legs. Good.",
-            50f,
+            60f,
             "table/1/table.jpg",
             "table/1/table.gltf"
+        ),
+        createProduct(
+            "Wooden table",
+            "Wooden table. Good.",
+            50f,
+            "table/2/table2.jpg",
+            "table/2/table2.gltf"
+        ),
+        createProduct(
+            "Antique table",
+            "Antique table. Nice.",
+            399.99f,
+            "table/3/table3.jpg",
+            "table/3/table3.gltf"
+        ),
+        createProduct(
+            "Mini table",
+            "Mini table for small purposes.",
+            20f,
+            "table/4/table4.jpg",
+            "table/4/table4.gltf"
+        ),
+        createProduct(
+            "Basic table",
+            "Basic table for variety of usages. Good.",
+            170f,
+            "table/5/table5.jpg",
+            "table/5/table5.gltf"
+        ),
+
         )
-    )
 
     private val sofas = mutableListOf<Product>()
 
