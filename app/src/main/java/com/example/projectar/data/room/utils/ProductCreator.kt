@@ -5,7 +5,6 @@ import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.tag.Tag
 import com.example.projectar.data.room.entity.tag.TagLink
-import com.example.projectar.data.utils.TagUtils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -23,19 +22,20 @@ object ProductCreator {
                     .insert(Tag(tag.id()))
             }
 
+            // Save all the products + add the tag
+            ProductList.data.forEach { pair ->
+                val products = pair.second
 
-            ProductList.data.forEach {
-                val id = database.productDao()
-                    .insertProduct(it)
-                val randomTagId = TagUtils.getRandomTagValue()
-
-                val tagLink = TagLink(
-                    id = id,
-                    tagId = randomTagId
-                )
-
-                database.tagDao()
-                    .setTagForProduct(tagLink)
+                products.forEach {
+                    val id = database.productDao()
+                        .insertProduct(it)
+                    val tagLink = TagLink(
+                        id = id,
+                        tagId = pair.first.id()
+                    )
+                    database.tagDao()
+                        .setTagForProduct(tagLink)
+                }
             }
         }
     }

@@ -41,18 +41,6 @@ enum class ProductTag {
 
         @StringRes
         override fun resourceStringId(): Int = R.string.tag_lamp
-    },
-    SOFA {
-        override fun id(): Long = TAG_ID_SOFA
-
-        @StringRes
-        override fun resourceStringId(): Int = R.string.tag_sofa
-    },
-    SURFACE {
-        override fun id(): Long = TAG_ID_SURFACE
-
-        @StringRes
-        override fun resourceStringId(): Int = R.string.tag_surface
     };
 
     abstract fun id(): Long
