@@ -119,8 +119,8 @@ class ProductArViewManager(
                 }
 
                 val viewNode = TransformableNode(fragment.transformationSystem).apply {
-                    scaleController.maxScale = 0.31f
-                    scaleController.minScale = 0.3f
+                    scaleController.maxScale = 1.001f
+                    scaleController.minScale = 1.0f
                     renderable = it
                     setParent(anchorNode)
                     select()

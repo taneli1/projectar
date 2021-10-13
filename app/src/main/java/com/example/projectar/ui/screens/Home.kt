@@ -85,7 +85,7 @@ fun Home(
             item {
 
                 Spacer(modifier = Modifier.size(16.dp))
-                BigItem(randomizedList[0], navigate = navigate)
+                BigItem(randomizedList[0], viewModel, navigate = navigate)
                 Spacer(modifier = Modifier.size(16.dp))
             }
             item() {

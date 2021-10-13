@@ -22,7 +22,7 @@ class ResourceModelManager(
                     return ModelRenderable.builder()
                         .setSource(
                             context,
-                            Uri.parse(info.filename)
+                            Uri.parse("models/chair1.gltf")
                         )
                         .setIsFilamentGltf(true)
                         .setAsyncLoadEnabled(true)
