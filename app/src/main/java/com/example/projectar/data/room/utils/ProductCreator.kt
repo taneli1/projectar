@@ -1,11 +1,11 @@
 package com.example.projectar.data.room.utils
 
-import com.example.projectar.data.appdata.products.FakeProductList
+import com.example.projectar.data.appdata.products.ProductList
 import com.example.projectar.data.appdata.tags.ProductTag
-import com.example.projectar.data.utils.TagUtils
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.tag.Tag
 import com.example.projectar.data.room.entity.tag.TagLink
+import com.example.projectar.data.utils.TagUtils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -24,7 +24,7 @@ object ProductCreator {
             }
 
 
-            FakeProductList.data.forEach {
+            ProductList.data.forEach {
                 val id = database.productDao()
                     .insertProduct(it)
                 val randomTagId = TagUtils.getRandomTagValue()

@@ -96,17 +96,17 @@ private fun RandomLayout(
     viewModel: ProductViewModel,
     navigate: (productId: Long) -> Unit,
 ) {
-    when {
-        index % 3 == 0 -> {
-            Grid(layoutId = layoutId, viewModel = viewModel, navigate = navigate)
-        }
-        index % 2 == 0 -> {
-            SingleLayout(layoutId = layoutId, viewModel = viewModel, navigate = navigate)
-        }
-        else -> {
-            HorizontalList(layoutId = layoutId, viewModel = viewModel, navigate = navigate)
-        }
-    }
+//    when {
+//        index % 3 == 0 -> {
+//            Grid(layoutId = layoutId, viewModel = viewModel, navigate = navigate)
+//        }
+//        index % 2 == 0 -> {
+//            SingleLayout(layoutId = layoutId, viewModel = viewModel, navigate = navigate)
+//        }
+//        else -> {
+//            HorizontalList(layoutId = layoutId, viewModel = viewModel, navigate = navigate)
+//        }
+//    }
 
     Spacer(modifier = Modifier.size(20.dp))
 }
