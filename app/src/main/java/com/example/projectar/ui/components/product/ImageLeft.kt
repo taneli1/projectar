@@ -55,12 +55,16 @@ fun ProductCartItem(
             )
         }
 
-        Row() {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Column(
                 modifier = Modifier
                     .padding(horizontal = PADDING_SM, vertical = PADDING_XS)
             ) {
-                Text(text = "prodasdawduct.adsasa", fontSize = 18.sp)
+                Text(
+                    text = product.data.title,
+                    fontSize = 18.sp,
+                    modifier = Modifier.fillMaxWidth(0.65f)
+                )
                 Text(text = "${StringUtils.formatFloat(product.data.price)}€", fontSize = FONT_XS)
             }
 
