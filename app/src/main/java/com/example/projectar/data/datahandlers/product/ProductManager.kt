@@ -21,7 +21,6 @@ interface ProductManager {
     fun getProductsNotLive(pf: TagFilter): List<Product>
     fun getProduct(productId: Long): LiveData<Product>
 
-    fun getProductTags(productId: Long): LiveData<List<Tag>>
     fun getAllTags(): LiveData<List<Tag>>
 
     fun getProductImage(imageInfo: ImageInfo): Bitmap?

@@ -16,7 +16,6 @@ interface ProductRepository {
     /*** Get product data for product id (Excluding tags)*/
     fun getProduct(id: Long): LiveData<Product>
 
-    fun getProductTags(productId: Long): LiveData<List<Tag>>
     fun getAllTags(): LiveData<List<Tag>>
 
     /** Get all products that match the filters */

@@ -30,11 +30,6 @@ class ProductRepositoryImpl(private val database: ApplicationDatabase) : Product
     override fun getOrders(userId: Long): LiveData<List<Order>> =
         database.orderDao().getOrders(userId)
 
-    override fun getProductTags(productId: Long): LiveData<List<Tag>> {
-        return database.tagDao()
-            .getAllTagsForProduct(productId)
-    }
-
     override fun getAllTags(): LiveData<List<Tag>> {
         return database.tagDao()
             .getAllTags()
