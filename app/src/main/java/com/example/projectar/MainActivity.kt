@@ -6,9 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.room.db.ApplicationDatabase
+import com.example.projectar.data.room.queryfilters.ProductFilter
+import com.example.projectar.data.room.utils.ProductCreator
 import com.example.projectar.databinding.ActivityMainBinding
 import com.example.projectar.di.Injector
 import com.example.projectar.ui.fragment.ArViewFragment
@@ -17,18 +20,24 @@ import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.functional.viewmodel.ProductViewModelImpl
 import com.example.projectar.ui.utils.ArViewUiProvider
 import com.example.projectar.ui.utils.ArViewUtils
+import com.example.projectar.ui.utils.NotificationBuilder
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+@ExperimentalAnimationApi
 class MainActivity : AppCompatActivity(), ArViewUiProvider {
     private val db by lazy { ApplicationDatabase.get(applicationContext) }
     private lateinit var viewModel: ProductViewModel
     private lateinit var binding: ActivityMainBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
-
+        fillDatabase()
+        NotificationBuilder.createNotificationChannel(this)
         // Init ViewModel here, use in fragments to share Cart data etc..
         viewModel = ViewModelProvider(
             this,
@@ -57,7 +66,6 @@ class MainActivity : AppCompatActivity(), ArViewUiProvider {
     }
 
 
-    @OptIn(ExperimentalAnimationApi::class)
     override fun setupInterface(arFragment: ArFragment) {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -97,5 +105,13 @@ class MainActivity : AppCompatActivity(), ArViewUiProvider {
         }
     }
 
+    private fun fillDatabase() {
+        lifecycleScope.launch(Dispatchers.Default) {
+            val prod = db.tagDao().getProductsNotLive(ProductFilter())
+            if (prod.isEmpty()) {
+                ProductCreator.createProducts(db)
+            }
+        }
+    }
 }
 

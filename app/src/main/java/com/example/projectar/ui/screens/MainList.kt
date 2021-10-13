@@ -1,6 +1,5 @@
 package com.example.projectar.ui.screens
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -29,7 +28,6 @@ import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.theme.PADDING_MD
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainList(
     viewModel: ProductViewModel,

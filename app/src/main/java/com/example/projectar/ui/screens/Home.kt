@@ -1,6 +1,5 @@
 package com.example.projectar.ui.screens
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -27,7 +26,6 @@ import com.example.projectar.ui.theme.Orange
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Home(
     viewModel: ProductViewModel,
@@ -42,15 +40,17 @@ fun Home(
 
     LaunchedEffect(true) {
         scope.launch {
-            delay(1500)
+            delay(1000)
             initialing.value = false
         }
     }
 
     LazyColumn(Modifier.padding(bottom = 50.dp)) {
+
         item {
             Spacer(modifier = Modifier.size(30.dp))
         }
+
         itemsIndexed(count.value) { index, _ ->
             RandomLayout(
                 "LayoutId$index",
@@ -96,17 +96,17 @@ private fun RandomLayout(
     viewModel: ProductViewModel,
     navigate: (productId: Long) -> Unit,
 ) {
-//    when {
-//        index % 3 == 0 -> {
-//            Grid(layoutId = layoutId, viewModel = viewModel, navigate = navigate)
-//        }
-//        index % 2 == 0 -> {
-//            SingleLayout(layoutId = layoutId, viewModel = viewModel, navigate = navigate)
-//        }
-//        else -> {
-//            HorizontalList(layoutId = layoutId, viewModel = viewModel, navigate = navigate)
-//        }
-//    }
+    when {
+        index % 3 == 0 -> {
+            Grid(layoutId = layoutId, viewModel = viewModel, navigate = navigate)
+        }
+        index % 2 == 0 -> {
+            SingleLayout(layoutId = layoutId, viewModel = viewModel, navigate = navigate)
+        }
+        else -> {
+            HorizontalList(layoutId = layoutId, viewModel = viewModel, navigate = navigate)
+        }
+    }
 
     Spacer(modifier = Modifier.size(20.dp))
 }
@@ -184,7 +184,7 @@ private fun SingleLayout(
 
     if (products.isNotEmpty()) {
         Spacer(modifier = Modifier.size(16.dp))
-        BigItem(products.first(), navigate = navigate)
+        BigItem(products.first(), navigate = navigate, viewModel = viewModel)
         Spacer(modifier = Modifier.size(16.dp))
     }
 }

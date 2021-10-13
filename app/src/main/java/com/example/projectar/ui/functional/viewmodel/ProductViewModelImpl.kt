@@ -7,15 +7,12 @@ import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.datahandlers.product.ProductManager
-import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
 import com.example.projectar.data.room.entity.order.Order
 import com.example.projectar.data.room.entity.product.Product
-import com.example.projectar.data.room.entity.tag.Tag
 import com.example.projectar.data.room.queryfilters.ProductFilter
 import com.example.projectar.data.room.queryfilters.TagFilter
-import com.example.projectar.data.room.utils.ProductCreator
 import com.example.projectar.data.utils.TagUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,8 +40,6 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
 
     override fun getProductData(productId: Long) = productManager.getProduct(productId)
 
-    override fun getProductTags(productId: Long): LiveData<List<Tag>> =
-        productManager.getProductTags(productId)
 
     override fun getProductsWithTags(tags: List<ProductTag>): LiveData<List<Product>> =
         productManager.getProducts(ProductFilter(tags = tags))
@@ -87,7 +82,7 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
             }
 
             val len = if (length == null || length > productPool.size) {
-                1
+                productPool.size
             } else length
 
             for (i in 0 until len) {
@@ -144,16 +139,11 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
         }
     }
 
-
-    // -------------------------- TESTING --------------------------
-    // -------------------------- TESTING --------------------------
-
-    fun createProducts(db: ApplicationDatabase) {
-        viewModelScope.launch(Dispatchers.IO) {
-            ProductCreator.createProducts(db)
-        }
-    }
-
+    /**
+     * Suppress UNCHECKED_CAST here, since the cast to T will never fail, and
+     * it must be done to override the default create method.
+     */
+    @Suppress("UNCHECKED_CAST")
     class ProductViewModelFactory(private val productManager: ProductManager) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

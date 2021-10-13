@@ -16,7 +16,8 @@ import com.example.projectar.data.room.entity.tag.TagLink
 
 @Database(
     entities = [(ProductData::class), (ImageInfo::class), (ModelInfo::class), (Tag::class), (TagLink::class), (Order::class)],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class ApplicationDatabase : RoomDatabase() {
