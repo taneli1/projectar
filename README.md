@@ -1,5 +1,7 @@
 # projectar
 
+Furniture shop with possibility to test out how the products look in a room with augmented reality.
+
 # Setup
 
 1. Clone project
