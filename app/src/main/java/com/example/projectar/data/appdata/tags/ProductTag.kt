@@ -3,12 +3,13 @@ package com.example.projectar.data.appdata.tags
 import androidx.annotation.StringRes
 import com.example.projectar.R
 
-private const val TAG_ID_BED = 0L
+private const val TAG_ID_CLOSET = 0L
 private const val TAG_ID_CHAIR = 1L
 private const val TAG_ID_TABLE = 2L
 private const val TAG_ID_LAMP = 3L
 private const val TAG_ID_SOFA = 4L
 private const val TAG_ID_SURFACE = 5L
+
 
 /**
  * All tags which can be used for Products of the application.
@@ -18,11 +19,11 @@ private const val TAG_ID_SURFACE = 5L
  */
 enum class ProductTag {
 
-    BED {
-        override fun id(): Long = TAG_ID_BED
+    CLOSET {
+        override fun id(): Long = TAG_ID_CLOSET
 
         @StringRes
-        override fun resourceStringId(): Int = R.string.tag_bed
+        override fun resourceStringId(): Int = R.string.tag_closet
     },
     CHAIR {
         override fun id(): Long = TAG_ID_CHAIR
