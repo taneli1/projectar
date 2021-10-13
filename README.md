@@ -7,4 +7,4 @@
 
 # Device requirements
 
-1. Device must have AR-Functionality for the application to work
+1. Device must have AR-Functionality for the application to work (api +24)
