@@ -7,16 +7,13 @@ import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.datahandlers.assets.ModelBuilder
 import com.example.projectar.data.datahandlers.cart.Cart
 import com.example.projectar.data.datahandlers.product.ProductManager
-import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
 import com.example.projectar.data.room.entity.order.Order
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.queryfilters.ProductFilter
 import com.example.projectar.data.room.queryfilters.TagFilter
-import com.example.projectar.data.room.utils.ProductCreator
 import com.example.projectar.data.utils.TagUtils
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -142,17 +139,11 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
         }
     }
 
-
-    // -------------------------- TESTING --------------------------
-    // -------------------------- TESTING --------------------------
-
-    @DelicateCoroutinesApi
-    fun createProducts(db: ApplicationDatabase) {
-        viewModelScope.launch(Dispatchers.IO) {
-            ProductCreator.createProducts(db)
-        }
-    }
-
+    /**
+     * Suppress UNCHECKED_CAST here, since the cast to T will never fail, and
+     * it must be done to override the default create method.
+     */
+    @Suppress("UNCHECKED_CAST")
     class ProductViewModelFactory(private val productManager: ProductManager) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

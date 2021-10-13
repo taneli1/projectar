@@ -1,6 +1,5 @@
 package com.example.projectar.ui.screens
 
-import android.content.Context
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -22,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
 import androidx.navigation.NavController
-import com.example.projectar.MainActivity
 import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.components.product.ProductCartItem
@@ -31,6 +29,7 @@ import com.example.projectar.ui.theme.FONT_LG
 import com.example.projectar.ui.theme.FONT_MD
 import com.example.projectar.ui.theme.Orange
 import com.example.projectar.ui.theme.Success
+import com.example.projectar.ui.utils.NotificationBuilder
 import com.example.projectar.ui.utils.StringUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -105,35 +104,35 @@ fun Cart(viewModel: ProductViewModel, navController: NavController) {
             item {
                 Column(Modifier.padding(20.dp)) {
                     Text(
-                            text = stringResource(id = R.string.cart),
-                            fontSize = FONT_LG
+                        text = stringResource(id = R.string.cart),
+                        fontSize = FONT_LG
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     Text(
-                            modifier = Modifier.padding(start = 2.dp),
-                            text = stringResource(
-                                    id = R.string.cart_items,
-                                    totalProductCount.value.toString()
-                            ),
-                            color = Orange,
-                            fontSize = FONT_MD
+                        modifier = Modifier.padding(start = 2.dp),
+                        text = stringResource(
+                            id = R.string.cart_items,
+                            totalProductCount.value.toString()
+                        ),
+                        color = Orange,
+                        fontSize = FONT_MD
                     )
                 }
             }
 
             itemsIndexed(productsWithCounts.entries.toList()) { index, entry ->
                 ProductCartItem(
-                        entry.key,
-                        entry.value,
-                        onMinusPressed = ::onMinusPress,
-                        onPlusPressed = ::onPlusPress
+                    entry.key,
+                    entry.value,
+                    onMinusPressed = ::onMinusPress,
+                    onPlusPressed = ::onPlusPress
                 )
 
                 // Don't show divider on last item
                 if (index != productsWithCounts.entries.toList().lastIndex) {
                     Divider(
-                            color = Color.LightGray,
-                            modifier = Modifier.padding(vertical = 12.dp, horizontal = 18.dp)
+                        color = Color.LightGray,
+                        modifier = Modifier.padding(vertical = 12.dp, horizontal = 18.dp)
                     )
                 }
             }
@@ -146,7 +145,6 @@ fun Cart(viewModel: ProductViewModel, navController: NavController) {
 }
 
 
-
 @Composable
 fun OrderSuccess() {
     val bool = remember {
@@ -155,36 +153,36 @@ fun OrderSuccess() {
 
     // "Fade in Animation" for components
     val iconColor by animateColorAsState(
-            if (bool.value) Color.White else Success,
-            animationSpec = tween(durationMillis = 1500)
+        if (bool.value) Color.White else Success,
+        animationSpec = tween(durationMillis = 1500)
     )
     val textColor by animateColorAsState(
-            if (bool.value) Color.White else Color.Black,
-            animationSpec = tween(durationMillis = 1500)
+        if (bool.value) Color.White else Color.Black,
+        animationSpec = tween(durationMillis = 1500)
     )
 
     Column(
-            modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = CenterHorizontally
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = CenterHorizontally
     ) {
         if (bool.value) {
             CircularProgressIndicator(
-                    color = Orange
+                color = Orange
             )
-            MainActivity.NotificationBuilder.sendTestNotification(context = LocalContext.current)
+            NotificationBuilder.sendTestNotification(context = LocalContext.current)
         }
         Column(
-                Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = CenterHorizontally
+            Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = CenterHorizontally
         ) {
             Icon(
-                    painter = painterResource(id = R.drawable.ic_baseline_check_circle_outline_64),
-                    contentDescription = stringResource(id = R.string.content_desc_placeholder),
-                    tint = iconColor
+                painter = painterResource(id = R.drawable.ic_baseline_check_circle_outline_64),
+                contentDescription = stringResource(id = R.string.content_desc_placeholder),
+                tint = iconColor
             )
             Text(text = stringResource(id = R.string.order_success), color = textColor)
         }
@@ -208,21 +206,21 @@ private fun CartFooter(totalPrice: Float, onOrderPressed: () -> Unit) {
     Spacer(modifier = Modifier.height(40.dp))
     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-                text = "Cart total ${StringUtils.formatFloat(totalPrice)}€",
-                textAlign = TextAlign.Center,
-                fontSize = FONT_MD
+            text = "Cart total ${StringUtils.formatFloat(totalPrice)}€",
+            textAlign = TextAlign.Center,
+            fontSize = FONT_MD
         )
 
         Spacer(modifier = Modifier.height(30.dp))
 
         Button(
-                onClick = { onOrderPressed() },
-                enabled = !cartEmpty,
-                colors = ButtonDefaults.textButtonColors(
-                        backgroundColor = if (cartEmpty) Color.Gray.copy(alpha = 0.4f) else Orange,
-                        contentColor = Color.White,
-                        disabledContentColor = Color.Black.copy(alpha = 0.4f)
-                )
+            onClick = { onOrderPressed() },
+            enabled = !cartEmpty,
+            colors = ButtonDefaults.textButtonColors(
+                backgroundColor = if (cartEmpty) Color.Gray.copy(alpha = 0.4f) else Orange,
+                contentColor = Color.White,
+                disabledContentColor = Color.Black.copy(alpha = 0.4f)
+            )
         ) {
             Text(text = stringResource(id = R.string.place_order))
         }

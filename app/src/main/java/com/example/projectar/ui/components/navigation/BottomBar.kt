@@ -17,10 +17,6 @@ import com.example.projectar.ui.theme.DarkGrey
 import com.example.projectar.ui.utils.NavUtils
 import com.example.projectar.ui.utils.Screen
 
-const val LABEL_HOME = "Home"
-const val LABEL_SEARCH = "Search"
-const val LABEL_AR = "Ar"
-
 /**
  * Bottom bar
  */

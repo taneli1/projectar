@@ -1,6 +1,5 @@
 package com.example.projectar.ui.screens
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -27,7 +26,6 @@ import com.example.projectar.ui.theme.Orange
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Home(
     viewModel: ProductViewModel,

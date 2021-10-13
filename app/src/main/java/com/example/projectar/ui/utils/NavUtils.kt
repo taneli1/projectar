@@ -79,7 +79,7 @@ object NavUtils {
     /**
      * Creates a navigator for the application, containing all the screens. (except ar)
      */
-    @OptIn(ExperimentalAnimationApi::class)
+    @ExperimentalAnimationApi
     @Composable
     fun CreateNavigator(
         navController: NavHostController,
