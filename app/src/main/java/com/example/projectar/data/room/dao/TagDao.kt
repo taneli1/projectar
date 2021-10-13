@@ -22,11 +22,7 @@ abstract class TagDao : BaseDao<Tag> {
     abstract fun setTagForProduct(link: TagLink)
 
     @Transaction
-    @Query("SELECT * FROM tag AS tags INNER JOIN tagLink AS links ON tags.tagId = links.tagId WHERE links.id = :productId")
-    abstract fun getAllTagsForProduct(productId: Long): LiveData<List<Tag>>
-
-    @Transaction
-    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) AND title LIKE :query")
+    @Query("SELECT id,title,description,price FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.linkId WHERE links.tagId IN (:tags) AND title LIKE :query")
     abstract fun getAllProductsForTags(tags: List<Long>, query: String): LiveData<List<Product>>
 
     fun getProductsFiltered(filter: TagFilter): LiveData<List<Product>> {
@@ -46,25 +42,20 @@ abstract class TagDao : BaseDao<Tag> {
 
     // Copy paste to get products with ordering queries for the above method
     @Transaction
-    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) AND title LIKE :query ORDER BY title ASC")
+    @Query("SELECT id,title,description,price FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.linkId WHERE links.tagId IN (:tags) AND title LIKE :query ORDER BY title ASC")
     abstract fun sortAlphabeticalASC(tags: List<Long>, query: String): LiveData<List<Product>>
 
     @Transaction
-    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) AND title LIKE :query ORDER BY title DESC")
+    @Query("SELECT id,title,description,price FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.linkId WHERE links.tagId IN (:tags) AND title LIKE :query ORDER BY title DESC")
     abstract fun sortAlphabeticalDESC(tags: List<Long>, query: String): LiveData<List<Product>>
 
     @Transaction
-    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) AND title LIKE :query ORDER BY price ASC")
+    @Query("SELECT id,title,description,price FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.linkId WHERE links.tagId IN (:tags) AND title LIKE :query ORDER BY price ASC")
     abstract fun sortPriceASC(tags: List<Long>, query: String): LiveData<List<Product>>
 
     @Transaction
-    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) AND title LIKE :query ORDER BY price DESC")
+    @Query("SELECT id,title,description,price FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.linkId WHERE links.tagId IN (:tags) AND title LIKE :query ORDER BY price DESC")
     abstract fun sortPriceDESC(tags: List<Long>, query: String): LiveData<List<Product>>
-
-
-    @Transaction
-    @Query("SELECT * FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.id WHERE links.tagId IN (:tags) AND title LIKE :query")
-    abstract fun getProductsFilteredNotLive(tags: List<Long>, query: String): List<Product>
 
     fun getProductsNotLive(filter: TagFilter): List<Product> {
         val list = filter.tags.map { it.id() }
@@ -72,4 +63,9 @@ abstract class TagDao : BaseDao<Tag> {
             .trim() + "%"
         return getProductsFilteredNotLive(list, q)
     }
+
+    @Transaction
+    @Query("SELECT id,title,description,price FROM productdata AS products INNER JOIN tagLink AS links ON products.id = links.linkId WHERE links.tagId IN (:tags) AND title LIKE :query")
+    abstract fun getProductsFilteredNotLive(tags: List<Long>, query: String): List<Product>
+
 }

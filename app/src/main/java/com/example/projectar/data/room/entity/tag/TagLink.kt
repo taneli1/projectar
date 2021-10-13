@@ -1,24 +1,24 @@
 package com.example.projectar.data.room.entity.tag
 
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.Relation
-import com.example.projectar.data.room.entity.product.Product
-import com.example.projectar.data.room.entity.product.ProductData
+import androidx.room.Index
 
 /**
  * Entity which links tags to other entities.
  */
 @Entity(
-    primaryKeys = ["id", "tagId"],
+    primaryKeys = ["linkId", "tagId"],
     foreignKeys = [ForeignKey(
         entity = Tag::class,
         childColumns = ["tagId"],
         parentColumns = ["tagId"]
-    )]
+    )],
+    indices = [
+        Index("tagId"),
+    ]
 )
 data class TagLink(
-    val id: Long,
+    val linkId: Long,
     val tagId: Long
 )

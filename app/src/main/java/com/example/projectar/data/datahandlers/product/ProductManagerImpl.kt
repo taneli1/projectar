@@ -48,7 +48,6 @@ class ProductManagerImpl(
     override fun getProduct(productId: Long) = productRepository.getProduct(productId)
 
     // Tag getters
-    override fun getProductTags(productId: Long) = productRepository.getProductTags(productId)
     override fun getAllTags() = productRepository.getAllTags()
 
     // Product assets

@@ -5,6 +5,7 @@ import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.room.db.ApplicationDatabase
 import com.example.projectar.data.room.entity.tag.Tag
 import com.example.projectar.data.room.entity.tag.TagLink
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
  */
 object ProductCreator {
 
+    @DelicateCoroutinesApi
     fun createProducts(database: ApplicationDatabase) {
         GlobalScope.launch {
 
@@ -30,7 +32,7 @@ object ProductCreator {
                     val id = database.productDao()
                         .insertProduct(it)
                     val tagLink = TagLink(
-                        id = id,
+                        linkId = id,
                         tagId = pair.first.id()
                     )
                     database.tagDao()
@@ -40,6 +42,7 @@ object ProductCreator {
         }
     }
 
+    @DelicateCoroutinesApi
     fun nuke(database: ApplicationDatabase) {
         GlobalScope.launch { database.nukeDao().nukeDb() }
     }

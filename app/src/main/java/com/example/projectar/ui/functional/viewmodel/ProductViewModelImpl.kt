@@ -12,11 +12,11 @@ import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
 import com.example.projectar.data.room.entity.order.Order
 import com.example.projectar.data.room.entity.product.Product
-import com.example.projectar.data.room.entity.tag.Tag
 import com.example.projectar.data.room.queryfilters.ProductFilter
 import com.example.projectar.data.room.queryfilters.TagFilter
 import com.example.projectar.data.room.utils.ProductCreator
 import com.example.projectar.data.utils.TagUtils
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -43,8 +43,6 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
 
     override fun getProductData(productId: Long) = productManager.getProduct(productId)
 
-    override fun getProductTags(productId: Long): LiveData<List<Tag>> =
-        productManager.getProductTags(productId)
 
     override fun getProductsWithTags(tags: List<ProductTag>): LiveData<List<Product>> =
         productManager.getProducts(ProductFilter(tags = tags))
@@ -87,7 +85,7 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
             }
 
             val len = if (length == null || length > productPool.size) {
-                1
+                productPool.size
             } else length
 
             for (i in 0 until len) {
@@ -148,6 +146,7 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
     // -------------------------- TESTING --------------------------
     // -------------------------- TESTING --------------------------
 
+    @DelicateCoroutinesApi
     fun createProducts(db: ApplicationDatabase) {
         viewModelScope.launch(Dispatchers.IO) {
             ProductCreator.createProducts(db)

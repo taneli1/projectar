@@ -65,7 +65,7 @@ fun Dropdown(
             expanded = expanded,
             onDismissRequest = { expanded = false },
         ) {
-            items.forEachIndexed { index, productTag ->
+            items.forEach() { productTag ->
                 val isChecked = remember {
                     mutableStateOf(selectedItems.contains(productTag))
                 }

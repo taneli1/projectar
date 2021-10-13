@@ -9,7 +9,6 @@ import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
 import com.example.projectar.data.room.entity.order.Order
 import com.example.projectar.data.room.entity.product.Product
-import com.example.projectar.data.room.entity.tag.Tag
 import com.example.projectar.data.room.queryfilters.TagFilter
 
 interface ProductViewModel {
@@ -50,9 +49,6 @@ interface ProductViewModel {
 
     /** Get all data for a product except its tags */
     fun getProductData(productId: Long): LiveData<Product>
-
-    /** Get all products for a tag */
-    fun getProductTags(productId: Long): LiveData<List<Tag>>
 
     /** Get all products matching tags */
     fun getProductsWithTags(tags: List<ProductTag>): LiveData<List<Product>>
