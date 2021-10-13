@@ -87,7 +87,7 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
             }
 
             val len = if (length == null || length > productPool.size) {
-                4
+                1
             } else length
 
             for (i in 0 until len) {

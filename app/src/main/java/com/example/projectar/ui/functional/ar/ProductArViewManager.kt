@@ -27,7 +27,7 @@ import java.lang.ref.WeakReference
  * function with the model it got from the build() method. (must happen on UI-Thread)
  */
 typealias ModelBuilderFunc =
-    (modelBuilder: ModelBuilder, onComplete: (model: ModelRenderable) -> Unit) -> Unit
+        (modelBuilder: ModelBuilder, onComplete: (model: ModelRenderable) -> Unit) -> Unit
 
 /**
  * Implementation of ArViewManager.
@@ -119,8 +119,8 @@ class ProductArViewManager(
                 }
 
                 val viewNode = TransformableNode(fragment.transformationSystem).apply {
-                    scaleController.maxScale = 0.31f
-                    scaleController.minScale = 0.3f
+                    scaleController.maxScale = 1.001f
+                    scaleController.minScale = 1f
                     renderable = it
                     setParent(anchorNode)
                     select()
@@ -302,7 +302,10 @@ class ProductArViewManager(
             findViewById<TextView>(R.id.view_ar_product_title)
                 .text = product.data.title
             findViewById<TextView>(R.id.view_ar_product_price)
-                .text = fragment.context?.getString(R.string.price_string, StringUtils.formatFloat(product.data.price))
+                .text = fragment.context?.getString(
+                R.string.price_string,
+                StringUtils.formatFloat(product.data.price)
+            )
 
             // Remove the entire model when delete button is pressed
             findViewById<Button>(R.id.view_ar_delete_button).setOnClickListener {

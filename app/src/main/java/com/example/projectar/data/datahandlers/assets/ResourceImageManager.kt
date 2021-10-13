@@ -2,11 +2,13 @@ package com.example.projectar.data.datahandlers.assets
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.util.Log
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import com.example.projectar.data.room.entity.file.ImageInfo
+import java.io.InputStream
 import java.lang.ref.WeakReference
+
 
 /**
  * Gets image files from project resources
@@ -24,16 +26,10 @@ class ResourceImageManager(
         try {
             context.get()
                 ?.let {
-                    val img = AppCompatResources.getDrawable(
-                        it,
-                        it.resources.getIdentifier(
-                            info.filename,
-                            RESOURCES_DRAWABLE,
-                            it.packageName
-                        )
-                    ) ?: throw Error("Image was null")
-
-                    return img.toBitmap()
+                    val stream: InputStream = context.get()?.assets?.open(info.filename)
+                        ?: throw Error("FileError")
+                    val d = Drawable.createFromStream(stream, null)
+                    return d.toBitmap()
                 }
         } catch (e: Exception) {
             Log.d(
