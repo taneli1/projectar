@@ -1,0 +1,266 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v1.6.16",
+        "version" : "2.0"
+    },
+    "extensionsUsed" : [
+        "KHR_draco_mesh_compression"
+    ],
+    "extensionsRequired" : [
+        "KHR_draco_mesh_compression"
+    ],
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0,
+                1,
+                2
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "name" : "willisau_riale_obj",
+            "rotation" : [
+                0.7071068286895752,
+                0,
+                0,
+                0.7071067094802856
+            ]
+        },
+        {
+            "name" : "willisau_riale_obj.001",
+            "rotation" : [
+                0.7071068286895752,
+                0,
+                0,
+                0.7071067094802856
+            ]
+        },
+        {
+            "mesh" : 0,
+            "name" : "willisau_riale_obj.002",
+            "scale" : [
+                0.008929836563766003,
+                0.008929836563766003,
+                0.008929836563766003
+            ]
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "name" : "willisau_riale_mtl_1",
+            "pbrMetallicRoughness" : {
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.8945907354354858
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "willisau_riale_mtl_2",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0,
+                    0,
+                    0,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.8945907354354858
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "willisau_riale_mtl_3",
+            "pbrMetallicRoughness" : {
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.8945907354354858
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "willisau_riale_obj.002",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1,
+                        "TEXCOORD_0" : 2
+                    },
+                    "extensions" : {
+                        "KHR_draco_mesh_compression" : {
+                            "bufferView" : 0,
+                            "attributes" : {
+                                "POSITION" : 0,
+                                "NORMAL" : 1,
+                                "TEXCOORD_0" : 2
+                            }
+                        }
+                    },
+                    "indices" : 3,
+                    "material" : 0,
+                    "mode" : 4
+                },
+                {
+                    "attributes" : {
+                        "POSITION" : 4,
+                        "NORMAL" : 5,
+                        "TEXCOORD_0" : 6
+                    },
+                    "extensions" : {
+                        "KHR_draco_mesh_compression" : {
+                            "bufferView" : 1,
+                            "attributes" : {
+                                "POSITION" : 0,
+                                "NORMAL" : 1,
+                                "TEXCOORD_0" : 2
+                            }
+                        }
+                    },
+                    "indices" : 7,
+                    "material" : 1,
+                    "mode" : 4
+                },
+                {
+                    "attributes" : {
+                        "POSITION" : 8,
+                        "NORMAL" : 9,
+                        "TEXCOORD_0" : 10
+                    },
+                    "extensions" : {
+                        "KHR_draco_mesh_compression" : {
+                            "bufferView" : 2,
+                            "attributes" : {
+                                "POSITION" : 0,
+                                "NORMAL" : 1,
+                                "TEXCOORD_0" : 2
+                            }
+                        }
+                    },
+                    "indices" : 11,
+                    "material" : 2,
+                    "mode" : 4
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "componentType" : 5126,
+            "count" : 2648,
+            "max" : [
+                21.58530044555664,
+                48.12220001220703,
+                22.077699661254883
+            ],
+            "min" : [
+                -21.585399627685547,
+                38.902400970458984,
+                -21.363000869750977
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "componentType" : 5126,
+            "count" : 2648,
+            "type" : "VEC3"
+        },
+        {
+            "componentType" : 5126,
+            "count" : 2648,
+            "type" : "VEC2"
+        },
+        {
+            "componentType" : 5123,
+            "count" : 15060,
+            "type" : "SCALAR"
+        },
+        {
+            "componentType" : 5126,
+            "count" : 296,
+            "max" : [
+                23.08639907836914,
+                0.30000001192092896,
+                23.50320053100586
+            ],
+            "min" : [
+                -23.08639907836914,
+                0,
+                -29.008800506591797
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "componentType" : 5126,
+            "count" : 296,
+            "type" : "VEC3"
+        },
+        {
+            "componentType" : 5126,
+            "count" : 296,
+            "type" : "VEC2"
+        },
+        {
+            "componentType" : 5123,
+            "count" : 816,
+            "type" : "SCALAR"
+        },
+        {
+            "componentType" : 5126,
+            "count" : 5549,
+            "max" : [
+                23.683000564575195,
+                80.93350219726562,
+                23.679100036621094
+            ],
+            "min" : [
+                -23.683000564575195,
+                0.30000001192092896,
+                -30.3356990814209
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "componentType" : 5126,
+            "count" : 5549,
+            "type" : "VEC3"
+        },
+        {
+            "componentType" : 5126,
+            "count" : 5549,
+            "type" : "VEC2"
+        },
+        {
+            "componentType" : 5123,
+            "count" : 20214,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 86100,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 9639,
+            "byteOffset" : 86100
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 179813,
+            "byteOffset" : 95740
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 275556,
+            "uri" : "chair1.bin"
+        }
+    ]
+}

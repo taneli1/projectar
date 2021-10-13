@@ -17,6 +17,7 @@ class ResourceModelManager(
     // To increase performance.
     private val cache: LinkedHashMap<Long, ModelBuilder> = linkedMapOf()
 
+
     companion object {
         private const val CACHE_MAX_SIZE = 100
     }

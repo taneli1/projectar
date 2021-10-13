@@ -1,5 +1,6 @@
 package com.example.projectar.ui.screens
 
+import android.content.Context
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -13,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -20,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
 import androidx.navigation.NavController
+import com.example.projectar.MainActivity
 import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.components.product.ProductCartItem
@@ -31,6 +34,8 @@ import com.example.projectar.ui.theme.Success
 import com.example.projectar.ui.utils.StringUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+
+const val CHANNEL_ID = "1234"
 
 @ExperimentalAnimationApi
 @Composable
@@ -138,8 +143,9 @@ fun Cart(viewModel: ProductViewModel, navController: NavController) {
             }
         }
     }
-
 }
+
+
 
 @Composable
 fun OrderSuccess() {
@@ -168,6 +174,7 @@ fun OrderSuccess() {
             CircularProgressIndicator(
                     color = Orange
             )
+            MainActivity.NotificationBuilder.sendTestNotification(context = LocalContext.current)
         }
         Column(
                 Modifier.fillMaxWidth(),
