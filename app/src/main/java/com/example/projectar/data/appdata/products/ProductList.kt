@@ -1,5 +1,6 @@
 package com.example.projectar.data.appdata.products
 
+import com.example.projectar.data.appdata.tags.ProductTag
 import com.example.projectar.data.room.entity.file.ImageInfo
 import com.example.projectar.data.room.entity.file.ModelInfo
 import com.example.projectar.data.room.entity.product.Product
@@ -80,10 +81,12 @@ object ProductList {
         ),
     )
 
-    val data: List<Product> = mutableListOf<Product>().apply {
-        addAll(tables)
-        addAll(lamps)
-    }
+    val data: List<Pair<ProductTag, List<Product>>> =
+        mutableListOf<Pair<ProductTag, List<Product>>>().apply {
+            add(Pair(ProductTag.LAMP, lamps))
+            add(Pair(ProductTag.TABLE, tables))
+        }
+
 
     private fun createProduct(
         title: String,
