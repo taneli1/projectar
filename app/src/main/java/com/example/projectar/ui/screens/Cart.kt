@@ -128,8 +128,6 @@ fun Cart(viewModel: ProductViewModel, navController: NavController) {
             }
 
             itemsIndexed(productsWithCounts.entries.toList()) { index, entry ->
-                Text(text = index.toString())
-
                 ProductCartItem(
                     entry.key.image?.let { viewModel.getImage(it) },
                     entry.key,
