@@ -60,8 +60,6 @@ fun Cart(viewModel: ProductViewModel, navController: NavController) {
         }
     }
 
-    val totalProductCount = viewModel.useCart().getCartTotal().observeAsState(0)
-
     // Wrap Product data with the amount of it selected by the user into observable state
     val productsWithCounts: Map<Product, Int> by viewModel.useCart().getAll().switchMap {
         val products = mutableMapOf<Product, Int>()
@@ -112,7 +110,6 @@ fun Cart(viewModel: ProductViewModel, navController: NavController) {
                         modifier = Modifier.padding(start = 2.dp),
                         text = stringResource(
                             id = R.string.cart_items,
-                            totalProductCount.value.toString()
                         ),
                         color = Orange,
                         fontSize = FONT_MD
