@@ -135,7 +135,6 @@ fun ArInterface(
                                     amountRendered = modelCounts.getOrDefault(product.data.id, 0),
                                     removeRenderedModel = arViewManager::removeModel,
                                     onItemClick = { id ->
-                                        Log.d("DEBUG", "ArInterface:$id ")
                                         arViewManager.setModelSelected(id)
                                         expanded.value = !expanded.value
                                     }

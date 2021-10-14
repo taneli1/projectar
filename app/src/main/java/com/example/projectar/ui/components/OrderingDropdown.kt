@@ -19,12 +19,11 @@ import com.example.projectar.data.room.queryfilters.SortBy
 import com.example.projectar.ui.theme.PADDING_SM
 import com.example.projectar.ui.theme.PADDING_XS
 import com.example.projectar.ui.theme.Shapes
-
+/**
+ * Dropdown menu for item sorting used in MainList screen. 3rd of 3 filtering/sorting fields
+ */
 @Composable
 fun OrderingDropdown(
-    /**
-     * Dropdown menu for item sorting used in MainList screen. 3rd of 3 filtering/sorting fields
-     */
     orderingOptions: MutableMap<SortBy, String>,
     sortBy: MutableState<SortBy>,
     filters: () -> Unit

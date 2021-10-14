@@ -27,19 +27,28 @@ import com.example.projectar.ui.components.SearchView
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.theme.PADDING_MD
 
-
+/**
+ * List on the searching page that shows items that fit the given parameters
+ */
 @Composable
 fun MainList(
     viewModel: ProductViewModel,
     navigate: (productId: Long) -> Unit
 ) {
+
+    /*
+    Get selected tags
+     */
     val items = TagUtils.getAllTags()
     val selectedItems: MutableList<ProductTag> = remember {
         viewModel.getFilter().tags.toMutableList()
     }
     val products: List<Product> by viewModel.products.observeAsState(listOf())
 
-
+    /*
+    Get selected sorting
+    Map for the sorting options so we can use the string version of the values on UI
+     */
     val orderingOptions = mutableMapOf<SortBy, String>()
     orderingOptions[SortBy.DEFAULT] = "Default"
     orderingOptions[SortBy.PRICE_ASC] = "Price Ascending"
@@ -48,7 +57,9 @@ fun MainList(
     orderingOptions[SortBy.ALPHABETICAL_DESC] = "Alphabetical Descending"
     val selectedSorting = remember { mutableStateOf(viewModel.getFilter().sortBy) }
 
-
+    /*
+    Get selected search string
+     */
     val searchTerm = viewModel.getFilter().searchTerm
     val textState = remember { mutableStateOf(TextFieldValue(searchTerm)) }
     fun applyFilter(textState: String, tags: MutableList<ProductTag>, sortBy: SortBy) {
@@ -96,7 +107,9 @@ fun MainList(
         )
     }
 
-
+    /*
+    Actual list of the items that match search parameters
+     */
     LazyColumn() {
         item {
             Header()
@@ -126,6 +139,9 @@ fun MainList(
     }
 }
 
+/**
+ * Filling "wrapper" for the items
+ */
 @Composable
 fun ProductRowWrapper(
     products: List<Product>,
