@@ -2,7 +2,6 @@ package com.example.projectar.data.datahandlers.cart
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.switchMap
 
 class CartImpl(
     private var _selections: Map<Long, Int> = mutableMapOf(),
@@ -16,6 +15,7 @@ class CartImpl(
             null -> copy[productId] = 1
             else -> copy[productId] = (current + 1)
         }
+
         updateMaps(copy)
         return copy[productId]!!
     }
@@ -38,9 +38,7 @@ class CartImpl(
     }
 
     override fun getCartTotal(): LiveData<Int> {
-        return selections.switchMap {
-            return@switchMap MutableLiveData(it.values.reduceOrNull { acc, i -> acc + i } ?: 0)
-        }
+        return MutableLiveData(_selections.values.reduceOrNull { acc, i -> acc + i } ?: 0)
     }
 
     override fun getAll(): LiveData<Map<Long, Int>> = selections
