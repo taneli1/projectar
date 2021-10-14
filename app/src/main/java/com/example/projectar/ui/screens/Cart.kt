@@ -66,7 +66,6 @@ fun Cart(viewModel: ProductViewModel, navController: NavController) {
 
     // Wrap Product data with the amount of it selected by the user into observable state
     val productsWithCounts: Map<Product, Int> by viewModel.useCart().getAll()
-
         .switchMap {
             val list = mutableMapOf<Product, Int>()
             it.forEach { entry ->
@@ -86,7 +85,7 @@ fun Cart(viewModel: ProductViewModel, navController: NavController) {
     val totalPrice: Float by viewModel.useCart().getAll().switchMap { map ->
         var price = 0f
         map.entries.forEach { entry ->
-            val product = viewModel.products.value?.find { it.data.id == entry.key }
+            val product = products.find { p -> p.data.id == entry.key }
             price += (entry.value * (product?.data?.price ?: 0f))
         }
         return@switchMap MutableLiveData(price)
