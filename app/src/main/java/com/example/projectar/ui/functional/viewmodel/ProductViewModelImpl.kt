@@ -126,7 +126,6 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
      */
     private fun getRandomTag(): ProductTag {
         val tag = unusedTagList.randomOrNull()
-        Log.d("TAG", "getRandomTag: Tag $tag")
         // Case where every tag has been used, reset the list
         return if (tag == null) {
             unusedTagList = TagUtils.getAllTags().toMutableList()
