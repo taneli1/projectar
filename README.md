@@ -15,7 +15,7 @@ Issues with bottom navigation bar, when navigating out of the AR-View. When tapp
 
 This is due to the not-so easily compatible Jetpack Compose + Sceneform. 
 
-The application UI is built with Compose. The recommended navigation for composable layouts, which we opted to use, did not work as good as expected with sceneform. Currently, the application has two fragments. The first one hosts all the composable screens, and the other hosts the AR-Fragment. This is the root of the issue. The application would need to use fragments + navigation graphs so that everything would work better with sceneform.
+The application UI is built with Compose. The recommended navigation for composable layouts, which we opted to use, did not work as good as expected with sceneform. Currently, the application has two fragments. The first one hosts all the composable screens with its own navigation system, and the other hosts the AR-Fragment. This is the root of the issue. The application would need to use fragments rather than Compose navigation so that everything would work better with sceneform.
 
 
 # Device requirements
