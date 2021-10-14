@@ -24,6 +24,7 @@ class ProductViewModelImpl(private val productManager: ProductManager) : ViewMod
     ProductViewModel {
     // Default filter for products
     private val filter: MutableLiveData<TagFilter> = MutableLiveData(ProductFilter())
+    override val allProducts: LiveData<List<Product>> = productManager.getProducts(ProductFilter())
 
     // List of products with a filter applied
     override val products: LiveData<List<Product>> = filter.switchMap {

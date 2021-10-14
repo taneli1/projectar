@@ -1,5 +1,6 @@
 package com.example.projectar.ui.screens
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -23,6 +24,7 @@ import androidx.lifecycle.switchMap
 import androidx.navigation.NavController
 import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
+import com.example.projectar.data.utils.TagUtils
 import com.example.projectar.ui.components.product.ProductCartItem
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.theme.FONT_LG
@@ -39,6 +41,8 @@ const val CHANNEL_ID = "1234"
 @ExperimentalAnimationApi
 @Composable
 fun Cart(viewModel: ProductViewModel, navController: NavController) {
+    val products: List<Product> by viewModel.getProductsWithTags(TagUtils.getAllTags())
+        .observeAsState(listOf())
 
     // Has the user placed an order
     val orderPlaced = remember {
@@ -61,16 +65,22 @@ fun Cart(viewModel: ProductViewModel, navController: NavController) {
     }
 
     // Wrap Product data with the amount of it selected by the user into observable state
-    val productsWithCounts: Map<Product, Int> by viewModel.useCart().getAll().switchMap {
-        val products = mutableMapOf<Product, Int>()
-        it.forEach { entry ->
-            val product = viewModel.products.value?.find { it.data.id == entry.key }
-            product?.let { prod ->
-                products[prod] = viewModel.useCart().getProductAmount(prod.data.id)
+    val productsWithCounts: Map<Product, Int> by viewModel.useCart().getAll()
+
+        .switchMap {
+            val list = mutableMapOf<Product, Int>()
+            it.forEach { entry ->
+                val product = products.find { p -> p.data.id == entry.key }
+
+                Log.d("FAST", "Cart:$entry.key ")
+                Log.d("FAST", "Prod:${viewModel.products.value} ")
+                product?.let { prod ->
+                    list[prod] = entry.value
+                }
             }
-        }
-        return@switchMap MutableLiveData(products)
-    }.observeAsState(mapOf())
+
+            return@switchMap MutableLiveData(list)
+        }.observeAsState(mapOf())
 
     // Calc the total price of the items
     val totalPrice: Float by viewModel.useCart().getAll().switchMap { map ->
@@ -118,6 +128,8 @@ fun Cart(viewModel: ProductViewModel, navController: NavController) {
             }
 
             itemsIndexed(productsWithCounts.entries.toList()) { index, entry ->
+                Text(text = index.toString())
+
                 ProductCartItem(
                     entry.key.image?.let { viewModel.getImage(it) },
                     entry.key,
@@ -125,6 +137,7 @@ fun Cart(viewModel: ProductViewModel, navController: NavController) {
                     onMinusPressed = ::onMinusPress,
                     onPlusPressed = ::onPlusPress
                 )
+
 
                 // Don't show divider on last item
                 if (index != productsWithCounts.entries.toList().lastIndex) {
