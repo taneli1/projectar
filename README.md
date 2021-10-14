@@ -11,7 +11,7 @@ Furniture shop with the possibility to test out how the products look in a room 
 
 # Known issues
 
-Issues with bottom navigation bar, when navigating out of the AR-View. When tapping on a bottom app bar icon (home or search), the application always navigates to the home screen. This also in some rare cases crashes the application, but is hard to reproduce and fix. 
+Issues with bottom navigation bar, when navigating out of the AR-View. When tapping on a bottom app bar icon (home or search), the application always navigates to the home screen. This also crashed the application once or twice, but we could not reproduce and fix. 
 
 This is due to the not-so easily compatible Jetpack Compose + Sceneform. 
 
