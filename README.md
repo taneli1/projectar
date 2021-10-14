@@ -1,4 +1,4 @@
-# projectar
+# mARket
 
 Furniture shop with the possibility to test out how the products look in a room with augmented reality.
 
