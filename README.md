@@ -1,6 +1,6 @@
 # projectar
 
-Furniture shop with possibility to test out how the products look in a room with augmented reality.
+Furniture shop with the possibility to test out how the products look in a room with augmented reality.
 
 
 # Setup
