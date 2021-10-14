@@ -122,6 +122,7 @@ fun Cart(viewModel: ProductViewModel, navController: NavController) {
 
             itemsIndexed(productsWithCounts.entries.toList()) { index, entry ->
                 ProductCartItem(
+                    entry.key.image?.let { viewModel.getImage(it) },
                     entry.key,
                     entry.value,
                     onMinusPressed = ::onMinusPress,
@@ -181,7 +182,7 @@ fun OrderSuccess() {
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_baseline_check_circle_outline_64),
-                contentDescription = stringResource(id = R.string.content_desc_placeholder),
+                contentDescription = stringResource(id = R.string.success_image),
                 tint = iconColor
             )
             Text(text = stringResource(id = R.string.order_success), color = textColor)

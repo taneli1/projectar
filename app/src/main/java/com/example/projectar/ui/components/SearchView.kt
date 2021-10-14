@@ -33,7 +33,7 @@ fun SearchView(filter: () -> Unit, state: MutableState<TextFieldValue>) {
          * TextBox used in MainList screen. 1st of 3 filtering/sorting fields
          */
         elevation = ELEVATION_XS,
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp)
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp).clip(RoundedCornerShape(6.dp))
     ) {
         // Fetch new set of items everytime textfield's value is changed
         TextField(

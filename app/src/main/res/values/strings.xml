@@ -40,4 +40,10 @@
     <string name="tag_surface">Surfaces</string>
     <string name="products_matching_filter">Products (%s)</string>
     <string name="tag_closet">Closet</string>
+    <string name="menu_burger">Hamburger menu</string>
+    <string name="menu_profile">Profile</string>
+    <string name="menu_cart">Cart</string>
+    <string name="content_desc_product">Product image</string>
+    <string name="in_cart">In cart: %s</string>
+    <string name="success_image">Green checkmark</string>
 </resources>

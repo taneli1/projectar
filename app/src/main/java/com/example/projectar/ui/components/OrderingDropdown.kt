@@ -48,7 +48,7 @@ fun OrderingDropdown(
                     PADDING_SM, vertical = PADDING_XS
                 )
         ) {
-            Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "Test")
+            Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
             orderingOptions[selectedItem]?.let { Text(text = it) }
         }
 

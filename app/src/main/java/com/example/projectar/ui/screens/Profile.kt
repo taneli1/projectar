@@ -48,7 +48,7 @@ fun Profile(
         }
 
         itemsIndexed(orders) { index, order ->
-            OrderListItem(order = order, products = products)
+            OrderListItem(order = order, products = products, viewModel = viewModel)
             if (index != orders.lastIndex) {
                 Divider(Modifier.padding(horizontal = 16.dp))
             }
@@ -94,7 +94,7 @@ private fun OrderListHeader(orders: List<Order>) {
  * If expanded, shows a list of products which were contained in the order.
  */
 @Composable
-private fun OrderListItem(order: Order, products: List<Product>) {
+private fun OrderListItem(order: Order, products: List<Product>, viewModel: ProductViewModel) {
 
     val expanded = remember {
         mutableStateOf(false)
@@ -114,10 +114,9 @@ private fun OrderListItem(order: Order, products: List<Product>) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         OrderContent(order = order)
-
         Icon(
             painter = painterResource(id = iconRes),
-            contentDescription = stringResource(id = R.string.content_desc_placeholder),
+            contentDescription = "",
             tint = Color.Black,
             modifier = Modifier
                 .scale(1.2f)
@@ -126,7 +125,7 @@ private fun OrderListItem(order: Order, products: List<Product>) {
     }
 
     if (expanded.value) {
-        OrderProductList(order = order, products = products)
+        OrderProductList(order = order, products = products, viewModel = viewModel)
     }
 }
 
@@ -144,7 +143,7 @@ private fun OrderContent(order: Order) {
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_baseline_shopping_cart_24),
-                contentDescription = stringResource(id = R.string.content_desc_placeholder),
+                contentDescription = "",
                 tint = Color.Black
             )
             Spacer(modifier = Modifier.size(2.dp))
@@ -172,6 +171,7 @@ private fun OrderContent(order: Order) {
  */
 @Composable
 private fun OrderProductList(
+    viewModel: ProductViewModel,
     order: Order,
     products: List<Product>
 ) {
@@ -192,6 +192,7 @@ private fun OrderProductList(
             productData?.let {
                 // Use cart items, provide null functions to hide the buttons
                 ProductCartItem(
+                    it.image?.let { it1 -> viewModel.getImage(it1) },
                     product = productData,
                     count = entry.value,
                     onMinusPressed = null,

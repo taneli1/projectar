@@ -247,7 +247,7 @@ fun ProductArComponent(
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.FillWidth,
                 bitmap = it,
-                contentDescription = stringResource(id = R.string.content_desc_placeholder)
+                contentDescription = stringResource(id = R.string.content_desc_product)
             )
         }
     }

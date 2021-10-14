@@ -33,11 +33,10 @@ fun CartFAB(
             backgroundColor = Orange,
             contentColor = Color.White,
         ) {
-
             Icon(
                 painter = painterResource(id = R.drawable.ic_baseline_shopping_cart_24),
                 stringResource(
-                    id = R.string.content_desc_placeholder
+                    id = R.string.cart
                 ),
                 Modifier.scale(1.1f)
             )
@@ -63,30 +62,3 @@ fun CartFAB(
         }
     }
 }
-
-//if (visible) {
-//    FloatingActionButton(
-//        onClick = onClick,
-//        backgroundColor = Orange,
-//        contentColor = Color.White,
-//    ) {
-//
-//        Text(
-//            text = itemCount.toString(),
-//            color = Color.Black,
-//            fontSize = FONT_MD,
-//            textAlign = TextAlign.Center,
-//            modifier = Modifier.offset(x = 15.dp, y = (-20).dp),
-//            overflow = TextOverflow.Visible
-//        )
-//
-//        Icon(
-//            painter = painterResource(id = R.drawable.ic_baseline_shopping_cart_24),
-//            stringResource(
-//                id = R.string.content_desc_placeholder
-//            ),
-//            Modifier.scale(1.1f)
-//        )
-//
-//    }
-//}

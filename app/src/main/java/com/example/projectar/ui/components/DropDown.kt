@@ -4,10 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -44,7 +46,8 @@ fun Dropdown(
             .wrapContentSize(Alignment.TopStart)
             .fillMaxWidth(0.5f)
             .border(width = 1.dp, color = Color.Gray, shape = Shapes.medium)
-            .clickable { expanded = !expanded },
+            .clickable { expanded = !expanded }
+            .clip(RoundedCornerShape(6.dp)),
         elevation = ELEVATION_SM
     ) {
         Row(
@@ -54,10 +57,10 @@ fun Dropdown(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_baseline_format_list_bulleted_24),
-                contentDescription = stringResource(id = R.string.content_desc_placeholder),
+                contentDescription = "",
                 tint = Color.Gray
             )
-            Divider(Modifier.width(PADDING_SM))
+            Divider(Modifier.width(PADDING_SM), color = Color.White)
             Text(stringResource(id = R.string.categories))
         }
         DropdownMenu(

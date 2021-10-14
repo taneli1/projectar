@@ -4,20 +4,24 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.theme.Background
+import com.example.projectar.ui.theme.ELEVATION_SM
 import com.example.projectar.ui.utils.ColorUtils
 import com.example.projectar.ui.utils.StringUtils
 
@@ -64,25 +68,29 @@ fun BigItem(product: Product, navigate: (productId: Long) -> Unit, viewModel: Pr
                     textAlign = TextAlign.Right
                 )
             }
-            product.image?.let { viewModel.getImage(it) }?.asImageBitmap()?.let {
-                Image(
-                    bitmap = it,
-                    contentDescription = "picture",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(225.dp)
+            Surface(color = Color.White, elevation = ELEVATION_SM) {
+                Column() {
+                    product.image?.let { viewModel.getImage(it) }?.asImageBitmap()?.let {
+                        Image(
+                            bitmap = it,
+                            contentDescription = stringResource(id = R.string.content_desc_product),
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(225.dp)
 
-                )
+                        )
+                    }
+                    Text(
+                        text = product.data.description.toString(),
+                        color = Color.White,
+                        modifier = Modifier
+                            .background(color = Background)
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    )
+                }
             }
-            Text(
-                text = product.data.description.toString(),
-                color = Color.White,
-                modifier = Modifier
-                    .background(color = Background)
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            )
         }
     }
 }
