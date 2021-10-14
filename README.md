@@ -9,6 +9,15 @@ Furniture shop with the possibility to test out how the products look in a room 
 2. Run
 
 
+# Known issues
+
+Issues with bottom navigation bar, when navigating out of the AR-View. When tapping on a bottom app bar icon (home or search), the application always navigates to the home screen. This also in some rare cases crashes the application, but is hard to reproduce and fix. 
+
+This is due to the not-so easily compatible Jetpack Compose + Sceneform. 
+
+The application UI is built with Compose. The recommended navigation for composable layouts, which we opted to use, did not work as good as expected with sceneform. Currently, the application has two fragments. The first one hosts all the composable screens, and the other hosts the AR-Fragment. This is the root of the issue. The application would need to use fragments + navigation graphs so that everything would work better with sceneform.
+
+
 # Device requirements
 
 1. Device must have AR-Functionality for the application to work (api +24)
