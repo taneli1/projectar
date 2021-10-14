@@ -52,7 +52,7 @@ fun ProductCartItem(
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.FillBounds,
                 bitmap = img.asImageBitmap(),
-                contentDescription = stringResource(id = R.string.content_desc_placeholder)
+                contentDescription = stringResource(id = R.string.content_desc_product)
             )
         }
 

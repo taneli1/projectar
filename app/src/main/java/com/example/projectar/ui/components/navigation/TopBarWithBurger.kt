@@ -78,7 +78,7 @@ private fun BurgerContent(navController: NavController) {
     IconButton(onClick = { showMenu = !showMenu }) {
         Icon(
             painter = painterResource(id = R.drawable.ic_baseline_menu_24),
-            contentDescription = "test"
+            contentDescription = stringResource(id = R.string.menu_burger)
         )
     }
     DropdownMenu(
@@ -88,23 +88,16 @@ private fun BurgerContent(navController: NavController) {
         DropdownMenuItem(onClick = { navController.navigate(Screen.Profile.route) }) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_baseline_person_24),
-                contentDescription = "test"
+                contentDescription = stringResource(id = R.string.menu_profile)
             )
             Text(text = stringResource(R.string.profile))
         }
         DropdownMenuItem(onClick = { navController.navigate(Screen.Cart.route) }) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_baseline_shopping_cart_24),
-                contentDescription = "test"
+                contentDescription = stringResource(id = R.string.menu_cart)
             )
             Text(text = stringResource(R.string.cart))
-        }
-        DropdownMenuItem(onClick = { navController.navigate(Screen.Rooms.route) }) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_baseline_menu_24),
-                contentDescription = "test"
-            )
-            Text(text = stringResource(R.string.rooms))
         }
     }
 }

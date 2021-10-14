@@ -114,10 +114,9 @@ private fun OrderListItem(order: Order, products: List<Product>, viewModel: Prod
         verticalAlignment = Alignment.CenterVertically
     ) {
         OrderContent(order = order)
-
         Icon(
             painter = painterResource(id = iconRes),
-            contentDescription = stringResource(id = R.string.content_desc_placeholder),
+            contentDescription = "",
             tint = Color.Black,
             modifier = Modifier
                 .scale(1.2f)
@@ -144,7 +143,7 @@ private fun OrderContent(order: Order) {
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_baseline_shopping_cart_24),
-                contentDescription = stringResource(id = R.string.content_desc_placeholder),
+                contentDescription = "",
                 tint = Color.Black
             )
             Spacer(modifier = Modifier.size(2.dp))

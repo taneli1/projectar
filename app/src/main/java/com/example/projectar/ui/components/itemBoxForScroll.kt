@@ -12,9 +12,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.projectar.R
 import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.ui.functional.viewmodel.ProductViewModel
 import com.example.projectar.ui.theme.DarkGrey
@@ -38,7 +40,7 @@ fun ItemBoxForScroll(
         product.image?.let { viewModel.getImage(it) }?.let {
             Image(
                 bitmap = it.asImageBitmap(),
-                contentDescription = "picture",
+                contentDescription = stringResource(id = R.string.content_desc_product),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()

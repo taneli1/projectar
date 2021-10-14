@@ -111,7 +111,7 @@ private fun FakeBottomBar(
                     icon = {
                         Icon(
                             painter = painterResource(id = NavUtils.getScreenDrawable(screen)),
-                            contentDescription = stringResource(id = R.string.content_desc_placeholder)
+                            contentDescription = stringResource(id = screen.resourceId)
                         )
                     },
                     selected = screen.route == Screen.Ar.route, // Always show the Ar view as selected

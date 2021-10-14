@@ -1,6 +1,5 @@
 package com.example.projectar.ui.screens
 
-import android.content.res.Resources
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.*
@@ -24,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
 import androidx.navigation.NavController
@@ -65,7 +63,7 @@ fun SingleProduct(
         product.image?.let { viewModel.getImage(it) }?.let {
             Image(
                 bitmap = it.asImageBitmap(),
-                contentDescription = "picture",
+                contentDescription = stringResource(id = R.string.content_desc_product),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -158,10 +156,12 @@ fun SingleProduct(
                         contentColor = Color.White,
                     )
                 ) {
-                    Text("In cart: $productCount")
+                    Text(
+                        stringResource(id = R.string.in_cart, productCount)
+                    )
                     Icon(
                         painter = painterResource(id = R.drawable.cart_arrow_down),
-                        contentDescription = "In cart: $productCount"
+                        contentDescription = stringResource(id = R.string.cart)
                     )
                 }
             }

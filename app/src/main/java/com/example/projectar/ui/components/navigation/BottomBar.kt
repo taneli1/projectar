@@ -12,7 +12,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import com.example.projectar.R
 import com.example.projectar.ui.theme.DarkGrey
 import com.example.projectar.ui.utils.NavUtils
 import com.example.projectar.ui.utils.Screen
@@ -36,7 +35,7 @@ fun BottomBar(
                 icon = {
                     Icon(
                         painter = painterResource(id = NavUtils.getScreenDrawable(screen)),
-                        contentDescription = stringResource(id = R.string.content_desc_placeholder)
+                        contentDescription = stringResource(id = screen.resourceId)
                     )
                 },
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
