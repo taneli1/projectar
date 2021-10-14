@@ -25,6 +25,9 @@ import com.example.projectar.ui.theme.ELEVATION_SM
 import com.example.projectar.ui.utils.ColorUtils
 import com.example.projectar.ui.utils.StringUtils
 
+/**
+ * Composable for the large items used on "Home" page
+ */
 @Composable
 fun BigItem(product: Product, navigate: (productId: Long) -> Unit, viewModel: ProductViewModel) {
     Column(

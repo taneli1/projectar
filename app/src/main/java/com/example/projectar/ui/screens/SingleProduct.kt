@@ -1,6 +1,5 @@
 package com.example.projectar.ui.screens
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -35,15 +34,17 @@ import com.example.projectar.ui.theme.Orange
 import com.example.projectar.ui.theme.Shapes
 import com.example.projectar.ui.utils.StringUtils
 
+/**
+ * Screen for single product's own page. Shows item's price, description,
+ * image, name and possibility to add to cart
+ */
 @Composable
 fun SingleProduct(
     product: Product, viewModel: ProductViewModel,
     navController: NavController, trueCart: Cart
 ) {
     fun checkItemCartStatus(): Int {
-        val isInCart = trueCart.getProductAmount(product.data.id)
-        Log.d("Amount", "amount of products: $isInCart")
-        return isInCart
+        return trueCart.getProductAmount(product.data.id)
     }
 
     val scroll = rememberScrollState(0)
@@ -125,7 +126,7 @@ fun SingleProduct(
                         trueCart.removeItem(product.data.id)
                         Toast.makeText(
                             navController.context,
-                            "Removed from cart",
+                            R.string.removedFromCart,
                             Toast.LENGTH_SHORT
                         )
                             .show()
@@ -134,7 +135,7 @@ fun SingleProduct(
                         contentColor = Color.White,
                     )
                 ) {
-                    Text("Remove")
+                    Text(stringResource(R.string.remove))
                     Icon(
                         painter = painterResource(id = R.drawable.cart_arrow_up),
                         contentDescription = R.string.AddToCart.toString()

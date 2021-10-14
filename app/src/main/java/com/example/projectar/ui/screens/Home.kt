@@ -26,12 +26,18 @@ import com.example.projectar.ui.theme.Orange
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+/**
+ * Composable view for the home page with randomized layouts.
+ * Uses ItemBox and ItemBoxForScroll composables to create nice grid
+ * that is also scrollable horizontally and vertically
+ */
 @Composable
 fun Home(
     viewModel: ProductViewModel,
     navigate: (productId: Long) -> Unit,
     initialing: MutableState<Boolean> = mutableStateOf(false)
 ) {
+
     val scope = rememberCoroutineScope()
 
     val count: MutableState<List<Unit>> = remember {
@@ -89,6 +95,9 @@ fun Home(
 
 }
 
+/**
+ * Randomizer for layout of the main screen
+ */
 @Composable
 private fun RandomLayout(
     layoutId: String,

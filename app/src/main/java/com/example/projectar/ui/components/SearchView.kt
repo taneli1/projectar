@@ -25,13 +25,13 @@ import com.example.projectar.ui.theme.ELEVATION_MD
 import com.example.projectar.ui.theme.ELEVATION_SM
 import com.example.projectar.ui.theme.ELEVATION_XS
 import com.example.projectar.ui.theme.Orange
-
+/**
+ * TextBox used in MainList screen. 1st of 3 filtering/sorting fields
+ * Takes inputted text value and gets items accordingly
+ */
 @Composable
 fun SearchView(filter: () -> Unit, state: MutableState<TextFieldValue>) {
     Surface(
-        /**
-         * TextBox used in MainList screen. 1st of 3 filtering/sorting fields
-         */
         elevation = ELEVATION_XS,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp).clip(RoundedCornerShape(6.dp))
     ) {
@@ -61,7 +61,8 @@ fun SearchView(filter: () -> Unit, state: MutableState<TextFieldValue>) {
                     IconButton(
                         onClick = {
                             state.value =
-                                TextFieldValue("") // Remove text from TextField when you press the 'X' icon
+                                    // Remove text from TextField when you press the 'X' icon
+                                TextFieldValue("")
                             filter()
                         }
                     ) {
@@ -76,7 +77,7 @@ fun SearchView(filter: () -> Unit, state: MutableState<TextFieldValue>) {
                 }
             },
             singleLine = true,
-            shape = RectangleShape, // The TextFiled has rounded corners top left and right by default
+            shape = RectangleShape,
             colors = TextFieldDefaults.textFieldColors(
                 textColor = Color.Black,
                 cursorColor = Color.White,

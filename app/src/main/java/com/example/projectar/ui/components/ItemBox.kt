@@ -22,6 +22,11 @@ import com.example.projectar.ui.theme.DarkGrey
 import com.example.projectar.ui.theme.Shapes
 import com.example.projectar.ui.utils.StringUtils
 
+/**
+ * The basic box containing 1 item and it's price and name on dark background.
+ * Scalable horizontally.
+ * Used in multiple views like Home and MainList
+ */
 @Composable
 fun ItemBox(
     product: Product,

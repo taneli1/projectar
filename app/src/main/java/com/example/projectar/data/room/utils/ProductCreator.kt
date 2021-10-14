@@ -10,7 +10,6 @@ import com.example.projectar.data.room.entity.tag.TagLink
  * Object to fill the database for development purposes
  */
 object ProductCreator {
-
     fun createProducts(database: ApplicationDatabase) {
         database.nukeDao().nukeDb()
 

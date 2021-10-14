@@ -23,6 +23,10 @@ import com.example.projectar.ui.theme.DarkGrey
 import com.example.projectar.ui.theme.Shapes
 import com.example.projectar.ui.utils.StringUtils
 
+/**
+ * Same as ItemBox but has fixed size so it can be horizontally
+ * scrollable without UI breaking down.
+ */
 @Composable
 fun ItemBoxForScroll(
     product: Product,
