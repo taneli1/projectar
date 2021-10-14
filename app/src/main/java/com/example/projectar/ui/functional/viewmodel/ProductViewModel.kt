@@ -12,6 +12,8 @@ import com.example.projectar.data.room.entity.product.Product
 import com.example.projectar.data.room.queryfilters.TagFilter
 
 interface ProductViewModel {
+    val allProducts: LiveData<List<Product>>
+
     /** List of products matching the current provided filter */
     val products: LiveData<List<Product>>
 
